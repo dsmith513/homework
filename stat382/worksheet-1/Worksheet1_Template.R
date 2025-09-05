@@ -45,7 +45,7 @@ brand <- laptop$brand
 
 
 ## Question 5 - Create the laptop2 data frame (see instructions for criteria)
-laptop2 <- laptop[c("OperatingSystem", "screen_size", "no_of_cores")]
+laptop2 <- laptop[ , c("OperatingSystem", "screen_size", "no_of_cores")]
 
 	
 	
