@@ -14,7 +14,11 @@ def extract_hour(time):
         array (float64): series of input dimension with hour information.  
           Should only take on integer values in 0-23
     """
-    [YOUR CODE HERE]
+    time_int = pd.to_numeric(time, errors="coerce").astype("Int64")
+    hours = (time_int // 100).astype(float)
+    hours = hours.where((hours >= 0) & (hours <= 23), np.nan)
+
+    return hours
 
 # 2% credit
 def extract_mins(time):
@@ -29,7 +33,11 @@ def extract_mins(time):
         array (float64): series of input dimension with minute information.  
           Should only take on integer values in 0-59
     """
-    [YOUR CODE HERE]
+    time_int = pd.to_numeric(time, errors="coerce").astype("Int64")
+    mins = (time_int % 100).astype(float)
+    mins = pd.Series(mins).where((mins >= 0) & (mins <= 59), np.nan)
+
+    return mins
 
 # 2% credit
 def convert_to_minofday(time):
@@ -45,7 +53,16 @@ def convert_to_minofday(time):
     
     Example: 13:03 is converted to 783.0
     """
-    [YOUR CODE HERE]
+    parts = time.str.split(":", expand=True)
+    hours = pd.to_numeric(parts[0], errors="coerce")
+    mins = pd.to_numeric(parts[1], errors="coerce")
+
+    valid = (hours >= 0) & (hours <= 23) & (mins >= 0) & (mins <= 59)
+
+    minofday = hours * 60 + mins
+    minofday = minofday.where(valid, np.nan)
+
+    return minofday.astype(float)
 
 # 3%credit
 def assigned_scheduled_times(arrival_times, scheduled_times):
@@ -60,11 +77,19 @@ def assigned_scheduled_times(arrival_times, scheduled_times):
         arrival_scheduled_times: pandas dataframe with two columns viz., arrival times and corresponding scheduled time
     """
     
-    actual = [YOUR CODE HERE]
+    actual = pd.Series(arrival_times, dtype='int64')
 
-    #insert code to find the closest scheduled time for each arrival time in arrival_times
-    scheduled = [YOUR CODE HERE]
-    [YOUR CODE HERE]
+    # insert code to find the closest scheduled time for each arrival time in arrival_times
+    scheduled = pd.Series(scheduled_times, dtype='int64').dropna().sort_values().to_numpy()
+    idx = np.searchsorted(scheduled, actual.to_numpy(), side='right') - 1
+    matched = np.where(idx >= 0, scheduled[np.clip(idx, 0, len(scheduled)-1)], np.nan)
+    
+    arrival_scheduled_times = pd.DataFrame({
+        'Arrival Times': actual,
+        'Scheduled Times': pd.Series(matched, index=actual.index, dtype='int64')
+    })
+
+    return arrival_scheduled_times
 
 # 3% credit
 def calc_delay(assigned_scheduled_times):
@@ -78,7 +103,8 @@ def calc_delay(assigned_scheduled_times):
         pandas series of input dimension with delay time
     """
     
-    scheduled = [YOUR CODE HERE]
-    actual = [YOUR CODE HERE]
+    scheduled = pd.to_numeric(assigned_scheduled_times.iloc[:, 0], errors='coerce')
+    actual = pd.to_numeric(assigned_scheduled_times.iloc[:, 1], errors='coerce')
     
-    [YOUR CODE HERE]
+    delay = actual - scheduled
+    return delay.astype(float)
