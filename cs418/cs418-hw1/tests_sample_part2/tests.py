@@ -8,8 +8,8 @@ class TestHW1Part2(unittest.TestCase):
 
 	def test_spotify_search_params(self):
 		"spotify_search_params: Correct implementation"
-		client_id = "your_cliend_id"
-		client_secret = "your_client_secret"
+		client_id = "f8f8a505d80c4f44aa0be7c765b6d247"
+		client_secret = "01321adc62924fa19899e529111b892a"
 		artist = "Taylor Swift"
 		url, headers, params = spotify_search_params(client_id, client_secret,artist=artist, track="Lover", type="track", limit=5)
 		expected_url = 'https://api.spotify.com/v1/search'
@@ -20,16 +20,16 @@ class TestHW1Part2(unittest.TestCase):
 
 	def test_spotify_search(self):
 		"spotify_search: Correct implementation"
-		client_id = "your_cliend_id"
-		client_secret = "your_client_secret"
+		client_id = "f8f8a505d80c4f44aa0be7c765b6d247"
+		client_secret = "01321adc62924fa19899e529111b892a"
 		artist = "Taylor Swift"
 		total, tracks = spotify_search(client_id, client_secret,artist=artist, track="Lover", type="track", limit=5)
-		self.assertTrue(total == 35, msg="Incorrect number of searched tracks")
+		self.assertTrue(total == 35, msg=f"Incorrect number of searched tracks: expected 35 but got {total}")
 		
 	def paginated_spotify_search_requests(self):
 		"paginated_spotify_search_requests: Correct implementation"
-		client_id = "your_cliend_id"
-		client_secret = "your_client_secret"
+		client_id = "f8f8a505d80c4f44aa0be7c765b6d247"
+		client_secret = "01321adc62924fa19899e529111b892a"
 		artist = "Taylor Swift"
 		total = 200
 		limit = 50
