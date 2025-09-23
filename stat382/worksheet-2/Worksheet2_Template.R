@@ -75,7 +75,7 @@ expected_value <- function(values, prob) {
 	
 	for (i in 1:4) {
 	  row_num_selected <- sample(1:630, size = 12, replace = TRUE)
-	  num_runs <- sum(MLB$Runs[row_num_selected])
+	  num_runs <- MLB$Runs[row_num_selected]
 	  sample_mean[i] <- mean(num_runs)
 	}
 	sample_mean
