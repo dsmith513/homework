@@ -1,0 +1,25 @@
+---
+title: "project-1"
+output:
+  pdf_document: default
+  html_document: default
+date: "2025-09-26"
+---
+
+## **Task 1**
+
+## **Task 2**
+
+## **Task 3**
+
+## **Task 4**
+
+## **Task 5**
+
+## **Task 6**
+
+## **Task 7**
+
+## **Task 8**
+
+## **Task 9**
