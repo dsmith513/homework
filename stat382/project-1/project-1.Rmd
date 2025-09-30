@@ -7,6 +7,14 @@ date: "2025-09-26"
 ---
 
 ## **Task 1**
+I am going to knit directly to a pdf file using the tinytex library.
+
+A .Rmd file contains the R source code and text that is used to generate the .pdf file. The .pdf file is usually considered the final product. 
+
+```{r medicaldata}
+medicaldata <- read.csv("medicaldata1.csv", header = TRUE)
+head(medicaldata, n = 6)
+```
 
 ## **Task 2**
 
