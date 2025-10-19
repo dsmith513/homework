@@ -1,0 +1,12 @@
+# size of the gridworld
+size : 3 4
+# list of locations of walls
+walls : 2 2
+# list of terminal states (row,column,reward)
+terminal_states : 3 4 +1 , 2 4 -1
+# reward in non-terminal states
+reward : -0.04
+# transition probabilities (intended, left, right, reverse)
+transition_probabilities : 0.8 0.1 0.1 0
+discount_rate : 1
+epsilon : 0.001
