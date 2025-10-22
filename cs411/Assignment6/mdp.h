@@ -14,7 +14,7 @@ struct MDP {
     vector<vector<double>> terminal_reward;
     double default_reward = 0.0;
     array<double, 4> transition_probabilities {};
-    double gamma = 1.0;
+    double discount_rate = 1.0;
     double epsilon = 0.001;
 
     bool in_bounds(int r, int c) const {
