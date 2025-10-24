@@ -17,17 +17,48 @@ head(medicaldata, n = 6)
 ```
 
 ## **Task 2**
+```{r task 2}
+medicaldata$Gallstone_Status <- as.factor(medicaldata$Gallstone_Status)
+medicaldata$Comorbidity <- factor(medicaldata$Comorbidity, ordered = TRUE, levels = c(0, 1, 2, 3))
+medicaldata$CAD <- as.factor(medicaldata$CAD)
+medicaldata$Diabetes_Mellitus <- as.factor(medicaldata$Diabetes_Mellitus)
+medicaldata$Hepatic_Fat_Accumulation <- factor(medicaldata$Hepatic_Fat_Accumulation, ordered = TRUE, levels = c(0, 1, 2, 3))
+```
 
 ## **Task 3**
+```{r task 3}
+hist(medicaldata$Body_Protein_Content, main = "Body Protein Content", xlab = "Body Protein Content (Percentage)")
+boxplot(medicaldata$Body_Protein_Content, main = "Body Protein Content", ylab = "Body Protein Content (Percentage)")
+```
+
+Based on the above boxplot and histogram, the body protein content appears to be normally distributed. The boxplot shows only 7 outliers out of a dataset of 317 individuals. The histogram is shaped like a bell curve, implying normality. The mean body protein content is 15.97095% with a standard deviation of 2.267927%.
 
 ## **Task 4**
+```{r task 4}
+comorbidity_frequency <- table(medicaldata$Comorbidity)
+barplot(comorbidity_frequency, main = "Comorbidity", xlab = "Number of Comorbid Conditions", ylab = "Frequency")
+
+```
+
+The graph of the number of comorbid conditions present in the indiduals in the medical data set is skewed right. The most frequent number of comorbid conditions present is zero, which occurs 216 times. 98 individuals have one comorbid condition. 1 individual has two comorbid conditions. 2 individuals have three comorbid conditions.
 
 ## **Task 5**
 
 ## **Task 6**
+```{r task 6}
+library(moments)
+hist(medicaldata$Lean_Mass, main = "Lean Mass", xlab = "Lean Mass (Percentage)")
+skewness(medicaldata$Lean_Mass)
+kurtosis(medicaldata$Lean_Mass)
+shapiro.test(medicaldata$Lean_Mass)
+```
+
+The skewness of the Lean Mass histogram is -0.1179956 and the kurtosis is 2.497133. These values as well as the fact that the histogram has a bell-curve shape implies normality. Running the Shapiro-Wilk normality test produces values of W = 0.99178 and a p-value = 0.07566. The null hypothesis is that the Lean Mass variable is normally distributed. The alternative hypothesis is that the Lean Mass variable is not normally distributed. Using a significance level of 3%, we can make the decision to not reject the null hypothesis becaues the p-value = 0.07566 > 0.03. We can conclude that there is enough evidence that the normality of the Lean Mass variable seems plausible.
 
 ## **Task 7**
-
+```{r task 7}
+medicaldata$Age_Class <- cut(medicaldata$Age, breaks = c(-Inf, 40, 55, 65, Inf), labels = c("Younger", "Lower Middle", "Upper Middle", "Elder"), right = FALSE, ordered_result = TRUE)
+```
 ## **Task 8**
 
 ## **Task 9**
