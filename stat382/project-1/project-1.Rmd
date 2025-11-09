@@ -19,10 +19,10 @@ head(medicaldata, n = 6)
 ## **Task 2**
 ```{r task 2}
 medicaldata$Gallstone_Status <- as.factor(medicaldata$Gallstone_Status)
-medicaldata$Comorbidity <- factor(medicaldata$Comorbidity, ordered = TRUE, levels = c(0, 1, 2, 3))
+medicaldata$Comorbidity <- factor(medicaldata$Comorbidity, ordered = TRUE, levels = c(0, 1, 2, 3), labels = c("No comorbidities present", "One comorbid condition", "Two comorbid conditions", "Three of more comorbid conditions"))
 medicaldata$CAD <- as.factor(medicaldata$CAD)
 medicaldata$Diabetes_Mellitus <- as.factor(medicaldata$Diabetes_Mellitus)
-medicaldata$Hepatic_Fat_Accumulation <- factor(medicaldata$Hepatic_Fat_Accumulation, ordered = TRUE, levels = c(0, 1, 2, 3))
+medicaldata$Hepatic_Fat_Accumulation <- factor(medicaldata$Hepatic_Fat_Accumulation, ordered = TRUE, levels = c(0, 1, 2, 3), labels = c("No fat accumulation", "Grade 1 (mild)", "Grade 2 (moderate)", "Grade 3 (severere)"))
 ```
 
 ## **Task 3**
@@ -36,6 +36,7 @@ Based on the above boxplot and histogram, the body protein content appears to be
 ## **Task 4**
 ```{r task 4}
 comorbidity_frequency <- table(medicaldata$Comorbidity)
+names(comorbidity_frequency) <- c("None", "One", "Two", "Three or More")
 barplot(comorbidity_frequency, main = "Comorbidity", xlab = "Number of Comorbid Conditions", ylab = "Frequency")
 
 ```
@@ -43,6 +44,24 @@ barplot(comorbidity_frequency, main = "Comorbidity", xlab = "Number of Comorbid 
 The graph of the number of comorbid conditions present in the indiduals in the medical data set is skewed right. The most frequent number of comorbid conditions present is zero, which occurs 216 times. 98 individuals have one comorbid condition. 1 individual has two comorbid conditions. 2 individuals have three comorbid conditions.
 
 ## **Task 5**
+```{r task 5}
+library(ggplot2)
+
+ggplot(medicaldata, aes(x = Hepatic_Fat_Accumulation, fill = Gallstone_Status)) +
+  geom_bar(position = "dodge") +
+  labs(
+    title = "Gallstone Status by Hepatic Fat Accumulation",
+    x = "Hepatic Fat Accumulation",
+    y = "Frequency",
+    fill = "Gallstone Status"
+  ) +
+  scale_fill_discrete(labels = c("Gallstones Present", "No Gallstones"))
+
+task5_distribution <- prop.table(table(medicaldata$Hepatic_Fat_Accumulation, medicaldata$Gallstone_Status))
+task5_distribution
+```
+
+Based on the barplot shown above, it appears as if an individual's gallstone status does vary based on their hepatic fat accumulation. Based on the conditional probabilities, you have a 52.34375% chance to have gallstones given that you have no hepatic fat accumulation. This probability is 80.048781% given grade 1 hepatic fat accumulation, 38.52459% for grade 2 hepatic fat accumulation, and 50.0 % for grade 3 hepatic fat accumulation. These conditional probabilities vary greatly, leading to the conclusion that an individual's gallstone status does vary based on their hepatic fat accumulation.
 
 ## **Task 6**
 ```{r task 6}
@@ -53,12 +72,34 @@ kurtosis(medicaldata$Lean_Mass)
 shapiro.test(medicaldata$Lean_Mass)
 ```
 
-The skewness of the Lean Mass histogram is -0.1179956 and the kurtosis is 2.497133. These values as well as the fact that the histogram has a bell-curve shape implies normality. Running the Shapiro-Wilk normality test produces values of W = 0.99178 and a p-value = 0.07566. The null hypothesis is that the Lean Mass variable is normally distributed. The alternative hypothesis is that the Lean Mass variable is not normally distributed. Using a significance level of 3%, we can make the decision to not reject the null hypothesis becaues the p-value = 0.07566 > 0.03. We can conclude that there is enough evidence that the normality of the Lean Mass variable seems plausible.
+The skewness of the Lean Mass histogram is -0.1179956 and the kurtosis is 2.497133. These values as well as the fact that the histogram has a bell-curve shape implies normality. Running the Shapiro-Wilk normality test produces values of W = 0.99178 and a p-value = 0.07566. The null hypothesis is that the Lean Mass variable is normally distributed. The alternative hypothesis is that the Lean Mass variable is not normally distributed. Using a significance level of 3%, we can make the decision to not reject the null hypothesis because the p-value = 0.07566 > 0.03. We can conclude that there is enough evidence that the normality of the Lean Mass variable seems plausible.
 
 ## **Task 7**
 ```{r task 7}
 medicaldata$Age_Class <- cut(medicaldata$Age, breaks = c(-Inf, 40, 55, 65, Inf), labels = c("Younger", "Lower Middle", "Upper Middle", "Elder"), right = FALSE, ordered_result = TRUE)
+
+boxplot(Total_Body_Fat_Ratio ~ Age_Class, data = medicaldata, main = "Total Body Fat Ratio by Age Class", xlab = "Age Class", ylab = "Total Body Fat Ratio")
+
+task7_summary <- aggregate(Total_Body_Fat_Ratio ~ Age_Class, data = medicaldata, FUN = function(x) c(mean = mean(x, na.rm = TRUE), sd = sd(x, na.rm = TRUE), median = median(x, na.rm = TRUE), IQR = IQR(x, na.rm = TRUE)))
+
+task7_summary
 ```
+
+The mean body fat increases by age class until individuals reach Upper Middle age where the mean is at its highest of 30.818657%. It decreases slightly to a mean of 28.802692% as individuals reach Elder age. It should be noted that the Elder age class also has the highest standard deviation of 9.478935, which means there is a wider range of body fat ratios present in this age class. A general conclusion could be made that a person's total body fat ration increases until they reach the Upper Middle age class, or between 55 and 65 years old, and then slightly decreases as they enter their elder years.
+
 ## **Task 8**
+```{r task 8}
+t.test(medicaldata$Lean_Mass, mu = 70, alternative = "greater", conf.level = 0.94)
+```
+
+The null hypothesis is that the population mean is equal to 70. The alternative hypothesis is that the population mean is greater than 70. Since the p-value, 0.0003747, is less than the significance level, 0.06, we make the decision to reject the null hypothesis. We conclude that there is enough evidence present that the population mean is greater than 70. We are 94% confident that the true average mean exceeds 70.87668. The confidence interval is from 70.87668 to infinity, and the mean of Lean Mass is 71.61741, which falls inside the interval.
 
 ## **Task 9**
+```{r task 9}
+glucose_cad_no <- medicaldata$Glucose[medicaldata$CAD == 0]
+glucose_cad_yes <- medicaldata$Glucose[medicaldata$CAD == 1]
+
+t.test(glucose_cad_no, glucose_cad_yes, alternative = "two.sided", conf.level = 0.99)
+```
+
+The null hypothesis is that the population mean of Glucose is the equal for individuals with and without CAD. The alternative hypothesis is that the population mean of Glucose is not equal for individuals with and without CAD. Since the p-value, 0.1826, is greater than the significance level, 0.01, we make the decision to not reject the null hypothesis. We conclude that there is not enough evidence to suggest that the means differ. The 99% confidence level goes from -92.46751 to 34.72758. Since zero is in this range, it supports the conclusion that there is not enough evidence to suggest that the means differ.

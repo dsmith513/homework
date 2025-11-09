@@ -9,6 +9,9 @@
 #include <fstream>
 
 #pragma region load functions
+// helper functions for parsing from input file to mdp
+
+// trim left side of string s
 static inline string leftTrim(const string& s) {
     size_t i = 0; 
     while (i < s.size() && isspace((unsigned char)s[i])) {
@@ -17,6 +20,7 @@ static inline string leftTrim(const string& s) {
     return s.substr(i);
 }
 
+// trim right side of string s
 static inline string rightTrim(const string& s) {
     if (s.empty()) return s;
     size_t i = s.size();
@@ -26,12 +30,14 @@ static inline string rightTrim(const string& s) {
     return s.substr(0, i);
 }
 
+// trim string s
 static inline string trim(const string& s) {
     return rightTrim(leftTrim(s)); 
 }
 
+// tokenize line for clean parsing
 static inline vector<string> tokenize_line(const string& line) {
-    // Split by whitespace, commas, or colons
+    // split by whitespace, commas, or colons
     vector<string> output;
     string cur;
     auto flush = [&](){
@@ -41,7 +47,7 @@ static inline vector<string> tokenize_line(const string& line) {
         } 
     };
     for (char ch : line) {
-        if (isspace((unsigned char)ch) || ch==',' || ch==':') {
+        if (isspace((unsigned char)ch) || ch == ',' || ch == ':') {
             flush();
         }
         else cur.push_back(ch);
@@ -264,7 +270,7 @@ void print_utility_grid(const MDP& mdp, const vector<vector<double>>& G) {
     cout.setf(ios::fixed);
     cout << setprecision(3);
 
-    for (int r = 1; r <= mdp.rows; r++) {
+    for (int r = mdp.rows; r >= 1; r--) {
         for (int c = 1;c <= mdp.cols; c++) {
             if (mdp.wall[r][c]) {
                 cout << setw(8) << "#";
@@ -284,7 +290,7 @@ void print_utility_grid(const MDP& mdp, const vector<vector<double>>& G) {
 // mdp: MDP structure
 // P: policy grid to print
 void print_policy_grid(const MDP& mdp, const vector<vector<char>>& P) {
-    for (int r = 1; r <= mdp.rows; r++) {
+    for (int r = mdp.rows; r >= 1; r--) {
         for (int c = 1; c <= mdp.cols; c++) {
             if (mdp.wall[r][c]) {
                 cout << "  #  ";
@@ -300,15 +306,26 @@ void print_policy_grid(const MDP& mdp, const vector<vector<char>>& P) {
     }
 }
 
+// main value iteration algorithm
+// accelpts and mdp and a bool determining if each iteration will be printed
+// returns VIResult object containing the final utility grid, policy grid, and number of iterations run
 VIResult run_value_iteration(const MDP& mdp, bool print_each_iter) {
+    // initialize U as the current iteration's utility grid
+    // Up is a temporary copy variable used for computing the next iteration's utilities
+    // we initialize with rows+1 and cols+1 because bottom left square represents (1,1) and not (0,0), etc.
     vector<vector<double>> U(mdp.rows+1, vector<double>(mdp.cols+1, 0.0));
     vector<vector<double>> Up = U;
 
     // initialize terminal utilities to their rewards
-    for (int r=1;r<=mdp.rows;r++)
-        for (int c=1;c<=mdp.cols;c++)
-            if (mdp.is_terminal[r][c]) U[r][c] = mdp.terminal_reward[r][c];
+    for (int r = 1; r <= mdp.rows; r++) {
+        for (int c = 1; c <= mdp.cols; c++) {
+            if (mdp.is_terminal[r][c]) {
+                U[r][c] = mdp.terminal_reward[r][c];
+            }
+        }
+    }
 
+    // print initial state
     if (print_each_iter) {
         cout << "Initial utilities (iteration 0):\n";
         print_utility_grid(mdp, U);
@@ -317,60 +334,96 @@ VIResult run_value_iteration(const MDP& mdp, bool print_each_iter) {
 
     int i = 0;
     while (true) {
-        i++;
-        double delta = 0.0;
-        Up = U;
+        i++; // increment how many iterations we've done
+        double delta = 0.0; // largest change in any cell's utility this iteration
+        Up = U; // copy current grid to compute next iteration
 
-        for (int r=1;r<=mdp.rows;r++) {
-            for (int c=1;c<=mdp.cols;c++) {
-                if (m.wall[r][c]) continue;
-                if (m.is_terminal[r][c]) { Up[r][c] = mdp.terminal_reward[r][c]; continue; }
-
-                double R = m.default_reward;
-                double best = -1e300;
-                for (int a=0;a<4;a++) {
-                    best = max(best, R + m.gamma * q_value(m, U, r, c, a));
+        // iterate over every cell in the grid
+        for (int r = 1;r <= mdp.rows; r++) {
+            for (int c = 1;c <= mdp.cols; c++) {
+                // skip walls
+                if (mdp.wall[r][c]) { 
+                    continue;
                 }
+                // terminal states have fixed utilities
+                if (mdp.is_terminal[r][c]) { 
+                    Up[r][c] = mdp.terminal_reward[r][c];
+                    continue; 
+                }
+
+                double reward = mdp.default_reward; // immediate reward of being in the cell, i.e. -0.04 shown in class
+                double best = -1e100; // track optimal expected return, very small value initialized to begin with
+
+                // compute expected utility of each possible action and store optimal action in best
+                for (int a = 0; a < 4; a++) {
+                    best = max(best, reward + mdp.discount_rate * q_value(mdp, U, r, c, a));
+                }
+
+                // store new utility for this state and keep track of delta
                 Up[r][c] = best;
                 delta = max(delta, fabs(Up[r][c] - U[r][c]));
             }
         }
 
+        // swap new and old grid
         U.swap(Up);
 
+        // print grid after each iteration
         if (print_each_iter) {
-            std::cout << "Iteration " << i << " utilities:\n";
-            print_utility_grid(m, U);
-            std::cout << "\n";
+            cout << "Iteration " << i << " utilities:\n";
+            print_utility_grid(mdp, U);
+            cout << "\n";
         }
 
-        // stop condition (AIMA Fig 17.6; for gamma==1, use absolute epsilon)
+        // stop condition, if utilities are barely changing we exit the loop
         double bound = (mdp.discount_rate < 1.0) ? (mdp.epsilon * (1.0 - mdp.discount_rate) / mdp.discount_rate) : mdp.epsilon;
-        if (delta <= bound) break;
+        if (delta <= bound) {
+            break;
+        }
     }
 
-    // Build final policy
+    // build final policy grid
+    // initialize grid "P" to hold optimal action for each state
+    // ^ > v < for actions
+    // T for terminal states
+    // # for walls
     vector<vector<char>> P(mdp.rows+1, vector<char>(mdp.cols+1, '?'));
-    for (int r=1;r<=mdp.rows;r++) {
-        for (int c=1;c<=mdp.cols;c++) {
-            if (mdp.wall[r][c]) { P[r][c] = '#'; continue; }
-            if (mdp.is_terminal[r][c]) { P[r][c] = 'T'; continue; }
 
-            double R = m.default_reward;
-            int bestA = 0;
-            double best = -1e300;
-            for (int a=0;a<4;a++) {
-                double val = R + m.gamma * q_value(m, U, r, c, a);
-                if (val > best) { best = val; bestA = a; }
+    // fill policy grid
+    for (int r = 1; r <= mdp.rows; r++) {
+        for (int c = 1; c <= mdp.cols; c++) {
+            // check if cell is a wall
+            if (mdp.wall[r][c]) { 
+                P[r][c] = '#'; 
+                continue; 
             }
+            // check if cell is a terminal state
+            if (mdp.is_terminal[r][c]) { 
+                P[r][c] = 'T'; 
+                continue; 
+            }
+
+            // get best action, similar method as before
+            double R = mdp.default_reward;
+            int bestA = 0;
+            double best = -1e100;
+            for (int a = 0; a < 4; a++) {
+                double val = R + mdp.discount_rate * q_value(mdp, U, r, c, a);
+                if (val > best) { 
+                    best = val; 
+                    bestA = a; 
+                }
+            }
+            // place correct arrow corresponding to optimal action in [r][c]
             P[r][c] = ARROW[bestA];
         }
     }
 
-    VIResult res;
-    res.U = move(U);
-    res.policy = move(P);
-    res.iterations = i;
-    return res;
+    VIResult result;
+    result.utilities = move(U); // final utility grid
+    result.policy = move(P); // final policy grid
+    result.iterations = i; // number of value iterations run
+
+    return result;
 }
 #pragma endregion
