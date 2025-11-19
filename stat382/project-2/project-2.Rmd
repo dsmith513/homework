@@ -1,0 +1,25 @@
+---
+title: "project-2"
+output: pdf_document
+date: "2025-11-19"
+---
+
+## **Task 1**
+```{r task 1}
+medicaldata <- read.csv("medicaldata2.csv")
+
+medicaldata$Gallstone_Status <- as.factor(medicaldata$Gallstone_Status)
+medicaldata$Comorbidity <- factor(medicaldata$Comorbidity, ordered = TRUE, levels = c(0, 1, 2, 3), labels = c("No comorbidities present", "One comorbid condition", "Two comorbid conditions", "Three of more comorbid conditions"))
+medicaldata$CAD <- as.factor(medicaldata$CAD)
+medicaldata$Diabetes_Mellitus <- as.factor(medicaldata$Diabetes_Mellitus)
+medicaldata$Hepatic_Fat_Accumulation <- factor(medicaldata$Hepatic_Fat_Accumulation, ordered = TRUE, levels = c(0, 1, 2, 3), labels = c("No fat accumulation", "Grade 1 (mild)", "Grade 2 (moderate)", "Grade 3 (severere)"))
+medicaldata$Age_Class <- factor(medicaldata$Age_Class, ordered = TRUE, levels = c("Younger", "Lower Middle", "Upper Middle", "Elder"))
+```
+
+## **Task 2**
+
+## **Task 3**
+
+## **Task 4**
+
+## **Task 5**
