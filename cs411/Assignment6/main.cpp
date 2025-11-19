@@ -1,24 +1,28 @@
 #include <iostream>
 #include "mdp.h"
 
-int main(int argc, char** argv) {
-    if (argc < 2) {
-        std::cerr << "Usage: " << argv[0] << " <mdp_input_file>\n";
-        return 1;
-    }
+using namespace std;
 
+int main(int argc, char** argv) {
+    string file_path = argv[1];
     MDP mdp;
-    if (!load_mdp(argv[1], mdp)) {
-        std::cerr << "Failed to load MDP from file.\n";
+
+    if (!load_mdp(file_path, mdp)) {
+        cerr << "Failed to load MDP from file: " << file_path << "\n";
         return 2;
     }
 
-    // Runs value iteration and prints utilities at each iteration internally
-    VIResult res = run_value_iteration(mdp, /*print_each_iter=*/true);
+    cout << "Running value iteration:\n\n";
+    VIResult result = run_value_iteration(mdp, true);
 
-    // Print final policy (as required)
-    std::cout << "Final policy:\n";
-    print_policy_grid(mdp, res.policy);
+    cout << "=============================================\n";
+    cout << "Final utilities after " << result.iterations << " iterations:\n";
+    print_utility_grid(mdp, result.utilities);
+    cout << "\n";
+
+    cout << "Optimal policy:\n";
+    print_policy_grid(mdp, result.policy);
+    cout << "=============================================\n";
 
     return 0;
 }
