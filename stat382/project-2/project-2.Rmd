@@ -17,6 +17,41 @@ medicaldata$Age_Class <- factor(medicaldata$Age_Class, ordered = TRUE, levels = 
 ```
 
 ## **Task 2**
+```{r task 2}
+plot(medicaldata$Body_Protein_Content, medicaldata$Total_Body_Fat_Ratio, xlab = "Body Protein Content (%)", ylab = "Total Body Fat Ratio (%)", main = "Total Body Fat Ratio versus Body Protein Content")
+
+task2model <- lm(Total_Body_Fat_Ratio ~ Body_Protein_Content, data = medicaldata)
+
+plot(task2model$fitted.values, task2model$residuals, xlab = "Fitted Values", ylab = "Residuals", main = "Residuals versus Fitted Values")
+abline(h = 0)
+
+qqnorm(task2model$residuals, main = "Normality Q-Q Plot")
+qqline(task2model$residuals)
+
+shapiro.test(task2model$residuals)
+
+pearson_coefficient <- cor(medicaldata$Body_Protein_Content, medicaldata$Total_Body_Fat_Ratio, method = "pearson")
+pearson_coefficient
+
+task2model$coefficients
+summary(task2model)
+```
+
+H0: Beta_1 = 0
+H1: Beta_1 != 0
+alpha = 0.05
+
+F = 307.7
+p < 2.2e-16
+
+Decision: Reject H0. p < 2.2e-16 < 0.05 = alpha
+Conclusion: There is evidence of linear association between Body Protein Content and Body Fat Ratio.
+
+Regression Line Equation: y = -2.624164x + 70.205708
+Pearson Correlation Coefficient: -0.7029279
+R^2: 0.4941
+
+
 
 ## **Task 3**
 
