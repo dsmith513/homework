@@ -1,0 +1,234 @@
+---
+title: "project-2"
+output:
+  html_document:
+    df_print: paged
+date: "2025-11-19"
+---
+
+## **Task 1**
+```{r task 1}
+medicaldata <- read.csv("medicaldata2.csv")
+
+medicaldata$Gallstone_Status <- as.factor(medicaldata$Gallstone_Status)
+medicaldata$Comorbidity <- factor(medicaldata$Comorbidity, ordered = TRUE, levels = c(0, 1, 2, 3), labels = c("No comorbidities present", "One comorbid condition", "Two comorbid conditions", "Three of more comorbid conditions"))
+medicaldata$CAD <- as.factor(medicaldata$CAD)
+medicaldata$Diabetes_Mellitus <- as.factor(medicaldata$Diabetes_Mellitus)
+medicaldata$Hepatic_Fat_Accumulation <- factor(medicaldata$Hepatic_Fat_Accumulation, ordered = TRUE, levels = c(0, 1, 2, 3), labels = c("No fat accumulation", "Grade 1 (mild)", "Grade 2 (moderate)", "Grade 3 (severere)"))
+medicaldata$Age_Class <- factor(medicaldata$Age_Class, ordered = TRUE, levels = c("Younger", "Lower Middle", "Upper Middle", "Elder"))
+```
+
+## **Task 2**
+```{r task 2}
+plot(medicaldata$Body_Protein_Content, medicaldata$Total_Body_Fat_Ratio, xlab = "Body Protein Content (%)", ylab = "Total Body Fat Ratio (%)", main = "Total Body Fat Ratio versus Body Protein Content")
+
+task2model <- lm(Total_Body_Fat_Ratio ~ Body_Protein_Content, data = medicaldata)
+
+plot(task2model$fitted.values, task2model$residuals, xlab = "Fitted Values", ylab = "Residuals", main = "Residuals versus Fitted Values")
+abline(h = 0)
+
+qqnorm(task2model$residuals, main = "Normality Q-Q Plot")
+qqline(task2model$residuals)
+
+shapiro.test(task2model$residuals)
+
+pearson_coefficient <- cor(medicaldata$Body_Protein_Content, medicaldata$Total_Body_Fat_Ratio, method = "pearson")
+pearson_coefficient
+
+task2model$coefficients
+summary(task2model)
+```
+
+H0: Beta_1 = 0
+H1: Beta_1 != 0
+alpha = 0.05
+
+F = 307.7
+p < 2.2e-16
+
+Decision: Reject H0. p < 2.2e-16 < 0.05 = alpha
+Conclusion: There is evidence of linear association between Body Protein Content and Body Fat Ratio.
+
+Regression Line Equation: Total_Body_Fat_Ratio = -2.624164 * Body_Protein_Content + 70.205708
+Pearson Correlation Coefficient: -0.7029279
+R^2: 0.4941
+
+The linearity and equal variance assumptions are met. The residuals appear randomly distributed around the value zero in the Residuals versus Fitted Values plot. The normality assumption is also met. The p-value obtained from the Shapiro-Wilk test is p = 0.5171 > 0.05. The Pearson Correlation Coefficient r = -0.7029279 indicates a strong negative linear association between Total Body Fat Ratio and Body Protein Content. The R^2 value R^2 = 0.4941 means that 49.41% of the variability in Total Body Fat Ratio is explained by Body Protein Content.
+
+## **Task 3**
+```{r task 3}
+task3model <- lm(Total_Body_Water ~ Height + Weight + Body_Protein_Content, data = medicaldata)
+
+plot(task3model$fitted.values, task3model$residuals, xlab = "Fitted Values", ylab = "Residuals", main = "Residuals versus Fitted Values")
+abline(h = 0)
+
+qqnorm(task3model$residuals, main = "Normality Q-Q Plot")
+qqline(task3model$residuals)
+
+shapiro.test(task3model$residuals)
+
+library(lmtest)
+dwtest(task3model)
+
+summary(task3model)
+```
+H0: Beta_Height = Beta_Weight = Beta_Body_Protein_Content = 0
+H1: At least one Beta != 0
+
+F = 368.6
+p < 2.2e-16
+
+Decision: Reject H0. p < 2.2e-16 < 0.03 = alpha
+
+Conclusion: There is enough evidence to conclude that Height, Weight, and Body Protein Content together significantly explain variation in Total Body Water.
+
+
+The linearity and equal variance assumptions are met. The residuals appear randomly distributed around the value zero in the Residuals versus Fitted Values plot. The normality assumption is not met. The p-value obtained from the Shapiro-Wilk test is p = 2e-12 < 0.03. The independence assumption is met. The p-value obtained from the Durbin-Watson test is p = 0.4822 > 0.03. The value of R^2 is R^2 = 0.7794 and the value of R^2_adj is R^2_adj = 0.7773. We can reasonably conclude that the combination of Height, Weight, and Body Protein Content together significantly explains variation in Total Body Water. Because of this, it is also important to test for the individual variables to determine the individual effects on Total Body Water.
+
+
+Test 1: Height
+
+H0: Beta_Height = 0
+H1: Beta_Height != 0
+
+t = 12.055
+p < 2e-16
+
+Decision: Reject H0. p < 2e-16 < 0.03 = alpha
+
+Conclusion: There is enough evidence to conclude that Height significantly explains variation in Total Body Water.
+
+
+Test 2: Weight
+
+H0: Beta_Weight = 0
+H1: Beta_Weight != 0
+
+t = 16.307
+p < 2e-16
+
+Decision: Reject H0. p < 2e-16 < 0.03 = alpha
+
+Conclusion: There is enough evidence to conclude that Weight significantly explains variation is Total Body Water.
+
+
+Test 3: Body Protein Content
+
+H0: Beta_Body_Protein_Content = 0
+H1: Beta_Body_Protein_Content != 0
+
+t = 0.927
+p = 0.355
+
+Decision: Do not reject H0. p = 0.355 > 0.03 = alpha
+
+Conclusion: There is not enough evidence to conclude that Body Protein Content significantly explains variation in Total Body Water.
+
+
+Based on the individual tests, we can conclude that Height and Weight are statistically significant predictors for Total Body Water. Body Protein Content is not a statistically significant predictor. The R^2 and R^2 adjusted values indicate that approximately 78% of the variability in Total Body Water can be explained by Height, Weight, and Body Protein Content.
+
+## **Task 4**
+```{r task 4}
+task4model <- lm(Total_Body_Fat_Ratio ~ Age_Class, data = medicaldata)
+
+shapiro.test(task4model$residuals)
+
+qqnorm(task4model$residuals, main = "Normality Q-Q Plot")
+qqline(task4model$residuals)
+
+plot(task4model$fitted.values, task4model$residuals, xlab = "Fitted Values", ylab = "Residuals", main = "Residuals versus Fitted Values")
+abline(h = 0)
+library(car)
+leveneTest(Total_Body_Fat_Ratio ~ Age_Class, data = medicaldata)
+
+anova(task4model)
+
+TukeyHSD(aov(task4model))
+```
+
+The normality assumption is met. The p-value obtained from the Shapiro-Wilk test is 0.02595 > 0.02 = alpha, meaning there is not enough evidence to conclude that the normality assumption is not met. Additionally, the equal variance assumption is met. Referring to the Residuals versus Fitted Values plot, we can see that the residuals appear randomly distributed around the value zero, indicating that the equal variance assumption is met. We can also see this with the results of the Levene Test, which obtained a p-value of 0.3487 > 0.02 = alpha, which further confirms that the equal variance assumption is met. The Levene Test was chosen over the Bartlett test even though the normality assumption was met because in the Normality Q-Q Plot, there is visible variation among the sample quantiles at the tails of the Q-Q Line.
+
+
+ANOVA Test:
+
+H0: μ_Younger = μ_Lower_Middle = μ_Upper_Middle = μ_Elder
+H1: At least one μ differs
+
+F = 6.3796
+p = 0.0003298
+
+Decision: Reject H0. p = 0.0003298 < 0.02 = alpha
+
+Conclusion: There is enough evidence to conclude that mean Total Body Fat Ratio does differ among Age Class.
+
+
+The ANOVA test tested whether the mean Total Body Fat Ratio differed among the four Age Classes: Younger, Lower Middle, Upper Middle, and Elder. The p-value obtained from the ANOVA test was p = 0.0003298, which means that at a 2% significance level there is enough evidence to conclude that mean Total Body Fat Ratio does differ among the four Age Classes. Because of this, a Tukey test is needed to determine which Age Classes differ from one another.
+
+From the Tukey test, we can observe that the Lower Middle and Younger Age Classes as well as the Upper Middle and Lower Age Classes had statistically significant differences in Total Body Fat Ratios at a 2% significance level. The adjusted p-values for these groups are p = 0.0068073 and p = 0.0002236 respectively, both of which are less than the significance level alpha = 0.02. None of the other Age Classes had statistically significant differences in Total Body Fat ratios at a 2% significance level.
+## **Task 5**
+```{r task 5}
+task5model <- lm(Triglyceride ~ Diabetes_Mellitus * Hepatic_Fat_Accumulation, data = medicaldata)
+
+shapiro.test(task5model$residuals)
+
+qqnorm(task5model$residuals, main = "Normality Q-Q Plot")
+qqline(task5model$residuals)
+
+plot(task5model$fitted.values, task5model$residuals, xlab = "Fitted Values", ylab = "Residuals", main = "Residuals versus Fitted Values")
+abline(h = 0)
+
+mean_triglyceride_diabetes <- tapply(medicaldata$Triglyceride, medicaldata$Diabetes_Mellitus, mean)
+barplot(mean_triglyceride_diabetes, main = "Mean Triglyceride By Diabetes Status", xlab = "Diabetes Mellitus", ylab = "Average Triglyceride (mg/dL)")
+
+mean_triglyceride_hepatic <- tapply(medicaldata$Triglyceride, medicaldata$Hepatic_Fat_Accumulation, mean)
+barplot(mean_triglyceride_hepatic, main = "Mean Triglyceride By Hepatic Fat Accumulation", xlab = "Hepatic Fat Accumulation", ylab = "Average Triglyceride (mg/dL)")
+
+anova(task5model)
+```
+
+The normality assumption is not met. The p-value obtained from the Shapiro-Wilk test is p < 2.2e-16 < 0.08 = alpha. There is enough evidence to suggest that the normality assumption is not met. The equal variance assumption is met. Referring to the Residuals versus Fitted Values plot, the residuals appear to be randomly distributed around zero. This means that we can reasonably conclude that there is equal variance.
+
+
+ANOVA Test:
+
+H0: (αβ)ij = 0, ∀(i, j)
+H1: At least one (αβ)ij̸ = 0
+
+F = 0.6669
+p = 0.573
+
+Decision: Do not reject H0. p = 0.573 > 0.08 = alpha
+
+Conclusion: There is enough evidence to conclude that Diabetes Mellitus and Hepatic Fat Accumulation do not depend on each other when predicting Triglycerides.
+
+
+Because we found that Diabetes Mellitus and Hepatic Fat Accumulation do not depend on each other when predicting Triglycerides, we need to test for main effects.
+
+
+Diabetes Mellitus Test:
+
+H0: αi = 0, ∀i
+H1: at least one αi̸ = 0
+
+F = 15.8534
+p = 8.538e-5
+
+Decision: Reject H0. p = 8.538e-5 < 0.08 = alpha
+
+Conclusion: There is enough evidence to conclude that Triglyceride levels vary significantly based on Diabetes Mellitus status.
+
+
+Hepatic Fat Accumulation Test:
+
+H0: βj = 0, ∀j
+H1: at least one βj̸ = 0
+
+F = 11.8896
+p = 2.173e-7
+
+Decision: Reject H0. p = 2.173e-7 < 0.08 - alpha
+
+Conclusion: There is enough evidence to conclude that Triglyceride levels vary significantly based on Hepatic Fat Accumulation.
+
+
+The ANOVA Test tested whether a patient's Diabetes Mellitus and Hepatic Fat Accumulation levels depend on each other when predicting Triglyceride levels. From the ANOVA test, a p-value was obtained of p = 0.573, which at an 8% significance level suggests that Diabetes Mellitus and Hepatic Fat Accumulation are not dependent on each other when predicting Triglyceride levels. When testing for main effects, it was found that Triglyceride levels vary significantly based on both of a patient's Diabetes Mellitus status and Hepatic Fat Accumulation with p-values of p = 8.538e-5 and p = 2.173e-7 respectively.

@@ -1,0 +1,217 @@
+Name,Manufacturer_Type,Parent_Company_HQ,Car_Type,Drive_Wheels_Available,Seating,Engine_liter,HP,Length_in,Width_in,Height_in,Wheelbase_in,Weight_lbs,Cargo_Volume_cuft,Overall_MPG,Lowest_MSRP,Drive_Wheels_Max
+GMC Yukon,Domestic,USA,SUV,"Rear, AWD, 4",8,5.3,355,204,81,74,116,5635,47.5,16,49600,All
+GMC Yuk XL,Domestic,USA,SUV,"Rear, AWD, 4",9,5.3,355,224,81,74,130,5945,62.5,16,52400,All
+Jeep Wrangler,Domestic,USA,SUV,4WD,5,2,270,188,74,74,118,4440,41.5,18,28045,Four
+Kia K900,Foreign,Korea,Sedan,4WD,5,3.3,365,202,75,59,122,4735,15,21,59900,Four
+Land Rover Range Rover,Foreign,India,SUV,4WD,5,2,254,197,78,72,115,5300,34.7,17,89500,Four
+Land Rover Range Rover Sport,Foreign,India,SUV,4WD,7,2,398,191,78,70,115,5255,31.5,18,68650,Four
+Lexus GX,Foreign,Japan,SUV,4WD,7,4.6,301,192,74,74,110,5170,36.5,17,52500,Four
+Fiat 500x,Domestic,USA,SUV,AWD,5,1.3,177,167,71,64,101,3280,19.5,23,24490,All
+Tesla Model 5,Domestic,USA,Sedan,AWD,5,0,417,196,77,57,117,4595,32,102,75000,All
+Tesla Model X,Domestic,USA,SUV,AWD,6,0,417,198,82,64,117,5415,26,87,81000,All
+Audi A5,Foreign,Germany,Coupe,AWD,4,2,248,184,73,54,109,3550,12,27,44200,All
+Audi A7,Foreign,Germany,Hatchback,AWD,5,3,335,196,75,56,115,4235,19,25,68000,All
+Audi A8,Foreign,Germany,Sedan,AWD,5,3,335,209,77,59,123,4810,13,21,83800,All
+Audi E-Tron,Foreign,Germany,SUV,AWD,5,0,335,193,76,66,115,5795,28.5,74,74800,All
+Audi Q3,Foreign,Germany,SUV,AWD,5,2,228,177,73,62,106,3905,23.7,22,34700,All
+Audi Q5,Foreign,Germany,SUV,AWD,5,2,248,184,75,65,111,4140,27,24,42950,All
+Audi Q7,Foreign,Germany,SUV,AWD,5,2,248,200,78,69,118,5080,35.5,20,53550,All
+Audi Q8,Foreign,Germany,SUV,AWD,5,3,335,197,79,67,118,5000,30.5,19,67400,All
+Audi TT,Foreign,Germany,SUV,AWD,4,2,228,165,72,53,99,3160,12,26,44900,All
+BMW X4,Foreign,Germany,SUV,AWD,5,2,248,188,76,64,113,4145,19,25,50450,All
+BMW X7,Foreign,Germany,SUV,AWD,5,3,335,203,79,71,122,5285,26,22,73900,All
+Jaguar E-Pace,Foreign,India,SUV,AWD,5,2,246,173,82,65,106,4130,21.5,21,38900,All
+Jaguar F-Pace,Foreign,India,SUV,AWD,5,2,180,186,87,66,113,4350,28.5,20,44800,All
+Jaguar I-Pace,Foreign,India,SUV,AWD,5,0,394,184,75,61,118,4920,25.5,76,69500,All
+Land Rover Discovery,Foreign,India,SUV,AWD,7,3,254,196,82,74,115,5405,42.5,17,52950,All
+Land Rover Discovery Sport,Foreign,India,SUV,AWD,7,2,246,181,82,68,108,4325,33,21,37990,All
+Land Rover Range Rover Evoque,Foreign,India,SUV,AWD,5,2,246,172,79,65,106,3935,21.5,23,42650,All
+Land Rover Range Rover Velar,Foreign,India,SUV,AWD,5,2,180,189,80,66,113,4350,29,21,49950,All
+Maserati Levante,Foreign,Italy,SUV,AWD,5,3,345,197,78,66,118,4905,20.5,16,75980,All
+Mercedes-Benz GLS,Foreign,Germany,SUV,AWD,7,3,362,205,77,73,123,5660,16,18,75200,All
+Porsche Cayenne,Foreign,Germany,SUV,AWD,5,2.9,434,194,78,67,114,4680,32,21,65700,All
+Porsche Macan,Foreign,Germany,SUV,AWD,5,2,248,185,76,64,111,4410,29,19,49900,All
+Subaru Accent,Foreign,Japan,SUV,AWD,7,2.4,260,197,76,72,114,4550,40.5,22,31995,All
+Subaru Crosstrek,Foreign,Japan,SUV,AWD,5,2,148,176,71,64,105,3190,27.5,29,21895,All
+Subaru Forester,Foreign,Japan,SUV,AWD,5,2.5,182,182,72,68,108,3485,36.5,28,24295,All
+Subaru Impreza,Foreign,Japan,Sedan,AWD,5,2,152,182,70,57,105,2085,12,30,18595,All
+Subaru Legacy,Foreign,Japan,Sedan,AWD,5,2.4,260,189,72,59,108,3499,15,31,24000,All
+Subaru Outback,Foreign,Japan,Wagon,AWD,5,2.4,260,191,73,66,108,3634,32.5,29,26000,All
+Subaru WRX,Foreign,Japan,Sedan,AWD,5,2,268,180,69,58,103,3320,11,26,27195,All
+Volkswagen Golf Alltrack,Foreign,Germany,Wagon,AWD,5,1.8,168,180,71,60,104,3465,30.5,25,26895,All
+Chevrolet Bolt,Domestic,USA,Hatchback,Front,5,0,200,164,70,63,102,3545,17,119,36620,Front
+Chevrolet Malibu,Domestic,USA,Sedan,Front,5,1.5,160,194,73,58,112,3125,16,32,22095,Front
+Chevrolet Sonic,Domestic,USA,Sedan,Front,5,1.4,138,174,68,60,99,2765,15,28,15420,Front
+Chevrolet Spark,Domestic,USA,Hatchback,Front,4,1.4,98,143,63,58,94,2280,11,33,13220,Front
+Chrysler Pacifica,Domestic,USA,Minivan,Front,8,3.6,248,204,80,70,122,4535,66,24,26995,Front
+Acura ILX,Foreign,Japan,Sedan,Front,5,2.4,201,182,71,56,105,3095,12,28,30000,Front
+Fiat 500,Foreign,Italy,Hatchback,Front,4,0,111,144,64,59,91,2565,10,28,33300,Front
+Fiat 500L,Foreign,Italy,Hatchback,Front,5,1.4,160,167,70,66,103,3330,22.5,27,21910,Front
+Honda Accord,Foreign,Japan,Sedan,Front,5,1.5,192,192,73,57,111,3155,17,36,23720,Front
+Honda Civic,Foreign,Japan,Sedan,Front,5,1.5,174,182,71,56,106,2745,13,32.5,19450,Front
+Honda Clarity,Foreign,Japan,Sedan,Front,5,0,161,193,74,58,108,4045,16,39,33400,Front
+Honda Fit,Foreign,Japan,Hatchback,Front,5,1.5,128,161,67,60,99,2625,17,33,16190,Front
+Honda Insight,Foreign,Japan,Sedan,Front,5,0,151,194,72,56,106,2975,15,54,22930,Front
+Honda Odyssey,Foreign,Japan,Minivan,Front,8,3.3,280,203,79,68,118,4490,71.5,22,30190,Front
+Honda Accent,Foreign,Japan,Sedan,Front,5,1.6,130,173,68,57,102,2625,14,33,14995,Front
+Hyundai Elantra,Foreign,Korea,Sedan,Front,5,1.4,128,182,71,57,106,2865,14,33,18950,Front
+Hyundai Ioniq,Foreign,Korea,Hatchback,Front,5,0,118,176,72,57,106,3070,19.5,52,30200,Front
+Hyundai Sonata,Foreign,Korea,Sedan,Front,5,1.6,180,193,73,57,112,3247,16,33,23300,Front
+Hyundai Veloster,Foreign,Korea,Hatchback,Front,4,1.6,201,167,71,55,104,2795,20,29,18500,Front
+Kia Cadenza,Foreign,Korea,Sedan,Front,5,3.3,290,196,74,58,112,3725,16,24,33100,Front
+Kia Forte,Foreign,Korea,Sedan,Front,5,2,147,183,71,57,106,2805,15,34,17790,Front
+Kia Niro,Foreign,Korea,Wagon,Front,5,0,201,172,71,60,106,3155,19,43,38500,Front
+Kia Optima,Foreign,Korea,Sedan,Front,5,1.6,178,191,73,58,110,3300,16,28,22990,Front
+Kia Rio,Foreign,Korea,Sedan,Front,5,1.6,130,173,68,57,102,2575,14,33,15390,Front
+Kia Sedona,Foreign,Korea,Minivan,Front,8,3.3,276,201,78,69,121,4595,46,20,27200,Front
+Kia Soul,Foreign,Korea,Wagon,Front,5,0,201,165,71,63,102,2995,24,108,33950,Front
+Lexus ES,Foreign,Japan,Sedan,Front,5,2.5,215,196,73,57,113,3770,17,25,39750,Front
+Mazda 6,Foreign,Japan,Sedan,Front,5,2.5,186,192,72,57,111,3405,15,28,23800,Front
+Mini Cooper,Foreign,Germany,Hatchback,Front,4,1.5,134,151,68,56,98,2775,9,30,21900,Front
+Mitsubishi Mirage,Foreign,Japan,SUV,Front,5,1.2,78,149,66,59,97,2085,17,37,13795,Front
+Nissan Kicks,Foreign,Japan,Wagon,Front,5,1.6,125,169,69,62,103,2630,25,32,18640,Front
+Nissan Leaf,Foreign,Japan,Hatchback,Front,5,0,147,176,71,61,106,3440,24,112,29690,Front
+Nissan Maxima,Foreign,Japan,Sedan,Front,5,3.5,300,193,73,57,109,3535,14,25,34050,Front
+Nissan Sentra,Foreign,Japan,Sedan,Front,5,1.6,188,182,69,59,106,2865,15,31,17890,Front
+Nissan Versa,Foreign,Japan,Sedan,Front,5,1.6,122,175,67,60,102,2494,38.3,34,14730,Front
+Toyota Avalon,Foreign,Japan,Sedan,Front,5,2.5,215,196,73,57,113,3680,16,42,35650,Front
+Toyota Camry,Foreign,Japan,Sedan,Front,5,2.5,203,192,72,57,111,3340,15,32,24095,Front
+Toyota C-HR,Foreign,Japan,Wagon,Front,5,2,144,171,71,62,104,3290,19.5,39,21145,Front
+Toyota Corolla,Foreign,Japan,Sedan,Front,5,1.8,121,183,70,57,106,2960,13,32,19500,Front
+Toyota Yaris,Foreign,Japan,Sedan,Front,5,1.5,106,172,67,59,101,2420,13,35,15600,Front
+Volkswagen GT1,Foreign,Germany,Hatchback,Front,5,2,228,166,70,58,102,3155,24,29,27595,Front
+Volkswagen Jetta,Foreign,Germany,Sedan,Front,5,1.4,147,185,71,57,106,3065,16,34,18745,Front
+Volkswagen Passat,Foreign,Germany,Sedan,Front,5,2,174,192,72,59,110,3320,16,28,25295,Front
+Buick Enclave,Domestic,USA,SUV,"Front, AWD",7,3.6,310,204,79,70,121,4690,48.5,18,40000,All
+Buick Encore,Domestic,USA,SUV,"Front, AWD",5,1.4,138,168,70,65,101,3355,26,23,23200,All
+Buick Envision,Domestic,USA,SUV,"Front, AWD",5,2,252,184,72,67,108,4050,32.5,21,31995,All
+Buick Regal,Domestic,USA,Hatchback,"Front, AWD",5,2,250,193,73,57,111,3680,32,23,25070,All
+Cadillac XT4,Domestic,USA,SUV,"Front, AWD",5,2,237,181,77,63,109,3930,26.5,23,34795,All
+Cadillac XT5,Domestic,USA,SUV,"Front, AWD",5,2,230,190,75,66,113,4300,33,20,41695,All
+Cadillac XTS,Domestic,USA,Sedan,"Front, AWD",5,3.6,304,202,73,59,112,4090,18,22,46795,All
+Chevrolet Blazer,Domestic,USA,SUV,"Front, AWD",5,2.5,193,191,77,67,113,4235,34.5,19,28800,All
+Chevrolet Equinox,Domestic,USA,SUV,"Front, AWD",5,1.5,170,183,73,65,107,3540,32,31,23800,All
+Chevrolet Traverse,Domestic,USA,SUV,"Front, AWD",8,3.6,310,204,79,71,121,4695,54.5,20,29800,All
+Ford EcoSport,Domestic,USA,SUV,"Front, AWD",5,1,123,161,70,65,99,3390,22.5,24,20485,All
+Ford Edge,Domestic,USA,SUV,"Front, AWD",5,2,250,189,76,68,112,4250,39,22,29995,All
+Ford Escape,Domestic,USA,SUV,"Front, AWD",5,1.5,250,181,74,69,107,3465,34.4,24,24885,All
+Ford Fusion,Domestic,USA,Sedan,"Front, AWD",5,1.5,181,193,73,58,112,3505,16,25,22840,All
+GMC Acadia,Domestic,USA,SUV,"Front, AWD",6,2.5,193,194,75,66,113,4395,40.5,19,29000,All
+GMC Terrain,Domestic,USA,SUV,"Front, AWD",5,1.5,170,182,72,65,107,3800,33,22,25000,All
+Jeep Renegade,Domestic,USA,SUV,"Front, AWD",5,1.3,177,167,71,66,101,3360,30.5,24,22025,All
+Lincoln Continental,Domestic,USA,Sedan,"Front, AWD",5,2.7,335,201,78,59,118,4540,17,20,46145,All
+Lincoln Corsair,Domestic,USA,SUV,"Front, AWD",5,2,250,181,76,64,107,3691,34,21,35495,All
+Lincoln MKZ,Domestic,USA,Sedan,"Front, AWD",5,2,188,194,73,58,112,3755,15,40,35995,All
+Lincoln Nautilus,Domestic,USA,SUV,"Front, AWD",5,2,245,190,76,66,112,4560,32.5,18,40340,All
+Acura MDX,Foreign,Japan,SUV,"Front, AWD",7,3,321,196,77,67,111,4200,34,21,44300,All
+Acura RDX,Foreign,Japan,SUV,"Front, AWD",5,2,272,187,74,66,108,4005,33,22,37600,All
+Acura RLX,Foreign,Japan,Sedan,"Front, AWD",5,3.5,310,198,74,58,112,3930,15,23,54900,All
+Acura TLX,Foreign,Japan,Sedan,"Front, AWD",5,2.4,206,190,74,57,109,3480,13,26,33000,All
+Audi A3,Foreign,Germany,Sedan,"Front, AWD",5,2,184,175,70,56,104,3135,13,27,33300,All
+Audi A4,Foreign,Germany,Sedan,"Front, AWD",5,2,188,186,73,56,111,3630,13,27,39200,All
+BMW X1,Foreign,Germany,SUV,"Front, AWD",5,2,228,175,72,63,105,3725,27,26,34950,All
+BMW X2,Foreign,Germany,SUV,"Front, AWD",5,2,228,172,72,60,105,3645,23.5,25,36400,All
+Honda CR-V,Foreign,Japan,SUV,"Front, AWD",5,1.5,190,181,73,67,105,3450,36,27.5,24350,All
+Honda HR-V,Foreign,Japan,SUV,"Front, AWD",5,1.8,141,169,72,56,106,3045,32,29,20520,All
+Honda Passport,Foreign,Japan,SUV,"Front, AWD",5,3.5,280,191,79,72,111,4170,39,21,31990,All
+Hyundai Kona,Foreign,Korea,SUV,"Front, AWD",5,1.6,75,164,71,61,102,3145,22.5,27.5,19990,All
+Hyundai Palisade,Foreign,Korea,SUV,"Front, AWD",8,3.8,291,196,78,69,114,4385,21,21,31550,All
+Hyundai Santa Fe,Foreign,Korea,SUV,"Front, AWD",5,2,235,188,74,66,109,4015,35.5,21,25750,All
+Hyundai Tucson,Foreign,Korea,SUV,"Front, AWD",5,2,164,176,73,65,105,3520,29.5,23,23200,All
+Infinity QX30,Foreign,Japan,SUV,"Front, AWD",5,2,208,174,72,60,106,3540,21.5,25,30250,All
+Infinity QX50,Foreign,Japan,SUV,"Front, AWD",5,2,268,185,75,66,110,4155,30.5,22,36650,All
+Infinity QX60,Foreign,Japan,SUV,"Front, AWD",7,3.5,295,201,77,69,114,4530,39,19,44350,All
+Kia Sorento,Foreign,Korea,SUV,"Front, AWD",7,2.4,185,189,74,66,109,4285,37.5,22,26290,All
+Kia Sportage,Foreign,Korea,SUV,"Front, AWD",5,2,240,176,73,64,105,3485,29.5,23,23990,All
+Kia Telluride,Foreign,Korea,SUV,"Front, AWD",8,3.8,291,197,78,69,114,4300,47.5,21,31690,All
+Lexus UX,Foreign,Japan,SUV,"Front, AWD",5,2,169,177,72,60,104,3570,18,37,32150,All
+Mazda 3,Foreign,Japan,Sedan,"Front, AWD",5,3,345,184,71,57,107,3025,13,30,21000,All
+Mazda CX-3,Foreign,Japan,SUV,"Front, AWD",5,2,187,168,70,61,101,2945,18,28,20390,All
+Mazda CX-5,Foreign,Japan,SUV,"Front, AWD",5,2.2,250,179,73,66,106,3590,30.5,24,24350,All
+Mazda CX-9,Foreign,Japan,SUV,"Front, AWD",7,2.5,227,200,76,68,113,4585,34,32,32280,All
+Mercedes-Benz A Class,Foreign,Germany,Sedan,"Front, AWD",5,2,188,179,71,57,107,3425,9,28,32500,All
+Mercedes-Benz CLA,Foreign,Germany,Sedan,"Front, AWD",5,2,221,185,72,57,107,3335,16,27,33100,All
+Mercedes-Benz GLA,Foreign,Germany,SUV,"Front, AWD",5,2,208,174,71,60,106,3535,23,26,33950,All
+Mini Cooper Clubman,Foreign,Germany,Wagon,"Front, AWD",5,1.5,134,168,71,57,105,3175,23,28,24900,All
+Mini Cooper Countryman,Foreign,Germany,SUV,"Front, AWD",5,1.5,134,170,72,61,105,3690,23.5,25,26900,All
+Mitsubishi Eclipse,Foreign,Japan,SUV,"Front, AWD",5,1.5,152,173,71,67,105,3515,22.5,24,23595,All
+Mitsubishi Outlander,Foreign,Japan,SUV,"Front, AWD",7,2,197,185,71,66,105,3610,32.5,24,24695,All
+Mitsubishi Outlander Sport,Foreign,Japan,SUV,"Front, AWD",5,2,148,169,70,64,105,3290,25.5,26,20945,All
+Nissan Altima,Foreign,Japan,Sedan,"Front, AWD",5,2,248,193,73,57,111,3240,15,31,24000,All
+Nissan Murano,Foreign,Japan,SUV,"Front, AWD",5,3.5,260,192,75,67,111,4025,33.5,21,31370,All
+Nissan Pathfinder,Foreign,Japan,SUV,"Front, AWD",7,3.5,284,199,77,70,114,4505,39.5,18,31530,All
+Nissan Rogue,Foreign,Japan,SUV,"Front, AWD",5,2.5,170,185,72,66,107,3590,31.5,24,25020,All
+Nissan Rogue Sport,Foreign,Japan,SUV,"Front, AWD",5,2,141,172,72,63,104,3365,24.5,26,22340,All
+Toyota Highlander,Foreign,Japan,SUV,"Front, AWD",8,2.5,240,193,76,68,110,4134,13.6,22,32000,All
+Toyota RAV4,Foreign,Japan,SUV,"Front, AWD",5,2.5,203,181,73,67,106,3510,30.5,30,25650,All
+Toyota Sienna,Foreign,Japan,Minivan,"Front, AWD",8,3.5,296,201,78,71,119,4550,70.5,21,31415,All
+Volkswagen Arteon,Foreign,Germany,Hatchback,"Front, AWD",5,2,268,191,74,57,112,3850,27,23,35845,All
+Volkswagen Atlas,Foreign,Germany,SUV,"Front, AWD",7,2,235,198,78,70,117,4670,50.5,20,30895,All
+Volkswagen Golf,Foreign,Germany,Hatchback,"Front, AWD",5,0,134,168,71,57,104,3459,24,125,31895,All
+Volkswagen Tiguan,Foreign,Germany,SUV,"Front, AWD",7,2,184,185,72,66,110,3860,33,25,24295,All
+Volvo S60,Foreign,China,Sedan,"Front, AWD",5,2,250,187,80,57,113,3740,12,26,35800,All
+Volvo S90,Foreign,China,Sedan,"Front, AWD",5,2,250,195,74,57,116,4085,14,23,47350,All
+Volvo XC40,Foreign,China,SUV,"Front, AWD",5,2,187,174,73,65,106,3785,25.5,24,33700,All
+Volvo XC60,Foreign,China,SUV,"Front, AWD",5,2,250,185,79,65,113,4150,34,23,39800,All
+Volvo XC90,Foreign,China,SUV,"Front, AWD",7,2,250,195,84,70,118,4595,35,20,47700,All
+Jeep Cherokee,Domestic,USA,SUV,"Front, AWD,",5,2,270,182,73,66,107,4070,31,23,24795,All
+Jeep Compass,Domestic,USA,SUV,"Front, AWD,",5,2.4,180,173,74,65,104,3525,27.5,24,21845,All
+Chevrolet Camaro,Domestic,USA,Coupe,Rear,4,2,275,188,75,53,111,3730,11,20,25000,Rear
+Chevrolet Corvette,Domestic,USA,Hatchback,Rear,2,6.2,455,177,74,49,107,3470,15,20,55900,Rear
+Ford Mustang,Domestic,USA,Coupe,Rear,4,2.3,310,188,75,54,107,3845,14,22,26670,Rear
+BMW Z4,Foreign,Germany,Convertible,Rear,2,2,255,171,73,53,97,3290,10,29,49700,Rear
+BMW i3,Foreign,Germany,Hatchback,Rear,4,0,170,157,70,62,101,3140,12,113,44450,Rear
+Fiat 124,Foreign,Italy,Convertible,Rear,2,1.4,160,160,69,49,91,2450,5,31,25190,Rear
+Mazda Mx-5 Miata,Foreign,Japan,Convertible,Rear,2,2,181,154,68,49,91,2335,5,34,25730,Rear
+Nissan Z,Foreign,Japan,Coupe,Rear,2,3.7,322,167,73,52,100,3385,7,23,34040,Rear
+Porsche 718 Boxster,Foreign,Germany,Convertible,Rear,2,2,300,172,71,50,97,3150,4,26,59000,Rear
+Porsche 718 Cayman,Foreign,Germany,Coupe,Rear,2,2,300,172,71,51,97,3055,10,24,56900,Rear
+Subaru BRZ,Foreign,Japan,Coupe,Rear,4,2,200,167,70,51,101,2770,7,30,25795,Rear
+Toyota 86,Foreign,Japan,Coupe,Rear,4,4,205,167,70,51,101,2770,7,30,26655,Rear
+Toyota Supra,Foreign,Japan,Hatchback,Rear,2,3,335,173,73,51,97,3400,10,26,49990,Rear
+Jeep Grand Cherokee,Domestic,USA,SUV,"Rear, 4WD",5,3,240,190,77,68,115,4900,36.5,21,31945,Four
+Nissan Armada,Foreign,Japan,SUV,"Rear, 4WD",7,5.6,390,209,80,76,121,5910,47,14,47100,Four
+Cadillac CT6,Domestic,USA,Sedan,"Rear, AWD",5,2,237,204,74,58,122,4040,15,22,50495,All
+Cadillac Escalade,Domestic,USA,SUV,"Rear, AWD",8,6.2,420,204,81,74,116,5820,48,16,75195,All
+Chevrolet Suburban,Domestic,USA,SUV,"Rear, AWD",9,5,355,224,82,74,130,5945,62.5,16,49700,All
+Chrysler 300,Domestic,USA,Sedan,"Rear, AWD",5,3.6,292,199,75,58,120,4095,16,21,29220,All
+Dodge Challenger,Domestic,USA,Coupe,"Rear, AWD",5,3.6,305,198,76,57,116,4190,16,20,27845,All
+Dodge Charger,Domestic,USA,Sedan,"Rear, AWD",5,3.6,292,198,75,58,120,4335,16,21,29220,All
+Dodge Durango,Domestic,USA,Sedan,"Rear, AWD",8,3.6,293,200,76,71,120,5105,44,18,30195,All
+Ford Expedition,Domestic,USA,SUV,"Rear, AWD",9,3.5,375,222,82,76,132,6035,66,16,48530,All
+Ford Explorer,Domestic,USA,SUV,"Rear, AWD",7,2.3,325,199,79,70,119,4345,87.8,23,28155,All
+Genesis G70,Domestic,USA,Sedan,"Rear, AWD",5,2,252,184,73,55,112,3770,11,23,34900,All
+Genesis G80,Domestic,USA,Sedan,"Rear, AWD",5,3.3,365,197,74,58,119,4530,15,20,42050,All
+Genesis G90,Domestic,USA,Sedan,"Rear, AWD",5,3.3,365,205,75,59,124,4820,16,18,69350,All
+Lincoln Aviator,Domestic,USA,SUV,"Rear, AWD",7,3,400,199,80,70,119,4900,21.5,20,51100,All
+Lincoln Navigator,Domestic,USA,SUV,"Rear, AWD",8,3.5,411,210,84,76,123,6100,56,16,73205,All
+Tesla Model 3,Domestic,USA,Sedan,"Rear, AWD",5,0,258,185,73,57,113,3895,15,130,39900,All
+Alfa Romeo Giulia,Foreign,Italy,Sedan,"Rear, AWD",5,2,280,183,74,57,111,3695,12,27,38295,All
+Alfa Romeo Stelvio,Foreign,Italy,SUV,"Rear, AWD",5,2,280,185,75,65,111,4020,26.5,24,40295,All
+BMW 2 Series,Foreign,Germany,Coupe,"Rear, AWD",4,2,248,175,70,56,106,3450,14,25,35300,All
+BMW 3 Series,Foreign,Germany,Sedan,"Rear, AWD",5,2,255,186,72,57,112,3640,17,29,40250,All
+BMW 4 Series,Foreign,Germany,Coupe,"Rear, AWD",4,2,248,183,72,54,111,3470,16,27,44600,All
+BMW 5 Series,Foreign,Germany,Sedan,"Rear, AWD",5,2,248,195,74,58,117,3950,19,26,53400,All
+BMW 6 Series,Foreign,Germany,Sedan,"Rear, AWD",5,3,315,193,75,54,112,4355,13,20,70300,All
+BMW 7 Series,Foreign,Germany,Sedan,"Rear, AWD",5,2,322,207,75,58,126,4710,18,21,83650,All
+BMW X3,Foreign,Germany,SUV,"Rear, AWD",5,2,248,186,74,66,113,4220,32,24,41000,All
+BMW X5,Foreign,Germany,SUV,"Rear, AWD",5,3,335,194,79,69,117,4740,36.5,23,60700,All
+BMW X6,Foreign,Germany,SUV,"Rear, AWD",5,3,300,192,78,67,116,4750,26.6,20,63550,All
+Infinity Q50,Foreign,Japan,Sedan,"Rear, AWD",5,2,208,188,72,57,112,3875,14,22,35650,All
+Infinity Q70,Foreign,Japan,Sedan,"Rear, AWD",5,3.7,330,195,73,59,114,3895,15,21,50400,All
+Infinity QX80,Foreign,Japan,SUV,"Rear, AWD",8,5.6,400,210,80,76,121,5990,49.5,15,65500,All
+Kia Stinger,Foreign,Korea,Hatchback,"Rear, AWD",5,2,255,190,74,55,114,3910,23,23,32990,All
+Lexus GS,Foreign,Japan,Sedan,"Rear, AWD",5,2,241,192,72,57,112,3845,16,21,46860,All
+Lexus IS,Foreign,Japan,Sedan,"Rear, AWD",5,2,241,184,71,56,110,3850,14,20,38560,All
+Lexus US,Foreign,Japan,Sedan,"Rear, AWD",5,3.5,354,206,75,58,123,5170,17,20,75450,All
+Maserati Ghibli,Foreign,Italy,Sedan,"Rear, AWD",5,3,345,196,77,58,118,4625,18,19,74980,All
+Mercedes-Benz C Class,Foreign,Germany,Sedan,"Rear, AWD",5,2,255,185,71,57,112,3670,13,26,41400,All
+Mercedes-Benz CLS,Foreign,Germany,Sedan,"Rear, AWD",5,3,362,199,74,55,116,4255,12,26,69200,All
+Mercedes-Benz E-Class,Foreign,Germany,Sedan,"Rear, AWD",5,2,255,194,73,57,116,4030,16,24,53500,All
+Mercedes-Benz GLC,Foreign,Germany,SUV,"Rear, AWD",5,2,241,183,74,65,113,4010,28,22,40700,All
+Mercedes-Benz GLE,Foreign,Germany,SUV,"Rear, AWD",5,2,255,194,77,71,118,5150,36.5,20,53700,All
+Mercedes-Benz S-Class,Foreign,Germany,Sedan,"Rear, AWD",5,3,362,207,75,59,125,4935,16,18,91250,All
+Porsche 911,Foreign,Germany,Coupe,"Rear, AWD",4,3,443,178,73,51,97,3380,5,23,113000,All
+Porsche Panamera,Foreign,Germany,Hatchback,"Rear, AWD",4,2.9,440,199,76,56,116,4125,17,23,86300,All
+Toyota 4Runner,Foreign,Japan,SUV,"Rear, AWD",7,4,270,190,76,72,110,4665,44.5,18,35310,All
+Toyota Sequoia,Foreign,Japan,SUV,"Rear, AWD",8,5.7,381,205,80,75,122,6025,61,15,49050,All

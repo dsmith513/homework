@@ -1,0 +1,58 @@
+Name,Car_Type,Drive_Wheels_Available,Seating,Engine_liter,HP,Length_in,Width_in,Height_in,Wheelbase_in,Weight_lbs,Cargo_Volume_cuft,Overall_MPG,Lowest_MSRP,Parent_Company_HQ,Manufacturer_Type
+Buick Enclave,SUV,"Front, AWD",7,3.6,310,204,79,70,121,4690,48.5,18,40000,USA,Domestic
+Buick Encore,SUV,"Front, AWD",5,1.4,138,168,70,65,101,3355,26,23,23200,USA,Domestic
+Buick Envision,SUV,"Front, AWD",5,2,252,184,72,67,108,4050,32.5,21,31995,USA,Domestic
+Buick Regal,Hatchback,"Front, AWD",5,2,250,193,73,57,111,3680,32,23,25070,USA,Domestic
+Cadillac CT6,Sedan,"Rear, AWD",5,2,237,204,74,58,122,4040,15,22,50495,USA,Domestic
+Cadillac Escalade,SUV,"Rear, AWD",8,6.2,420,204,81,74,116,5820,48,16,75195,USA,Domestic
+Cadillac XT4,SUV,"Front, AWD",5,2,237,181,77,63,109,3930,26.5,23,34795,USA,Domestic
+Cadillac XT5,SUV,"Front, AWD",5,2,230,190,75,66,113,4300,33,20,41695,USA,Domestic
+Cadillac XT6,SUV,"Front, AWD",7,3.6,310,199,77,69,113,4645,12.6,.,52695,USA,Domestic
+Cadillac XTS,Sedan,"Front, AWD",5,3.6,304,202,73,59,112,4090,18,22,46795,USA,Domestic
+Chevrolet Blazer,SUV,"Front, AWD",5,2.5,193,191,77,67,113,4235,34.5,19,28800,USA,Domestic
+Chevrolet Bolt,Hatchback,Front,5,.,200,164,70,63,102,3545,17,119,36620,USA,Domestic
+Chevrolet Camaro,Coupe,Rear,4,2,275,188,75,53,111,3730,11,20,25000,USA,Domestic
+Chevrolet Corvette,Hatchback,Rear,2,6.2,455,177,74,49,107,3470,15,20,55900,USA,Domestic
+Chevrolet Equinox,SUV,"Front, AWD",5,1.5,170,183,73,65,107,3540,32,31,23800,USA,Domestic
+Chevrolet Impala,Sedan,Front,5,2.5,197,201,73,59,112,3855,19,.,28020,USA,Domestic
+Chevrolet Malibu,Sedan,Front,5,1.5,160,194,73,58,112,3125,16,32,22095,USA,Domestic
+Chevrolet Sonic,Sedan,Front,5,1.4,138,174,68,60,99,2765,15,28,15420,USA,Domestic
+Chevrolet Spark,Hatchback,Front,4,1.4,98,143,63,58,94,2280,11,33,13220,USA,Domestic
+Chevrolet Suburban,SUV,"Rear, AWD",9,5,355,224,82,74,130,5945,62.5,16,49700,USA,Domestic
+Chevrolet Tahoe,.,"Rear, AWD",9,5.3,355,204,81,74,116,5635,47.5,16,46800,USA,Domestic
+Chevrolet Traverse,SUV,"Front, AWD",8,3.6,310,204,79,71,121,4695,54.5,20,29800,USA,Domestic
+Chevrolet Trax,.,"Front, AWD",5,1.4,138,167,70,66,101,3255,26,25,21300,USA,Domestic
+Chrysler 300,Sedan,"Rear, AWD",5,3.6,292,199,75,58,120,4095,16,21,29220,USA,Domestic
+Chrysler Pacifica,Minivan,Front,8,3.6,248,204,80,70,122,4535,66,24,26995,USA,Domestic
+Dodge Challenger,Coupe,"Rear, AWD",5,3.6,305,198,76,57,116,4190,16,20,27845,USA,Domestic
+Dodge Charger,Sedan,"Rear, AWD",5,3.6,292,198,75,58,120,4335,16,21,29220,USA,Domestic
+Dodge Durango,Sedan,"Rear, AWD",8,3.6,293,200,76,71,120,5105,44,18,30195,USA,Domestic
+Fiat 500x,SUV,AWD,5,1.3,177,167,71,64,101,3280,19.5,23,24490,USA,Domestic
+Ford EcoSport,SUV,"Front, AWD",5,1,123,161,70,65,99,3390,22.5,24,20485,USA,Domestic
+Ford Edge,SUV,"Front, AWD",5,2,250,189,76,68,112,4250,39,22,29995,USA,Domestic
+Ford Escape,SUV,"Front, AWD",5,1.5,250,181,74,69,107,3465,34.4,24,24885,USA,Domestic
+Ford Expedition,SUV,"Rear, AWD",9,3.5,375,222,82,76,132,6035,66,16,48530,USA,Domestic
+Ford Explorer,SUV,"Rear, AWD",7,2.3,325,199,79,70,119,4345,87.8,23,28155,USA,Domestic
+Ford Fusion,Sedan,"Front, AWD",5,1.5,181,193,73,58,112,3505,16,25,22840,USA,Domestic
+Ford Mustang,Coupe,Rear,4,2.3,310,188,75,54,107,3845,14,22,26670,USA,Domestic
+Genesis G70,Sedan,"Rear, AWD",5,2,252,184,73,55,112,3770,11,23,34900,USA,Domestic
+Genesis G80,Sedan,"Rear, AWD",5,3.3,365,197,74,58,119,4530,15,20,42050,USA,Domestic
+Genesis G90,Sedan,"Rear, AWD",5,3.3,365,205,75,59,124,4820,16,18,69350,USA,Domestic
+GMC Acadia,SUV,"Front, AWD",6,2.5,193,194,75,66,113,4395,40.5,19,29000,USA,Domestic
+GMC Terrain,SUV,"Front, AWD",5,1.5,170,182,72,65,107,3800,33,22,25000,USA,Domestic
+GMC Yukon,SUV,"Rear, AWD, 4WD",8,5.3,355,204,81,74,116,5635,47.5,16,49600,USA,Domestic
+GMC Yuk XL,SUV,"Rear, AWD, 4WD",9,5.3,355,224,81,74,130,5945,62.5,16,52400,USA,Domestic
+Jeep Cherokee,SUV,"Front, AWD, 4WD",5,2,270,182,73,66,107,4070,31,23,24795,USA,Domestic
+Jeep Compass,SUV,"Front, AWD, 4WD",5,2.4,180,173,74,65,104,3525,27.5,24,21845,USA,Domestic
+Jeep Grand Cherokee,SUV,"Rear, 4WD",5,3,240,190,77,68,115,4900,36.5,21,31945,USA,Domestic
+Jeep Renegade,SUV,"Front, AWD",5,1.3,177,167,71,66,101,3360,30.5,24,22025,USA,Domestic
+Jeep Wrangler,SUV,4WD,5,2,270,188,74,74,118,4440,41.5,18,28045,USA,Domestic
+Lincoln Aviator,SUV,"Rear, AWD",7,3,400,199,80,70,119,4900,21.5,20,51100,USA,Domestic
+Lincoln Continental,Sedan,"Front, AWD",5,2.7,335,201,78,59,118,4540,17,20,46145,USA,Domestic
+Lincoln Corsair,SUV,"Front, AWD",5,2,250,181,76,64,107,3691,34,21,35495,USA,Domestic
+Lincoln MKZ,Sedan,"Front, AWD",5,2,188,194,73,58,112,3755,15,40,35995,USA,Domestic
+Lincoln Nautilus,SUV,"Front, AWD",5,2,245,190,76,66,112,4560,32.5,18,40340,USA,Domestic
+Lincoln Navigator,SUV,"Rear, AWD",8,3.5,411,210,84,76,123,6100,56,16,73205,USA,Domestic
+Tesla Model 3,Sedan,"Rear, AWD",5,.,258,185,73,57,113,3895,15,130,39900,USA,Domestic
+Tesla Model 5,Sedan,AWD,5,.,417,196,77,57,117,4595,32,102,75000,USA,Domestic
+Tesla Model X,SUV,AWD,6,.,417,198,82,64,117,5415,26,87,81000,USA,Domestic

@@ -1,0 +1,695 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\documentclass[
+]{article}
+\usepackage{xcolor}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx}
+\makeatletter
+\newsavebox\pandoc@box
+\newcommand*\pandocbounded[1]{% scales image to fit in text height/width
+  \sbox\pandoc@box{#1}%
+  \Gscale@div\@tempa{\textheight}{\dimexpr\ht\pandoc@box+\dp\pandoc@box\relax}%
+  \Gscale@div\@tempb{\linewidth}{\wd\pandoc@box}%
+  \ifdim\@tempb\p@<\@tempa\p@\let\@tempa\@tempb\fi% select the smaller of both
+  \ifdim\@tempa\p@<\p@\scalebox{\@tempa}{\usebox\pandoc@box}%
+  \else\usebox{\pandoc@box}%
+  \fi%
+}
+% Set default figure placement to htbp
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  pdftitle={project-2},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\title{project-2}
+\author{}
+\date{\vspace{-2.5em}2025-11-19}
+
+\begin{document}
+\maketitle
+
+\subsection{\texorpdfstring{\textbf{Task 1}}{Task 1}}\label{task-1}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{medicaldata }\OtherTok{\textless{}{-}} \FunctionTok{read.csv}\NormalTok{(}\StringTok{"medicaldata2.csv"}\NormalTok{)}
+
+\NormalTok{medicaldata}\SpecialCharTok{$}\NormalTok{Gallstone\_Status }\OtherTok{\textless{}{-}} \FunctionTok{as.factor}\NormalTok{(medicaldata}\SpecialCharTok{$}\NormalTok{Gallstone\_Status)}
+\NormalTok{medicaldata}\SpecialCharTok{$}\NormalTok{Comorbidity }\OtherTok{\textless{}{-}} \FunctionTok{factor}\NormalTok{(medicaldata}\SpecialCharTok{$}\NormalTok{Comorbidity, }\AttributeTok{ordered =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{levels =} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{, }\DecValTok{3}\NormalTok{), }\AttributeTok{labels =} \FunctionTok{c}\NormalTok{(}\StringTok{"No comorbidities present"}\NormalTok{, }\StringTok{"One comorbid condition"}\NormalTok{, }\StringTok{"Two comorbid conditions"}\NormalTok{, }\StringTok{"Three of more comorbid conditions"}\NormalTok{))}
+\NormalTok{medicaldata}\SpecialCharTok{$}\NormalTok{CAD }\OtherTok{\textless{}{-}} \FunctionTok{as.factor}\NormalTok{(medicaldata}\SpecialCharTok{$}\NormalTok{CAD)}
+\NormalTok{medicaldata}\SpecialCharTok{$}\NormalTok{Diabetes\_Mellitus }\OtherTok{\textless{}{-}} \FunctionTok{as.factor}\NormalTok{(medicaldata}\SpecialCharTok{$}\NormalTok{Diabetes\_Mellitus)}
+\NormalTok{medicaldata}\SpecialCharTok{$}\NormalTok{Hepatic\_Fat\_Accumulation }\OtherTok{\textless{}{-}} \FunctionTok{factor}\NormalTok{(medicaldata}\SpecialCharTok{$}\NormalTok{Hepatic\_Fat\_Accumulation, }\AttributeTok{ordered =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{levels =} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{, }\DecValTok{3}\NormalTok{), }\AttributeTok{labels =} \FunctionTok{c}\NormalTok{(}\StringTok{"No fat accumulation"}\NormalTok{, }\StringTok{"Grade 1 (mild)"}\NormalTok{, }\StringTok{"Grade 2 (moderate)"}\NormalTok{, }\StringTok{"Grade 3 (severere)"}\NormalTok{))}
+\NormalTok{medicaldata}\SpecialCharTok{$}\NormalTok{Age\_Class }\OtherTok{\textless{}{-}} \FunctionTok{factor}\NormalTok{(medicaldata}\SpecialCharTok{$}\NormalTok{Age\_Class, }\AttributeTok{ordered =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{levels =} \FunctionTok{c}\NormalTok{(}\StringTok{"Younger"}\NormalTok{, }\StringTok{"Lower Middle"}\NormalTok{, }\StringTok{"Upper Middle"}\NormalTok{, }\StringTok{"Elder"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\subsection{\texorpdfstring{\textbf{Task 2}}{Task 2}}\label{task-2}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{plot}\NormalTok{(medicaldata}\SpecialCharTok{$}\NormalTok{Body\_Protein\_Content, medicaldata}\SpecialCharTok{$}\NormalTok{Total\_Body\_Fat\_Ratio, }\AttributeTok{xlab =} \StringTok{"Body Protein Content (\%)"}\NormalTok{, }\AttributeTok{ylab =} \StringTok{"Total Body Fat Ratio (\%)"}\NormalTok{, }\AttributeTok{main =} \StringTok{"Total Body Fat Ratio versus Body Protein Content"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\pandocbounded{\includegraphics[keepaspectratio]{project-2_files/figure-latex/task 2-1.pdf}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{task2model }\OtherTok{\textless{}{-}} \FunctionTok{lm}\NormalTok{(Total\_Body\_Fat\_Ratio }\SpecialCharTok{\textasciitilde{}}\NormalTok{ Body\_Protein\_Content, }\AttributeTok{data =}\NormalTok{ medicaldata)}
+
+\FunctionTok{plot}\NormalTok{(task2model}\SpecialCharTok{$}\NormalTok{fitted.values, task2model}\SpecialCharTok{$}\NormalTok{residuals, }\AttributeTok{xlab =} \StringTok{"Fitted Values"}\NormalTok{, }\AttributeTok{ylab =} \StringTok{"Residuals"}\NormalTok{, }\AttributeTok{main =} \StringTok{"Residuals versus Fitted Values"}\NormalTok{)}
+\FunctionTok{abline}\NormalTok{(}\AttributeTok{h =} \DecValTok{0}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\pandocbounded{\includegraphics[keepaspectratio]{project-2_files/figure-latex/task 2-2.pdf}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{qqnorm}\NormalTok{(task2model}\SpecialCharTok{$}\NormalTok{residuals, }\AttributeTok{main =} \StringTok{"Normality Q{-}Q Plot"}\NormalTok{)}
+\FunctionTok{qqline}\NormalTok{(task2model}\SpecialCharTok{$}\NormalTok{residuals)}
+\end{Highlighting}
+\end{Shaded}
+
+\pandocbounded{\includegraphics[keepaspectratio]{project-2_files/figure-latex/task 2-3.pdf}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{shapiro.test}\NormalTok{(task2model}\SpecialCharTok{$}\NormalTok{residuals)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+##  Shapiro-Wilk normality test
+## 
+## data:  task2model$residuals
+## W = 0.99561, p-value = 0.5171
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{pearson\_coefficient }\OtherTok{\textless{}{-}} \FunctionTok{cor}\NormalTok{(medicaldata}\SpecialCharTok{$}\NormalTok{Body\_Protein\_Content, medicaldata}\SpecialCharTok{$}\NormalTok{Total\_Body\_Fat\_Ratio, }\AttributeTok{method =} \StringTok{"pearson"}\NormalTok{)}
+\NormalTok{pearson\_coefficient}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] -0.7029279
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{task2model}\SpecialCharTok{$}\NormalTok{coefficients}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##          (Intercept) Body_Protein_Content 
+##            70.205708            -2.624164
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{summary}\NormalTok{(task2model)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = Total_Body_Fat_Ratio ~ Body_Protein_Content, data = medicaldata)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -17.6717  -3.9411  -0.0006   4.1312  19.5556 
+## 
+## Coefficients:
+##                      Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)           70.2057     2.4133   29.09   <2e-16 ***
+## Body_Protein_Content  -2.6242     0.1496  -17.54   <2e-16 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 6.032 on 315 degrees of freedom
+## Multiple R-squared:  0.4941, Adjusted R-squared:  0.4925 
+## F-statistic: 307.7 on 1 and 315 DF,  p-value: < 2.2e-16
+\end{verbatim}
+
+H0: Beta\_1 = 0 H1: Beta\_1 != 0 alpha = 0.05
+
+F = 307.7 p \textless{} 2.2e-16
+
+Decision: Reject H0. p \textless{} 2.2e-16 \textless{} 0.05 = alpha
+Conclusion: There is evidence of linear association between Body Protein
+Content and Body Fat Ratio.
+
+Regression Line Equation: Total\_Body\_Fat\_Ratio = -2.624164 *
+Body\_Protein\_Content + 70.205708 Pearson Correlation Coefficient:
+-0.7029279 R\^{}2: 0.4941
+
+The linearity and equal variance assumptions are met. The residuals
+appear randomly distributed around the value zero in the Residuals
+versus Fitted Values plot. The normality assumption is also met. The
+p-value obtained from the Shapiro-Wilk test is p = 0.5171 \textgreater{}
+0.05. The Pearson Correlation Coefficient r = -0.7029279 indicates a
+strong negative linear association between Total Body Fat Ratio and Body
+Protein Content. The R\^{}2 value R\^{}2 = 0.4941 means that 49.41\% of
+the variability in Total Body Fat Ratio is explained by Body Protein
+Content.
+
+\subsection{\texorpdfstring{\textbf{Task 3}}{Task 3}}\label{task-3}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{task3model }\OtherTok{\textless{}{-}} \FunctionTok{lm}\NormalTok{(Total\_Body\_Water }\SpecialCharTok{\textasciitilde{}}\NormalTok{ Height }\SpecialCharTok{+}\NormalTok{ Weight }\SpecialCharTok{+}\NormalTok{ Body\_Protein\_Content, }\AttributeTok{data =}\NormalTok{ medicaldata)}
+
+\FunctionTok{plot}\NormalTok{(task3model}\SpecialCharTok{$}\NormalTok{fitted.values, task3model}\SpecialCharTok{$}\NormalTok{residuals, }\AttributeTok{xlab =} \StringTok{"Fitted Values"}\NormalTok{, }\AttributeTok{ylab =} \StringTok{"Residuals"}\NormalTok{, }\AttributeTok{main =} \StringTok{"Residuals versus Fitted Values"}\NormalTok{)}
+\FunctionTok{abline}\NormalTok{(}\AttributeTok{h =} \DecValTok{0}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\pandocbounded{\includegraphics[keepaspectratio]{project-2_files/figure-latex/task 3-1.pdf}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{qqnorm}\NormalTok{(task3model}\SpecialCharTok{$}\NormalTok{residuals, }\AttributeTok{main =} \StringTok{"Normality Q{-}Q Plot"}\NormalTok{)}
+\FunctionTok{qqline}\NormalTok{(task3model}\SpecialCharTok{$}\NormalTok{residuals)}
+
+\FunctionTok{shapiro.test}\NormalTok{(task3model}\SpecialCharTok{$}\NormalTok{residuals)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+##  Shapiro-Wilk normality test
+## 
+## data:  task3model$residuals
+## W = 0.91481, p-value = 2e-12
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(lmtest)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: package 'lmtest' was built under R version 4.3.3
+\end{verbatim}
+
+\begin{verbatim}
+## Loading required package: zoo
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: package 'zoo' was built under R version 4.3.3
+\end{verbatim}
+
+\begin{verbatim}
+## 
+## Attaching package: 'zoo'
+\end{verbatim}
+
+\begin{verbatim}
+## The following objects are masked from 'package:base':
+## 
+##     as.Date, as.Date.numeric
+\end{verbatim}
+
+\pandocbounded{\includegraphics[keepaspectratio]{project-2_files/figure-latex/task 3-2.pdf}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{dwtest}\NormalTok{(task3model)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+##  Durbin-Watson test
+## 
+## data:  task3model
+## DW = 2.0022, p-value = 0.4822
+## alternative hypothesis: true autocorrelation is greater than 0
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{summary}\NormalTok{(task3model)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = Total_Body_Water ~ Height + Weight + Body_Protein_Content, 
+##     data = medicaldata)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -28.995  -2.278   0.216   2.322  14.976 
+## 
+## Coefficients:
+##                       Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)          -45.55001    3.53916 -12.870   <2e-16 ***
+## Height                 0.36208    0.03004  12.055   <2e-16 ***
+## Weight                 0.29469    0.01807  16.307   <2e-16 ***
+## Body_Protein_Content   0.11748    0.12672   0.927    0.355    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 3.741 on 313 degrees of freedom
+## Multiple R-squared:  0.7794, Adjusted R-squared:  0.7773 
+## F-statistic: 368.6 on 3 and 313 DF,  p-value: < 2.2e-16
+\end{verbatim}
+
+H0: Beta\_Height = Beta\_Weight = Beta\_Body\_Protein\_Content = 0 H1:
+At least one Beta != 0
+
+F = 368.6 p \textless{} 2.2e-16
+
+Decision: Reject H0. p \textless{} 2.2e-16 \textless{} 0.03 = alpha
+
+Conclusion: There is enough evidence to conclude that Height, Weight,
+and Body Protein Content together significantly explain variation in
+Total Body Water.
+
+The linearity and equal variance assumptions are met. The residuals
+appear randomly distributed around the value zero in the Residuals
+versus Fitted Values plot. The normality assumption is not met. The
+p-value obtained from the Shapiro-Wilk test is p = 2e-12 \textless{}
+0.03. The independence assumption is met. The p-value obtained from the
+Durbin-Watson test is p = 0.4822 \textgreater{} 0.03. The value of
+R\^{}2 is R\^{}2 = 0.7794 and the value of R\^{}2\_adj is R\^{}2\_adj =
+0.7773. We can reasonably conclude that the combination of Height,
+Weight, and Body Protein Content together significantly explains
+variation in Total Body Water. Because of this, it is also important to
+test for the individual variables to determine the individual effects on
+Total Body Water.
+
+Test 1: Height
+
+H0: Beta\_Height = 0 H1: Beta\_Height != 0
+
+t = 12.055 p \textless{} 2e-16
+
+Decision: Reject H0. p \textless{} 2e-16 \textless{} 0.03 = alpha
+
+Conclusion: There is enough evidence to conclude that Height
+significantly explains variation in Total Body Water.
+
+Test 2: Weight
+
+H0: Beta\_Weight = 0 H1: Beta\_Weight != 0
+
+t = 16.307 p \textless{} 2e-16
+
+Decision: Reject H0. p \textless{} 2e-16 \textless{} 0.03 = alpha
+
+Conclusion: There is enough evidence to conclude that Weight
+significantly explains variation is Total Body Water.
+
+Test 3: Body Protein Content
+
+H0: Beta\_Body\_Protein\_Content = 0 H1: Beta\_Body\_Protein\_Content !=
+0
+
+t = 0.927 p = 0.355
+
+Decision: Do not reject H0. p = 0.355 \textgreater{} 0.03 = alpha
+
+Conclusion: There is not enough evidence to conclude that Body Protein
+Content significantly explains variation in Total Body Water.
+
+Based on the individual tests, we can conclude that Height and Weight
+are statistically significant predictors for Total Body Water. Body
+Protein Content is not a statistically significant predictor. The R\^{}2
+and R\^{}2 adjusted values indicate that approximately 78\% of the
+variability in Total Body Water can be explained by Height, Weight, and
+Body Protein Content.
+
+\subsection{\texorpdfstring{\textbf{Task 4}}{Task 4}}\label{task-4}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{task4model }\OtherTok{\textless{}{-}} \FunctionTok{lm}\NormalTok{(Total\_Body\_Fat\_Ratio }\SpecialCharTok{\textasciitilde{}}\NormalTok{ Age\_Class, }\AttributeTok{data =}\NormalTok{ medicaldata)}
+
+\FunctionTok{shapiro.test}\NormalTok{(task4model}\SpecialCharTok{$}\NormalTok{residuals)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+##  Shapiro-Wilk normality test
+## 
+## data:  task4model$residuals
+## W = 0.98979, p-value = 0.02595
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{qqnorm}\NormalTok{(task4model}\SpecialCharTok{$}\NormalTok{residuals, }\AttributeTok{main =} \StringTok{"Normality Q{-}Q Plot"}\NormalTok{)}
+\FunctionTok{qqline}\NormalTok{(task4model}\SpecialCharTok{$}\NormalTok{residuals)}
+\end{Highlighting}
+\end{Shaded}
+
+\pandocbounded{\includegraphics[keepaspectratio]{project-2_files/figure-latex/task 4-1.pdf}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{plot}\NormalTok{(task4model}\SpecialCharTok{$}\NormalTok{fitted.values, task4model}\SpecialCharTok{$}\NormalTok{residuals, }\AttributeTok{xlab =} \StringTok{"Fitted Values"}\NormalTok{, }\AttributeTok{ylab =} \StringTok{"Residuals"}\NormalTok{, }\AttributeTok{main =} \StringTok{"Residuals versus Fitted Values"}\NormalTok{)}
+\FunctionTok{abline}\NormalTok{(}\AttributeTok{h =} \DecValTok{0}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\pandocbounded{\includegraphics[keepaspectratio]{project-2_files/figure-latex/task 4-2.pdf}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(car)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: package 'car' was built under R version 4.3.3
+\end{verbatim}
+
+\begin{verbatim}
+## Loading required package: carData
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: package 'carData' was built under R version 4.3.3
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{leveneTest}\NormalTok{(Total\_Body\_Fat\_Ratio }\SpecialCharTok{\textasciitilde{}}\NormalTok{ Age\_Class, }\AttributeTok{data =}\NormalTok{ medicaldata)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Levene's Test for Homogeneity of Variance (center = median)
+##        Df F value Pr(>F)
+## group   3  1.1015 0.3487
+##       313
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{anova}\NormalTok{(task4model)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Analysis of Variance Table
+## 
+## Response: Total_Body_Fat_Ratio
+##            Df  Sum Sq Mean Sq F value    Pr(>F)    
+## Age_Class   3  1305.3  435.09  6.3796 0.0003298 ***
+## Residuals 313 21346.7   68.20                      
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{TukeyHSD}\NormalTok{(}\FunctionTok{aov}\NormalTok{(task4model))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   Tukey multiple comparisons of means
+##     95% family-wise confidence level
+## 
+## Fit: aov(formula = task4model)
+## 
+## $Age_Class
+##                                  diff        lwr      upr     p adj
+## Lower Middle-Younger       3.70408972  0.7670808 6.641099 0.0068073
+## Upper Middle-Younger       5.63548025  2.1507189 9.120242 0.0002236
+## Elder-Younger              3.61951584 -1.1608757 8.399907 0.2072476
+## Upper Middle-Lower Middle  1.93139053 -1.2410021 5.103783 0.3958680
+## Elder-Lower Middle        -0.08457388 -4.6422768 4.473129 0.9999604
+## Elder-Upper Middle        -2.01596441 -6.9444730 2.912544 0.7162008
+\end{verbatim}
+
+The normality assumption is met. The p-value obtained from the
+Shapiro-Wilk test is 0.02595 \textgreater{} 0.02 = alpha, meaning there
+is not enough evidence to conclude that the normality assumption is not
+met. Additionally, the equal variance assumption is met. Referring to
+the Residuals versus Fitted Values plot, we can see that the residuals
+appear randomly distributed around the value zero, indicating that the
+equal variance assumption is met. We can also see this with the results
+of the Levene Test, which obtained a p-value of 0.3487 \textgreater{}
+0.02 = alpha, which further confirms that the equal variance assumption
+is met. The Levene Test was chosen over the Bartlett test even though
+the normality assumption was met because in the Normality Q-Q Plot,
+there is visible variation among the sample quantiles at the tails of
+the Q-Q Line.
+
+ANOVA Test:
+
+H0: μ\_Younger = μ\_Lower\_Middle = μ\_Upper\_Middle = μ\_Elder H1: At
+least one μ differs
+
+F = 6.3796 p = 0.0003298
+
+Decision: Reject H0. p = 0.0003298 \textless{} 0.02 = alpha
+
+Conclusion: There is enough evidence to conclude that mean Total Body
+Fat Ratio does differ among Age Class.
+
+The ANOVA test tested whether the mean Total Body Fat Ratio differed
+among the four Age Classes: Younger, Lower Middle, Upper Middle, and
+Elder. The p-value obtained from the ANOVA test was p = 0.0003298, which
+means that at a 2\% significance level there is enough evidence to
+conclude that mean Total Body Fat Ratio does differ among the four Age
+Classes. Because of this, a Tukey test is needed to determine which Age
+Classes differ from one another.
+
+From the Tukey test, we can observe that the Lower Middle and Younger
+Age Classes as well as the Upper Middle and Lower Age Classes had
+statistically significant differences in Total Body Fat Ratios at a 2\%
+significance level. The adjusted p-values for these groups are p =
+0.0068073 and p = 0.0002236 respectively, both of which are less than
+the significance level alpha = 0.02. None of the other Age Classes had
+statistically significant differences in Total Body Fat ratios at a 2\%
+significance level. \#\# \textbf{Task 5}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{task5model }\OtherTok{\textless{}{-}} \FunctionTok{lm}\NormalTok{(Triglyceride }\SpecialCharTok{\textasciitilde{}}\NormalTok{ Diabetes\_Mellitus }\SpecialCharTok{*}\NormalTok{ Hepatic\_Fat\_Accumulation, }\AttributeTok{data =}\NormalTok{ medicaldata)}
+
+\FunctionTok{shapiro.test}\NormalTok{(task5model}\SpecialCharTok{$}\NormalTok{residuals)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+##  Shapiro-Wilk normality test
+## 
+## data:  task5model$residuals
+## W = 0.83805, p-value < 2.2e-16
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{qqnorm}\NormalTok{(task5model}\SpecialCharTok{$}\NormalTok{residuals, }\AttributeTok{main =} \StringTok{"Normality Q{-}Q Plot"}\NormalTok{)}
+\FunctionTok{qqline}\NormalTok{(task5model}\SpecialCharTok{$}\NormalTok{residuals)}
+\end{Highlighting}
+\end{Shaded}
+
+\pandocbounded{\includegraphics[keepaspectratio]{project-2_files/figure-latex/task 5-1.pdf}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{plot}\NormalTok{(task5model}\SpecialCharTok{$}\NormalTok{fitted.values, task5model}\SpecialCharTok{$}\NormalTok{residuals, }\AttributeTok{xlab =} \StringTok{"Fitted Values"}\NormalTok{, }\AttributeTok{ylab =} \StringTok{"Residuals"}\NormalTok{, }\AttributeTok{main =} \StringTok{"Residuals versus Fitted Values"}\NormalTok{)}
+\FunctionTok{abline}\NormalTok{(}\AttributeTok{h =} \DecValTok{0}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\pandocbounded{\includegraphics[keepaspectratio]{project-2_files/figure-latex/task 5-2.pdf}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{mean\_triglyceride\_diabetes }\OtherTok{\textless{}{-}} \FunctionTok{tapply}\NormalTok{(medicaldata}\SpecialCharTok{$}\NormalTok{Triglyceride, medicaldata}\SpecialCharTok{$}\NormalTok{Diabetes\_Mellitus, mean)}
+\FunctionTok{barplot}\NormalTok{(mean\_triglyceride\_diabetes, }\AttributeTok{main =} \StringTok{"Mean Triglyceride By Diabetes Status"}\NormalTok{, }\AttributeTok{xlab =} \StringTok{"Diabetes Mellitus"}\NormalTok{, }\AttributeTok{ylab =} \StringTok{"Average Triglyceride (mg/dL)"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\pandocbounded{\includegraphics[keepaspectratio]{project-2_files/figure-latex/task 5-3.pdf}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{mean\_triglyceride\_hepatic }\OtherTok{\textless{}{-}} \FunctionTok{tapply}\NormalTok{(medicaldata}\SpecialCharTok{$}\NormalTok{Triglyceride, medicaldata}\SpecialCharTok{$}\NormalTok{Hepatic\_Fat\_Accumulation, mean)}
+\FunctionTok{barplot}\NormalTok{(mean\_triglyceride\_hepatic, }\AttributeTok{main =} \StringTok{"Mean Triglyceride By Hepatic Fat Accumulation"}\NormalTok{, }\AttributeTok{xlab =} \StringTok{"Hepatic Fat Accumulation"}\NormalTok{, }\AttributeTok{ylab =} \StringTok{"Average Triglyceride (mg/dL)"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\pandocbounded{\includegraphics[keepaspectratio]{project-2_files/figure-latex/task 5-4.pdf}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{anova}\NormalTok{(task5model)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Analysis of Variance Table
+## 
+## Response: Triglyceride
+##                                             Df  Sum Sq Mean Sq F value
+## Diabetes_Mellitus                            1  132956  132956 15.8534
+## Hepatic_Fat_Accumulation                     3  299137   99712 11.8896
+## Diabetes_Mellitus:Hepatic_Fat_Accumulation   3   16778    5593  0.6669
+## Residuals                                  309 2591444    8387        
+##                                               Pr(>F)    
+## Diabetes_Mellitus                          8.538e-05 ***
+## Hepatic_Fat_Accumulation                   2.173e-07 ***
+## Diabetes_Mellitus:Hepatic_Fat_Accumulation     0.573    
+## Residuals                                               
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+\end{verbatim}
+
+The normality assumption is not met. The p-value obtained from the
+Shapiro-Wilk test is p \textless{} 2.2e-16 \textless{} 0.08 = alpha.
+There is enough evidence to suggest that the normality assumption is not
+met. The equal variance assumption is met. Referring to the Residuals
+versus Fitted Values plot, the residuals appear to be randomly
+distributed around zero. This means that we can reasonably conclude that
+there is equal variance.
+
+ANOVA Test:
+
+H0: (αβ)ij = 0, ∀(i, j) H1: At least one (αβ)ij̸ = 0
+
+F = 0.6669 p = 0.573
+
+Decision: Do not reject H0. p = 0.573 \textgreater{} 0.08 = alpha
+
+Conclusion: There is enough evidence to conclude that Diabetes Mellitus
+and Hepatic Fat Accumulation do not depend on each other when predicting
+Triglycerides.
+
+Because we found that Diabetes Mellitus and Hepatic Fat Accumulation do
+not depend on each other when predicting Triglycerides, we need to test
+for main effects.
+
+Diabetes Mellitus Test:
+
+H0: αi = 0, ∀i H1: at least one αi̸ = 0
+
+F = 15.8534 p = 8.538e-5
+
+Decision: Reject H0. p = 8.538e-5 \textless{} 0.08 = alpha
+
+Conclusion: There is enough evidence to conclude that Triglyceride
+levels vary significantly based on Diabetes Mellitus status.
+
+Hepatic Fat Accumulation Test:
+
+H0: βj = 0, ∀j H1: at least one βj̸ = 0
+
+F = 11.8896 p = 2.173e-7
+
+Decision: Reject H0. p = 2.173e-7 \textless{} 0.08 - alpha
+
+Conclusion: There is enough evidence to conclude that Triglyceride
+levels vary significantly based on Hepatic Fat Accumulation.
+
+The ANOVA Test tested whether a patient's Diabetes Mellitus and Hepatic
+Fat Accumulation levels depend on each other when predicting
+Triglyceride levels. From the ANOVA test, a p-value was obtained of p =
+0.573, which at an 8\% significance level suggests that Diabetes
+Mellitus and Hepatic Fat Accumulation are not dependent on each other
+when predicting Triglyceride levels. When testing for main effects, it
+was found that Triglyceride levels vary significantly based on both of a
+patient's Diabetes Mellitus status and Hepatic Fat Accumulation with
+p-values of p = 8.538e-5 and p = 2.173e-7 respectively.
+
+\end{document}

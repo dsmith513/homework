@@ -9,6 +9,8 @@ from sklearn.metrics import accuracy_score
 from nltk import pos_tag
 from nltk.tokenize import sent_tokenize, word_tokenize
 from collections import Counter
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.linear_model import LogisticRegression
 
 # Convert part of speech tag from nltk.pos_tag to word net compatible format
 # Simple mapping based on first letter of return tag to make grading consistent
@@ -31,7 +33,33 @@ def process(text, lemmatizer=nltk.stem.wordnet.WordNetLemmatizer()):
     Outputs:
         list(str): tokenized text
     """
-    [YOUR CODE HERE]
+    text = re.sub(r'http\S+', '', text)
+                 
+    emoji_pattern = re.compile("["
+        u"\U0001F600-\U0001F64F"  # emoticons
+        u"\U0001F300-\U0001F5FF"  # symbols & pictographs
+        u"\U0001F680-\U0001F6FF"  # transport & map symbols
+        u"\U0001F1E0-\U0001F1FF"  # flags (iOS)
+        u"\U00002702-\U000027B0"  # dingbats
+        u"\U000024C2-\U0001F251"  # misc
+                           "]+", flags=re.UNICODE)
+    text = emoji_pattern.sub(r'', text)
+
+    text = text.replace("'s", "")
+    text = text.replace("'", "")
+
+    text = re.sub(r'[' + string.punctuation + ']+', ' ', text).strip()
+    
+    text = text.lower()
+    tokens = word_tokenize(text)
+
+    tagged_tokens = nltk.pos_tag(tokens)
+    lemma_tokens = [
+        lemmatizer.lemmatize(word, get_wordnet_pos(pos))
+        for (word, pos) in tagged_tokens
+    ]
+
+    return lemma_tokens
     
 #%%
 def get_wordnet_pos(treebank_tag): #no need to change this function - used to tag tokens for context specification and then for lemmatization
@@ -55,29 +83,16 @@ def process_all(df, lemmatizer=nltk.stem.wordnet.WordNetLemmatizer()):
         pd.DataFrame: dataframe in which the values of text column have been changed from str to list(str),
                         the output from process_text() function. Other columns are unaffected.
     """
-    text = re.sub(r'http\S+', '', text)
-                 
-    emoji_pattern = re.compile("["
-        u"\U0001F600-\U0001F64F"  # emoticons
-        u"\U0001F300-\U0001F5FF"  # symbols & pictographs
-        u"\U0001F680-\U0001F6FF"  # transport & map symbols
-        u"\U0001F1E0-\U0001F1FF"  # flags (iOS)
-        u"\U00002702-\U000027B0"  # dingbats
-        u"\U000024C2-\U0001F251"  # misc
-                           "]+", flags=re.UNICODE)
-    text = emoji_pattern.sub(r'', text)
+    processed_df = df.copy()
 
-    text = text.replace("'s", "")
-    text = text.replace("'", "")
+    def safe_process(x):
+        if isinstance(x, str):
+            return process(x, lemmatizer=lemmatizer)
+        return []
 
-    text = re.sub(r'[' + string.punctuation + ']+', ' ', text).strip()
-    
-    text = text.lower()
-    tokens = word_tokenize(text)
+    processed_df["Content"] = processed_df["Content"].apply(safe_process)
 
-    lemma_tokens = [lemmatizer.lemmatize(token) for token in tokens]
-
-    return lemma_tokens
+    return processed_df
 
 #%%
 def identity(x):
@@ -94,7 +109,18 @@ def create_features(processed_tweets, stop_words):
             we need this to tranform test tweets in the same way as train tweets
         scipy.sparse.csr.csr_matrix: sparse bag-of-words TF-IDF feature matrix
     """
-    [YOUR CODE HERE]
+    vectorizer = TfidfVectorizer(
+        tokenizer=identity,
+        preprocessor=identity,
+        token_pattern=None,
+        lowercase=False, 
+        stop_words=stop_words,
+        min_df=2
+    )
+
+    X = vectorizer.fit_transform(processed_tweets)
+
+    return vectorizer, X
 
 #%%
 def create_labels(processed_tweets):
@@ -104,7 +130,15 @@ def create_labels(processed_tweets):
     Outputs:
         numpy.ndarray(int): dense binary numpy array of class labels
     """
-    [YOUR CODE HERE]
+    label_map = {
+        "Zohran Mamdani": 0,
+        "Curtis Sliwa": 1,
+        "Andrew Cuomo": 2
+    }
+    
+    y = processed_tweets["handle"].map(label_map)
+    
+    return y.to_numpy(dtype=int)
     
 #%%
 class MajorityLabelClassifier():
@@ -115,21 +149,24 @@ class MajorityLabelClassifier():
         """
         Initialize your parameter here
         """
-        [YOUR CODE HERE]
+        self.majority_label = None
         
     def fit(self, X, y):
         """
         Implement fit by taking training data X and their labels y and finding the mode of y
         i.e. store your learned parameter
         """
-        [YOUR CODE HERE]
+        counts = Counter(y)
+        self.majority_label = counts.most_common(1)[0][0]
+        return self
     
     def predict(self, X):
         """
         Implement to give the mode of training labels as a prediction for each data instance in X
         return labels
         """
-        [YOUR CODE HERE]
+        num_samples = X.shape[0]
+        return np.full(num_samples, self.majority_label, dtype=int)
 
 #%%
 def learn_classifier(X_train, y_train, penalty):
@@ -142,7 +179,40 @@ def learn_classifier(X_train, y_train, penalty):
         sklearn.linear_model.LogisticRegression: classifier learnt from data
     """
     
-    [YOUR CODE HERE]
+    if penalty == "none":
+        classifier = LogisticRegression(
+            penalty=None,
+            solver="lbfgs",
+            max_iter=1000
+        )
+        
+    elif penalty == "l2":
+        classifier = LogisticRegression(
+            penalty="l2",
+            solver="lbfgs",
+            max_iter=1000
+        )
+        
+    elif penalty == "l1":
+        classifier = LogisticRegression(
+            penalty="l1",
+            solver="liblinear",
+            max_iter=1000
+        )
+        
+    elif penalty == "elasticnet":
+        classifier = LogisticRegression(
+            penalty="elasticnet",
+            solver="saga",
+            l1_ratio=0.5,  
+            max_iter=1000
+        )
+        
+    else:
+        raise ValueError(f"Invalid penalty type: {penalty}")
+    
+    classifier.fit(X_train, y_train)
+    return classifier
 
 #%%
 def evaluate_classifier(classifier, X_validation, y_validation):
@@ -154,7 +224,9 @@ def evaluate_classifier(classifier, X_validation, y_validation):
     Outputs:
         double: accuracy of classifier on the validation data
     """
-    [YOUR CODE HERE]
+    y_prediction = classifier.predict(X_validation)
+    
+    return accuracy_score(y_validation, y_prediction)
 
 #%%
 def best_model_selection(kf, X, y):
@@ -168,7 +240,34 @@ def best_model_selection(kf, X, y):
     Return:
     best_penalty (string)
     """
-    [YOUR CODE HERE]
+    penalties = ['none', 'l2', 'l1', 'elasticnet']
+    best_penalty = None
+    best_avg_acc = -1.0
+    
+    for penalty in ['none', 'l2', 'l1', 'elasticnet']:
+        fold_accuracies = []
+
+        for train_index, val_index in kf.split(X):
+            X_train, X_val = X[train_index], X[val_index]
+            y_train, y_val = y[train_index], y[val_index]
+
+            clf = learn_classifier(X_train, y_train, penalty)
+
+            acc = evaluate_classifier(clf, X_val, y_val)
+            fold_accuracies.append(acc)
+
+        avg_acc = np.mean(fold_accuracies)
+
+        if avg_acc > best_avg_acc:
+            best_avg_acc = avg_acc
+            best_penalty = penalty
+        # Use the documentation of KFold cross-validation to split ..
+        # training data and test data from create_features() and create_labels()
+        # call learn_classifer() using training split of kth fold
+        # evaluate on the test split of kth fold
+        # record avg accuracies and determine best model (penalty)
+    #return best penalty as string
+    return best_penalty
     
 #%%
 def classify_tweets(tfidf, classifier, unlabeled_tweets):
@@ -180,4 +279,8 @@ def classify_tweets(tfidf, classifier, unlabeled_tweets):
     Outputs:
         numpy.ndarray(int): dense binary vector of class labels for unlabeled tweets
     """
-    [YOUR CODE HERE]
+    processed_unlabeled = process_all(unlabeled_tweets)
+    X_unlabeled = tfidf.transform(processed_unlabeled["Content"])
+    y_pred = classifier.predict(X_unlabeled)
+
+    return y_pred
