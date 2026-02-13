@@ -1,0 +1,7 @@
+\project_{title,platformname,name,streamdate,streamscount}(
+  \select_{label='EMI'}(
+    (((songs \join_{songs.bandid=bands.id} bands)
+      \join_{songs.songid=streams_daily.songid} streams_daily)
+      \join_{streams_daily.platformid=platforms.platformid} platforms)
+  )
+)
