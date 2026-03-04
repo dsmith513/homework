@@ -1,1 +1,6 @@
-// write the RA code for the answer to Question 1.1.7 here. Use radb's syntax.
+\project_{songid,title}(songs)
+\diff
+\project_{songs.songid,songs.title}(
+  songs \join_{songs.songid=streams_daily.songid}
+  \select_{platformid=10 or platformid=20}(streams_daily)
+);

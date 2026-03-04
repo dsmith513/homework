@@ -1,1 +1,28 @@
-// write the RA code for the answer to Question 1.1.11 here. Use radb's syntax.
+\project_{bandname, profit}(
+  \rename_{bandname, profit}(
+    \project_{bands.name, profit}(
+      (
+        \select_{profit > avgprofit}(
+          (
+            \rename_{bandid,profit}(
+              \aggr_{bandid: sum(streamscount*unitrevenue)}(
+                streams_daily \join_{streams_daily.platformid=platforms.platformid} platforms
+              )
+            )
+            \cross
+            \rename_{avgprofit}(
+              \aggr_{avg(profit)}(
+                \rename_{bandid,profit}(
+                  \aggr_{bandid: sum(streamscount*unitrevenue)}(
+                    streams_daily \join_{streams_daily.platformid=platforms.platformid} platforms
+                  )
+                )
+              )
+            )
+          )
+        )
+      )
+      \join_{bandid=bands.id} bands
+    )
+  )
+);

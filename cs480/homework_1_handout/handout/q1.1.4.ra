@@ -1,1 +1,31 @@
-// write the RA code for the answer to Question 1.1.4 here. Use radb's syntax.
+(
+  \project_{genre}(
+    \rename_{genre,total}(
+      \aggr_{genre: sum(streamscount)}(
+        songs \join_{songs.songid=streams_daily.songid} streams_daily
+      )
+    )
+  )
+)
+\diff
+(
+  \project_{g1.genre}(
+    \select_{g1.total < g2.total}(
+      \rename_{g1:*}(
+        \rename_{genre,total}(
+          \aggr_{genre: sum(streamscount)}(
+            songs \join_{songs.songid=streams_daily.songid} streams_daily
+          )
+        )
+      )
+      \cross
+      \rename_{g2:*}(
+        \rename_{genre,total}(
+          \aggr_{genre: sum(streamscount)}(
+            songs \join_{songs.songid=streams_daily.songid} streams_daily
+          )
+        )
+      )
+    )
+  )
+);

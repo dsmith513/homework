@@ -1,1 +1,42 @@
-// write the RA code for the answer to Question 1.1.8 here. Use radb's syntax.
+(
+  \project_{type,label}(
+    \rename_{type,label,profit}(
+      \aggr_{type,label: sum(streamscount*unitrevenue)}(
+        (
+          (
+            (streams_daily \join_{streams_daily.platformid=platforms.platformid} platforms)
+            \join_{streams_daily.bandid=bands.id} bands
+          )
+        )
+      )
+    )
+  )
+)
+\diff
+(
+  \project_{p1.type,p1.label}(
+    \select_{p1.type=p2.type and p1.profit < p2.profit}(
+      \rename_{p1:*}(
+        \rename_{type,label,profit}(
+          \aggr_{type,label: sum(streamscount*unitrevenue)}(
+            (
+              (streams_daily \join_{streams_daily.platformid=platforms.platformid} platforms)
+              \join_{streams_daily.bandid=bands.id} bands
+            )
+          )
+        )
+      )
+      \cross
+      \rename_{p2:*}(
+        \rename_{type,label,profit}(
+          \aggr_{type,label: sum(streamscount*unitrevenue)}(
+            (
+              (streams_daily \join_{streams_daily.platformid=platforms.platformid} platforms)
+              \join_{streams_daily.bandid=bands.id} bands
+            )
+          )
+        )
+      )
+    )
+  )
+);

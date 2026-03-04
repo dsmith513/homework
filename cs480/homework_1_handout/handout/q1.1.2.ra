@@ -1,1 +1,1 @@
-\select_{duration>240}(songs)
+\project_{songid, title} (\select_{duration > 240} (songs));

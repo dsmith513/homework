@@ -1,1 +1,1 @@
-\project_{title,releasedate,duration}(\select_{genre='Rock'}(songs))
+\project_{title, releasedate, duration} (\select_{genre = 'Rock'} (songs));

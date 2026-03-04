@@ -1,1 +1,13 @@
-// write the RA code for the answer to Question 1.1.6 here. Use radb's syntax.
+\project_{band1,band2}(
+  \rename_{band1,band2}(
+    \project_{b1.name,b2.name}(
+      (
+        (
+          (\rename_{s1:*}(songs) \join_{s1.title=s2.title and s1.bandid<>s2.bandid} \rename_{s2:*}(songs))
+          \join_{s1.bandid=b1.id} \rename_{b1:*}(bands)
+        )
+        \join_{s2.bandid=b2.id} \rename_{b2:*}(bands)
+      )
+    )
+  )
+);
