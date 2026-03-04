@@ -1,0 +1,29 @@
+\project_{songs.title, bandname, ts.totalstreams}(
+  (
+    (
+      \select_{ts.totalstreams > avg.avgstreams}(
+        (
+          \rename_{ts:*}(
+            \rename_{songid,totalstreams}(
+              \aggr_{songid: sum(streamscount)}(streams_daily)
+            )
+          )
+          \cross
+          \rename_{avg:*}(
+            \rename_{avgstreams}(
+              \aggr_{avg(totalstreams)}(
+                \rename_{songid,totalstreams}(
+                  \aggr_{songid: sum(streamscount)}(streams_daily)
+                )
+              )
+            )
+          )
+        )
+      )
+      \join_{ts.songid = songs.songid} songs
+    )
+    \join_{songs.bandid = id}(
+      \rename_{id, bandname, label}(bands)
+    )
+  )
+);

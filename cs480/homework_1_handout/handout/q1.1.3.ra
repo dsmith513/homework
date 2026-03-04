@@ -1,0 +1,9 @@
+\project_{title, platformname, bandname, streamdate, streamcount}(
+    \rename_{title, platformname, bandname, streamdate, streamcount}(
+        \project_{title, platformname, name, streamdate, streamscount}(
+            \select_{label = 'EMI' and songs.bandid = bands.id and songs.songid = streams_daily.songid and streams_daily.bandid = bands.id and streams_daily.platformid = platforms.platformid}(
+                songs \cross bands \cross streams_daily \cross platforms
+            )
+        )
+    )
+);

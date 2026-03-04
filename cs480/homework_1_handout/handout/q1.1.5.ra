@@ -1,0 +1,29 @@
+(
+  \project_{songs.songid,songs.title,songs.releasedate}(
+    \select_{streamdate>='2025-01-01' and streamdate<'2026-01-01'}(
+      songs \join_{songs.songid=streams_daily.songid} streams_daily
+    )
+  )
+)
+\diff
+(
+  \project_{s1.songid,s1.title,s1.releasedate}(
+    \select_{s2.releasedate < s1.releasedate}(
+      \rename_{s1:*}(
+        \project_{songs.songid,songs.title,songs.releasedate}(
+          \select_{streamdate>='2025-01-01' and streamdate<'2026-01-01'}(
+            songs \join_{songs.songid=streams_daily.songid} streams_daily
+          )
+        )
+      )
+      \cross
+      \rename_{s2:*}(
+        \project_{songs.songid,songs.title,songs.releasedate}(
+          \select_{streamdate>='2025-01-01' and streamdate<'2026-01-01'}(
+            songs \join_{songs.songid=streams_daily.songid} streams_daily
+          )
+        )
+      )
+    )
+  )
+);

@@ -1,0 +1,25 @@
+\project_{platforms.platformname, songs.title}(
+  (
+    \select_{ts.total >= av.avg_total}(
+      (
+        \rename_{ts:*}(
+          \rename_{platformid,songid,total}(
+            \aggr_{platformid,songid: sum(streamscount)}(streams_daily)
+          )
+        )
+        \join_{ts.platformid = av.platformid}
+        \rename_{av:*}(
+          \rename_{platformid,avg_total}(
+            \aggr_{platformid: avg(total)}(
+              \rename_{platformid,songid,total}(
+                \aggr_{platformid,songid: sum(streamscount)}(streams_daily)
+              )
+            )
+          )
+        )
+      )
+    )
+    \join_{ts.songid = songs.songid} songs
+  )
+  \join_{ts.platformid = platforms.platformid} platforms
+);

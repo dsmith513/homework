@@ -1,0 +1,6 @@
+\project_{songid,title}(songs)
+\diff
+\project_{songs.songid,songs.title}(
+  songs \join_{songs.songid=streams_daily.songid}
+  \select_{platformid=10 or platformid=20}(streams_daily)
+);
