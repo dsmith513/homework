@@ -1,0 +1,708 @@
+---
+title: "Characteristics that Determine Dungeons and Dragons Monsters' Hitpoints"
+author: "Dylan Smith"
+date: "`r Sys.Date()`"
+output: pdf_document
+abstract: "This project analyzes the characteristics of Dungeons and Dragons 5th Edition monsters with the goal of predicting their hit points. Multiple linear regression was used with hit points as the response variable and size, armor class, legendary status, strength, dexterity, constitution, intelligence, wisdom, charisma, and proficiency bonus used as the initial predictor variables."
+---
+
+## **Section 1. Data Introduction and Description**
+
+### **Introduction**
+The main question this project is attempting to answer is: which Dungeons and Dragons 5th Edition monster characteristics most explain and predict their hit points? The response variable is hp, which measures a monster's hit points. The predictor variables considered in this project are challenge rating (cr), size (size), armor class (ac), legendary status (legendary), strength (str), dexterity (dex), constitution (con), intelligence (int), wisdom (wis), charisma (cha), and proficiency bonus (proficiency_bonus).  
+
+First, descriptive statistics, histograms, and boxplots are used to summarize the data. Next, multicollinearity is checked using the Variance Inflation Factor (VIF). Regression assumptions are evaluated using residual plots, the Durbin-Watson test, Q-Q plots, and the Shapiro-Wilk test. Due to the original model violating several of the regression assumptions, a Box-Cox transformation is conducted on the response variable. After refitting the model with the transformed response variable, hypothesis tests are conducted for the overall model and the predictor variables. Stepwise selection using AIC is used to discard ineffective predictor variables to obtain a more refined final model. Finally, leverage values are compared between the initial and the final models.
+
+### **Descriptive Statistics and Graphics: Quantitative Variables**
+```{r descriptive_stats, echo = FALSE} 
+library(knitr)
+
+data <- read.csv("DnD_5e_Monsters_481.csv", header = TRUE)
+vars <- c("hp", "str", "int")
+
+descriptive_stats <- function(x) {
+  c(
+    Min = min(x, na.rm = TRUE),
+    Q1 = quantile(x, 0.25, na.rm = TRUE),
+    Median = median(x, na.rm = TRUE),
+    Q3 = quantile(x, 0.75, na.rm = TRUE),
+    Max = max(x, na.rm = TRUE),
+    Mean = mean(x, na.rm = TRUE),
+    Variance = var(x, na.rm = TRUE),
+    SD = sd(x, na.rm = TRUE)
+  )
+}
+
+summary_table <- data.frame(
+  Variable = vars,
+  t(sapply(data[vars], descriptive_stats)),
+  row.names = NULL
+)
+
+colnames(summary_table) <- c("Variable", "Min", "Q1", "Median", "Q3", "Max", "Mean", "Variance", "SD")
+
+kable(summary_table, caption = "Descriptive Statistics for HP, STR, and INT")
+```
+```{r hp_plots, echo = FALSE}
+hist(data$hp, main = "Figure 1: Histogram of Hit Points (HP)", xlab = "Hit Points", ylab = "Frequency")
+boxplot(data$hp, main = "Figure 2: Boxplot of Hit Points (HP)", ylab = "Hit Points")
+```
+The histogram of HP shown in Figure 1 is strongly skewed right. This means that the monsters' hit points are not normally distributed. Most monsters have relatively low HP values. The boxplot shown in Figure 2 shows many outliers of monsters with high HP values between 300 and 700. It is possible that these outliers with high HP values correspond to boss monsters whereas the vast majority of regular monsters have much lower HP values.
+
+```{r str_plots, echo = FALSE}
+hist(data$str, main = "Figure 3: Histogram of Strength (STR)", xlab = "Strength", ylab = "Frequency")
+boxplot(data$str, main = "Figure 4: Boxplot of Strength (STR)", ylab = "Strength")
+```
+The histogram of Strength shown in Figure 3 is shaped more like a bell curve, indicating that the monsters' strength values are more normally distributed. Although the histogram is not perfectly symmetric, there is no strong skew to either side. This is further reinforced upon looking at the boxplot in Figure 4, which shows no apparent outliers present.
+
+```{r int_plots, echo = FALSE}
+hist(data$int, main = "Figure 5: Histogram of Intelligence (INT)", xlab = "Intelligence", ylab = "Frequency")
+boxplot(data$int, main = "Figure 6: Boxplot of Intelligence (INT)", ylab = "Intelligence")
+```
+The histogram of Intelligence shown in Figure 5 is skewed right. This means that most monsters have low intelligence values, with the highest frequencies near the lower end and the distribution trailing off gradually as intelligence increases. The boxplot in Figure 6 shows only one outlier with an intelligence value greater than 25.
+
+### **Descriptive Statistics: Indicator Variables**
+```{r size_table, echo = FALSE}
+size_table <- table(data$size)
+
+size_summary <- data.frame(
+  Size = c("Small", "Large"),
+  Frequency = c(size_table["0"], size_table["1"])
+)
+
+kable(size_summary, caption = "Frequency Table for Creature Size")
+```
+The frequency table for the variable size shown in Table 2 shows that there are 222 small creatures and 179 large creatures in the data set.
+
+```{r legendary_table, echo = FALSE}
+legendary_table <- table(data$legendary)
+
+legendary_summary <- data.frame(
+  Legendary = c("Not Legendary", "Legendary"),
+  Frequency = c(legendary_table["0"], legendary_table["1"])
+)
+
+kable(legendary_summary, caption = "Frequency Table for Legendary Status")
+```
+The frequency table for the variable legendary shown in Table 3 shows that there are 366 not legendary creatures and 35 legendary creatures in the data set.
+
+## **Section 2. Multiple Linear Regression Analysis**
+Throughout this section, a significance level of $\alpha = 0.03$ will be used to make decisions.
+
+```{r MLR_setup, echo = FALSE}
+alpha <- 0.03
+model <- lm(hp ~ cr + size + ac + legendary + str + dex + con + int + wis + cha + proficiency_bonus, data = data)
+```
+
+### **Multicollinearity Check**
+To check for multicollinearity, we use the VIF (Variance Inflation Factor) technique. For each predictor variable, VIF measures how much the variance of its estimated regression coefficient is inflated due to linear relationships with the other predictor variables. If the VIF > 10, that indicates that there is problematic multicollinearity present. Starting with the predictor variables of cr, size, ac, legendary, str, dex, con, int, wis, cha, and proficiency_bonus, the VIF is calculated for each predictor variable and the predictor variable with the largest VIF that exceeds 10 is removed and the model is then refitted. This process is repeated until all remaining predictor variables have VIF values less than or equal to 10.
+
+
+Iteration 1:
+```{r VIF_1, echo = FALSE, message = FALSE, warning = FALSE}
+library(car)
+
+vif1 <- vif(model)
+
+vif1_table <- data.frame(
+  Predictor = names(vif1),
+  VIF = as.numeric(vif1)
+)
+
+kable(vif1_table, caption = "VIF Values for Iteration 1")
+```
+Predictor variable removed: cr
+
+Iteration 2:
+```{r VIF_2, echo = FALSE}
+model2 <- lm(hp ~ size + ac + legendary + str + dex + con + int + wis + cha + proficiency_bonus, data = data)
+
+vif2 <- vif(model2)
+
+vif2_table <- data.frame(
+  Predictor = names(vif2),
+  VIF = as.numeric(vif2)
+)
+
+kable(vif2_table, caption = "VIF Values for Iteration 2")
+```
+After the second iteration, all predictor variables have VIF values less than 10. Therefore, no additional predictor variables need to be removed.
+
+### **Initial Regression Model and Assumptions Check**
+After removing the predictor variable cr due to multicollinearity, the initial regression model was fit using hp as the response variable. The predictor variables are size, ac, legendary, str, dex, con, int, wis, cha, and proficiency_bonus. The model examines how each of these predictor variables are related to a monster's hit points.
+```{r model_summary_tables, echo = FALSE, message = FALSE, warning = FALSE}
+library(broom)
+coefficient_table <- tidy(model2)[, c("term", "estimate", "std.error", "statistic", "p.value")]
+
+kable(coefficient_table, col.names = c("Term", "Estimate", "Std. Error", "t value", "p-value"), caption = "Regression Coefficients for the Initial Model")
+
+fit_table <- glance(model2)[, c("r.squared", "adj.r.squared", "sigma", "statistic", "p.value", "df", "df.residual")]
+fit_table$p.value <- ifelse(fit_table$p.value < 0.0001, "< 0.0001", fit_table$p.value)
+
+kable(fit_table, col.names = c("R-squared", "Adjusted R-squared", "Residual SE", "F Statistic", "Model p-value", "df Model", "df Residual"), caption = "Overall Model Summary")
+```
+
+```{r linearity_equal_variance_check, echo = FALSE}
+plot(fitted(model2), residuals(model2),
+     xlab = "Fitted Values",
+     ylab = "Residuals",
+     main = "Figure 7: Residuals vs Fitted Values")
+abline(h = 0, lty = 2)
+```
+The linearity check is performed using the Residuals vs Fitted Values plot shown in Figure 7. The plot shows that the residuals are not randomly distributed around the value 0. The residuals appear to be distributed in a curved pattern. Therefore, the linearity assumption is not met.
+
+The equal variance of residuals check is also performed using the Residuals vs Fitted Values plot shown in Figure 7. Because the plot shows that the residuals are not randomly distributed around 0 and are instead distributed in a curved pattern, the equal variance of residuals assumption is also not met.
+
+```{r independence_check, echo = FALSE}
+set.seed(12)
+dw <- durbinWatsonTest(model2)
+
+dw_table <- data.frame(
+  Lag = 1,
+  Autocorrelation = dw$r,
+  'D-W Statistic' = dw$dw,
+  'p-value' = dw$p,
+  row.names = NULL
+)
+
+kable(dw_table, caption = "Durbin-Watson Test for Independence of Residuals")
+```
+The independence check is performed using the Durbin-Watson Test shown in Table 8. The seed is set to 12 to ensure that the p-value generated by the Durbin-Watson Test is reproducible.
+
+$H_0$: The residuals are independent.  
+$H_1$: The residuals are not independent.
+
+p-value: $p = 0.072$
+
+Decision: Do not reject $H_0$. $0.072 > 0.03$  
+Conclusion: There is not enough evidence to conclude that the residuals are dependent. The independence assumption is met.
+
+```{r normality_check, echo = FALSE, message = FALSE, warning = FALSE}
+qqnorm(residuals(model2), main = "Figure 8: QQ Plot of Residuals")
+qqline(residuals(model2))
+
+shapiro <- shapiro.test(residuals(model2))
+
+shapiro_table <- data.frame(
+  W = shapiro$statistic,
+  p_value = ifelse(shapiro$p.value < 0.0001, "< 0.0001", shapiro$p.value),
+  row.names = NULL
+)
+
+kable(shapiro_table, col.names = c("W-Statistic", "p-value"), caption = "Shapiro-Wilk Normality Test")
+```
+The normality check is performed with the QQ plot shown in Figure 8. The QQ plot shows that the points deviate substantially at both tails. If the residuals are normally distributed, the points on the QQ plot should fall approximately on the reference line. Because there is so much deviation at the tails, the normality assumption is not met.  
+
+
+The normality check is also performed using the Shapiro-Wilk Test shown in Table 9.
+
+$H_0$: The residuals are normally distributed.  
+$H_1$: The residuals are not normally distributed.
+
+p-value: $p < 0.0001$
+
+Decision: Reject $H_0$. $p < 0.03$  
+Conclusion: There is enough evidence to conclude that the residuals are not normally distributed. The normality assumption is not met.
+
+### **Transformation #1 (Y-Variable)**
+The linearity, equal variance, and normality assumptions were all not met. Based on this, it does seem necessary to transform the original hp variable. This is necessary because the current model is suggesting that the hp variable is not fitting well.
+
+```{r transformation_1, echo = FALSE}
+library(MASS)
+boxcox(model2)
+title(main = "Figure 9: Box-Cox Transformation")
+
+data$hp_transformed <- sqrt(data$hp)
+```
+The Box-Cox plot shown in Figure 9 suggests that a value of $\lambda = 0.5$ is best. A new column has been added to the dataset corresponding to hp$^{0.5}$
+
+### **Regression Model and Assumptions Check after Transformation #1**
+After applying the Box-Cox transformation, a new model is needed with the transformed response variable. The predictor variables remain unchanged. The predictor variables are size, ac, legendary, str, dex, con, int, wis, cha, and proficiency_bonus.
+
+```{r transform1_linearity_equal_variance_check, echo = FALSE}
+model3 <- lm(hp_transformed ~ size + ac + legendary + str + dex + con + int + wis + cha + proficiency_bonus, data = data)
+
+plot(fitted(model3), residuals(model3),
+     xlab = "Fitted Values",
+     ylab = "Residuals",
+     main = "Figure 10: Residuals vs Fitted Values")
+abline(h = 0, lty = 2)
+```
+The linearity check is performed using the Residuals vs Fitted Values plot shown in Figure 10. The plot shows that the residuals are now randomly distributed around the value 0. Therefore, the linearity assumption is met.
+
+The equal variance of residuals check is also performed using the Residuals vs Fitted Values plot shown in Figure 10. Because the plot shows that the residuals are randomly distributed around 0, the equal variance of residuals assumption is also met.
+
+```{r transform1_independence_check, echo = FALSE}
+set.seed(12)
+dw <- durbinWatsonTest(model3)
+
+dw_table <- data.frame(
+  Lag = 1,
+  Autocorrelation = dw$r,
+  'D-W Statistic' = dw$dw,
+  'p-value' = dw$p,
+  row.names = NULL
+)
+
+kable(dw_table, caption = "Durbin-Watson Test for Independence of Residuals")
+```
+The independence check is performed using the Durbin-Watson Test shown in Table 10. The seed is set to 12 to ensure that the p-value generated by the Durbin-Watson Test is reproducible.
+
+$H_0$: The residuals are independent.  
+$H_1$: The residuals are not independent.
+
+p-value: $p = 0.012$
+
+Decision: Reject $H_0$. $0.012 < 0.03$  
+Conclusion: There is enough evidence to conclude that the residuals are not independent. The independence assumption is not met.
+
+```{r transform1_normality_check, echo = FALSE, message = FALSE, warning = FALSE}
+qqnorm(residuals(model3), main = "Figure 11: QQ Plot of Residuals")
+qqline(residuals(model3))
+
+shapiro <- shapiro.test(residuals(model3))
+
+shapiro_table <- data.frame(
+  W = shapiro$statistic,
+  p_value = ifelse(shapiro$p.value < 0.0001, "< 0.0001", shapiro$p.value),
+  row.names = NULL
+)
+
+kable(shapiro_table, col.names = c("W-Statistic", "p-value"), caption = "Shapiro-Wilk Normality Test")
+```
+The normality check is performed with the QQ plot shown in Figure 11. The QQ plot shows that the points deviate substantially less at both tails than they did before. The points on the QQ plot now lie much closer to the reference line. Because of this, the normality assumption is met.  
+
+
+The normality check is also performed using the Shapiro-Wilk Test shown in Table 11.
+
+$H_0$: The residuals are normally distributed.  
+$H_1$: The residuals are not normally distributed.
+
+p-value: $p = 0.0328136$
+
+Decision: Do not reject $H_0$. $0.0328136 > 0.03$  
+Conclusion: There is enough evidence to conclude that the residuals are normally distributed. The normality assumption is met.
+
+### **Transformation #2 (X-Variable)**
+No additional X-Variable transformation is needed. The linearity, equal variance, and normality assumptions, which were previously not met before the Y-Variable transformation, are now met. The only issue is that now the independence assumption is no longer met at a significance level of 0.03. However, as X-Variable transformation is unlikely to fix this problem and result in all four checks being met.
+
+### **Hypothesis Testing**
+```{r transform1_summary_tables, echo = FALSE, message = FALSE, warning = FALSE}
+coefficient_table <- tidy(model3)[, c("term", "estimate", "std.error", "statistic", "p.value")]
+
+kable(coefficient_table, col.names = c("Term", "Estimate", "Std. Error", "t value", "p-value"), caption = "Regression Coefficients for the Transformed Model")
+
+fit_table <- glance(model3)[, c("r.squared", "adj.r.squared", "sigma", "statistic", "p.value", "df", "df.residual")]
+fit_table$p.value <- ifelse(fit_table$p.value < 0.0001, "< 0.0001", fit_table$p.value)
+
+kable(fit_table, col.names = c("R-squared", "Adjusted R-squared", "Residual SE", "F Statistic", "Model p-value", "df Model", "df Residual"), caption = "Overall Model Summary")
+```
+**Overall Model Test:**  
+
+$H_0: \beta_1 = \beta_2 = \cdots = \beta_{10} = 0$   
+$H_1:$ At least one $\beta_j \neq 0$  
+$F = 406.8618$  
+$p < 0.0001$  
+
+Decision: Reject $H_0$. $p < 0.0001 < 0.03$.  
+Conclusion: There is sufficient evidence to conclude that at least one predictor variable is linearly related to the transformed response variable for hit points.
+
+**Individual Predictor Variable Tests:**   
+
+Size:  
+$H_0: \beta_{\text{size}} = 0$  
+$H_1: \beta_{\text{size}} \neq 0$   
+$t = 3.3593128$
+$p = 0.0008584$  
+Decision: Reject $H_0$. $p = 0.0008584 < 0.03$
+Conclusion: There is enough evidence to conclude that size is a significant predictor variable for the transformed response variable for hit points.  
+
+Armor Class:  
+$H_0: \beta_{\text{ac}} = 0$  
+$H_1: \beta_{\text{ac}} \neq 0$   
+$t = -0.1552510$
+$p = 0.8767038$  
+Decision: Do not reject $H_0$. $p = 0.8767038 > 0.03$
+Conclusion: There is not enough evidence to conclude that armor class is a significant predictor variable for the transformed response variable for hit points.  
+
+Legendary:  
+$H_0: \beta_{\text{legendary}} = 0$  
+$H_1: \beta_{\text{legendary}} \neq 0$   
+$t = -3.7740060$
+$p = 0.0001856$  
+Decision: Reject $H_0$. $p = 0.0001856 < 0.03$
+Conclusion: There is enough evidence to conclude that legendary is a significant predictor variable for the transformed response variable for hit points.  
+
+Strength:  
+$H_0: \beta_{\text{str}} = 0$  
+$H_1: \beta_{\text{str}} \neq 0$   
+$t = 5.6549562$
+$p < 0.0001$  
+Decision: Reject $H_0$. $p < 0.0001 < 0.03$
+Conclusion: There is enough evidence to conclude that strength is a significant predictor variable for the transformed response variable for hit points.  
+
+Dexterity:  
+$H_0: \beta_{\text{dex}} = 0$  
+$H_1: \beta_{\text{dex}} \neq 0$   
+$t = 1.2158482$
+$p = 0.2247782$  
+Decision: Do not reject $H_0$. $p = 0.2247782 > 0.03$
+Conclusion: There is not enough evidence to conclude that dexterity is a significant predictor variable for the transformed response variable for hit points.  
+
+Constitution:  
+$H_0: \beta_{\text{con}} = 0$  
+$H_1: \beta_{\text{con}} \neq 0$   
+$t = 9.9403706$
+$p < 0.0001$  
+Decision: Reject $H_0$. $p < 0.0001 < 0.03$
+Conclusion: There is enough evidence to conclude that constitution is a significant predictor variable for the transformed response variable for hit points.  
+
+Intelligence:  
+$H_0: \beta_{\text{int}} = 0$  
+$H_1: \beta_{\text{int}} \neq 0$   
+$t = 3.3688436$
+$p = 0.0008300$  
+Decision: Reject $H_0$. $p = 0.0008300 < 0.03$
+Conclusion: There is enough evidence to conclude that intelligence is a significant predictor variable for the transformed response variable for hit points.  
+
+Wisdom:  
+$H_0: \beta_{\text{wis}} = 0$  
+$H_1: \beta_{\text{wis}} \neq 0$   
+$t = -2.2454172$
+$p = 0.0253009$  
+Decision: Reject $H_0$. $p = 0.0253009 < 0.03$
+Conclusion: There is enough evidence to conclude that wisdom is a significant predictor variable for the transformed response variable for hit points.  
+
+Charisma:  
+$H_0: \beta_{\text{cha}} = 0$  
+$H_1: \beta_{\text{cha}} \neq 0$   
+$t = 0.5498966$
+$p = 0.5827050$  
+Decision: Do not reject $H_0$. $p = 0.5827050 > 0.03$
+Conclusion: There is not enough evidence to conclude that charisma is a significant predictor variable for the transformed response variable for hit points.  
+
+Proficiency Bonus:  
+$H_0: \beta_{\text{proficiency\_bonus}} = 0$  
+$H_1: \beta_{\text{proficiency\_bonus}} \neq 0$   
+$t = 12.1895388$
+$p < 0.0001$  
+Decision: Reject $H_0$. $p < 0.0001 < 0.03$
+Conclusion: There is enough evidence to conclude that proficiency bonus is a significant predictor variable for the transformed response variable for hit points.  
+
+$\mathbf{R^2}$ **Value:** $\mathbf{0.912529}$
+
+An $R^2$ Value of $R^2 = 0.912529$ means that approximately 91.2529% of the variability in the transformed response variable hit points is explained by the predictors in the model.  
+
+## **Section 3. Variable Selection**
+To build the "best" model possible, stepwise selection using AIC was used. This procedure combines elements of forward selection and backward elimination. Variables are added to the model sequentially. After adding each new variable, variables that no longer provide an improvement to best model fit are removed.
+```{r best_model_backward, echo = FALSE}
+best_model <- stepAIC(model3, direction = "both", trace = FALSE)
+
+coefficient_table <- tidy(best_model)[, c("term", "estimate", "std.error", "statistic", "p.value")]
+
+kable(coefficient_table, col.names = c("Term", "Estimate", "Std. Error", "t value", "p-value"), caption = "Regression Coefficients for the Best Model")
+
+fit_table <- glance(best_model)[, c("r.squared", "adj.r.squared", "sigma", "statistic", "p.value", "df", "df.residual")]
+fit_table$p.value <- ifelse(fit_table$p.value < 0.0001, "< 0.0001", fit_table$p.value)
+
+kable(fit_table, col.names = c("R-squared", "Adjusted R-squared", "Residual SE", "F Statistic", "Model p-value", "df Model", "df Residual"), caption = "Overall Model Summary")
+```
+After the stepwise selection procedure, the variables we are left with are size, legendary, str, con, int, wis, and proficiency_bonus. The variables ac, dex, and cha are removed. The best value has an $R^2$ value of $R^2 = 0.9120836$. This means that approximately 91.20836% of variability in the transformed response variable hit points can be explained by the predictor variables size, legendary, str, con, int, wis, and proficiency_bonus.
+
+## **Section 4. High Leverage Point Comparison**
+``` {r leverage_comparison, echo = FALSE}
+leverage_model2 <- hatvalues(model2)
+leverage_best_model <- hatvalues(best_model)
+
+n <- nrow(data)
+
+p_model2 <- length(coef(model2)) - 1
+p_best <- length(coef(best_model)) - 1
+
+hbar_model2 <- (p_model2 + 1) / n
+hbar_best <- (p_best + 1) / n
+
+cutoff_model2 <- 3 * hbar_model2
+cutoff_best <- 3 * hbar_best
+
+high_leverage_model2 <- which(leverage_model2 > cutoff_model2)
+high_leverage_best <- which(leverage_best_model > cutoff_best)
+
+lev_summary <- data.frame(
+  Model = c("Initial Model", "Best Model"),
+  Predictors = c(p_model2, p_best),
+  n = c(n, n),
+  Average_Leverage = c(hbar_model2, hbar_best),
+  Cutoff = c(cutoff_model2, cutoff_best)
+)
+
+kable(lev_summary, caption = "Leverage Cutoffs for the Two Models")
+
+
+high_leverage_table1 <- data.frame(
+  Observation = high_leverage_model2,
+  Leverage = leverage_model2[high_leverage_model2],
+  row.names = NULL
+)
+
+high_leverage_table2 <- data.frame(
+  Observation = high_leverage_best,
+  Leverage = leverage_best_model[high_leverage_best],
+  row.names = NULL
+)
+
+kable(high_leverage_table1, caption = "High Leverage Points in the Initial Model")
+kable(high_leverage_table2, caption = "High Leverage Points in the Best Model")
+```
+There are high leverage points present in both models. For the initial model, the cutoff is 0.0822943. The observations with high leverage in the base model are observations 35, 225, 317, 344, 377, and 400. In the best model, the cutoff is 0.0598504. The observations with high leverage in the best model are observations 2, 103, 108, 222, 225, 317, 344, 355, and 400. Observations 35 and 377 are high leverage only in the base model. These observations changed from high leverage to "normal" after the variable selection in the best model. Observations 2, 103, 108, 222, and 355 are high leverage only in the best model. Observations 225, 317, 344, and 400 are high leverage in both models.
+
+## **Section 5. Conclusions**
+
+**Final Statistical Model:** $\hat{Y} = -4.6409365 + 0.6724299x_1 - 1.4867110x_2 + 0.1258033x_3 + 0.3920857x_4 + 0.1121865x_5 - 0.0577261x_6 + 1.4844378x_7$  
+$\hat{Y} = \sqrt{hp}$  
+$x_1 = \text{size}$  
+$x_2 = \text{legendary}$  
+$x_3 = \text{str}$  
+$x_4 = \text{con}$  
+$x_5 = \text{int}$  
+$x_6 = \text{wis}$  
+$x_7 = \text{proficiency\_bonus}$  
+
+$\mathbf{R^2}$ **Comparison:**  
+Before variable selection, the model had an $R^2$ value of $R^2 = 0.912529$. After variable selection, the best model had an $R^2$ value of $R^2 = 0.9120836$. The $R^2$ value decreased slightly, but still remained relatively the same. This indicates that the original model explained nearly the same amount of variability in hit points as the final model.  
+
+**Interpretation of One Variable**  
+Using the variable strength (str), as a monster's strength increases by one point, the $\sqrt{hp}$ of the monster increases by 0.1258033.
+
+## **Appendix**
+
+## **Code**
+``` {r appendix, echo = TRUE, eval = FALSE}
+library(knitr)
+
+data <- read.csv("DnD_5e_Monsters_481.csv", header = TRUE)
+vars <- c("hp", "str", "int")
+
+descriptive_stats <- function(x) {
+  c(
+    Min = min(x, na.rm = TRUE),
+    Q1 = quantile(x, 0.25, na.rm = TRUE),
+    Median = median(x, na.rm = TRUE),
+    Q3 = quantile(x, 0.75, na.rm = TRUE),
+    Max = max(x, na.rm = TRUE),
+    Mean = mean(x, na.rm = TRUE),
+    Variance = var(x, na.rm = TRUE),
+    SD = sd(x, na.rm = TRUE)
+  )
+}
+
+summary_table <- data.frame(
+  Variable = vars,
+  t(sapply(data[vars], descriptive_stats)),
+  row.names = NULL
+)
+
+colnames(summary_table) <- c("Variable", "Min", "Q1", "Median", "Q3", "Max", "Mean", "Variance", "SD")
+
+kable(summary_table, caption = "Descriptive Statistics for HP, STR, and INT")
+
+hist(data$hp, main = "Figure 1: Histogram of Hit Points (HP)", xlab = "Hit Points", ylab = "Frequency")
+boxplot(data$hp, main = "Figure 2: Boxplot of Hit Points (HP)", ylab = "Hit Points")
+
+hist(data$str, main = "Figure 3: Histogram of Strength (STR)", xlab = "Strength", ylab = "Frequency")
+boxplot(data$str, main = "Figure 4: Boxplot of Strength (STR)", ylab = "Strength")
+
+hist(data$int, main = "Figure 5: Histogram of Intelligence (INT)", xlab = "Intelligence", ylab = "Frequency")
+boxplot(data$int, main = "Figure 6: Boxplot of Intelligence (INT)", ylab = "Intelligence")
+
+size_table <- table(data$size)
+
+size_summary <- data.frame(
+  Size = c("Small", "Large"),
+  Frequency = c(size_table["0"], size_table["1"])
+)
+
+kable(size_summary, caption = "Frequency Table for Creature Size")
+
+legendary_table <- table(data$legendary)
+
+legendary_summary <- data.frame(
+  Legendary = c("Not Legendary", "Legendary"),
+  Frequency = c(legendary_table["0"], legendary_table["1"])
+)
+
+kable(legendary_summary, caption = "Frequency Table for Legendary Status")
+
+alpha <- 0.03
+model <- lm(hp ~ cr + size + ac + legendary + str + dex + con + int + wis + cha + proficiency_bonus, data = data)
+
+library(car)
+
+vif1 <- vif(model)
+
+vif1_table <- data.frame(
+  Predictor = names(vif1),
+  VIF = as.numeric(vif1)
+)
+
+kable(vif1_table, caption = "VIF Values for Iteration 1")
+
+model2 <- lm(hp ~ size + ac + legendary + str + dex + con + int + wis + cha + proficiency_bonus, data = data)
+
+vif2 <- vif(model2)
+
+vif2_table <- data.frame(
+  Predictor = names(vif2),
+  VIF = as.numeric(vif2)
+)
+
+kable(vif2_table, caption = "VIF Values for Iteration 2")
+
+library(broom)
+coefficient_table <- tidy(model2)[, c("term", "estimate", "std.error", "statistic", "p.value")]
+
+kable(coefficient_table, col.names = c("Term", "Estimate", "Std. Error", "t value", "p-value"), caption = "Regression Coefficients for the Initial Model")
+
+fit_table <- glance(model2)[, c("r.squared", "adj.r.squared", "sigma", "statistic", "p.value", "df", "df.residual")]
+fit_table$p.value <- ifelse(fit_table$p.value < 0.0001, "< 0.0001", fit_table$p.value)
+
+kable(fit_table, col.names = c("R-squared", "Adjusted R-squared", "Residual SE", "F Statistic", "Model p-value", "df Model", "df Residual"), caption = "Overall Model Summary")
+
+plot(fitted(model2), residuals(model2),
+     xlab = "Fitted Values",
+     ylab = "Residuals",
+     main = "Figure 7: Residuals vs Fitted Values")
+abline(h = 0, lty = 2)
+
+set.seed(12)
+dw <- durbinWatsonTest(model2)
+
+dw_table <- data.frame(
+  Lag = 1,
+  Autocorrelation = dw$r,
+  'D-W Statistic' = dw$dw,
+  'p-value' = dw$p,
+  row.names = NULL
+)
+
+kable(dw_table, caption = "Durbin-Watson Test for Independence of Residuals")
+
+qqnorm(residuals(model2), main = "Figure 8: QQ Plot of Residuals")
+qqline(residuals(model2))
+
+shapiro <- shapiro.test(residuals(model2))
+
+shapiro_table <- data.frame(
+  W = shapiro$statistic,
+  p_value = ifelse(shapiro$p.value < 0.0001, "< 0.0001", shapiro$p.value),
+  row.names = NULL
+)
+
+kable(shapiro_table, col.names = c("W-Statistic", "p-value"), caption = "Shapiro-Wilk Normality Test")
+
+library(MASS)
+boxcox(model2)
+title(main = "Figure 9: Box-Cox Transformation")
+
+data$hp_transformed <- sqrt(data$hp)
+
+model3 <- lm(hp_transformed ~ size + ac + legendary + str + dex + con + int + wis + cha + proficiency_bonus, data = data)
+
+plot(fitted(model3), residuals(model3),
+     xlab = "Fitted Values",
+     ylab = "Residuals",
+     main = "Figure 10: Residuals vs Fitted Values")
+abline(h = 0, lty = 2)
+
+set.seed(12)
+dw <- durbinWatsonTest(model3)
+
+dw_table <- data.frame(
+  Lag = 1,
+  Autocorrelation = dw$r,
+  'D-W Statistic' = dw$dw,
+  'p-value' = dw$p,
+  row.names = NULL
+)
+
+kable(dw_table, caption = "Durbin-Watson Test for Independence of Residuals")
+
+qqnorm(residuals(model3), main = "Figure 11: QQ Plot of Residuals")
+qqline(residuals(model3))
+
+shapiro <- shapiro.test(residuals(model3))
+
+shapiro_table <- data.frame(
+  W = shapiro$statistic,
+  p_value = ifelse(shapiro$p.value < 0.0001, "< 0.0001", shapiro$p.value),
+  row.names = NULL
+)
+
+kable(shapiro_table, col.names = c("W-Statistic", "p-value"), caption = "Shapiro-Wilk Normality Test")
+
+coefficient_table <- tidy(model3)[, c("term", "estimate", "std.error", "statistic", "p.value")]
+
+kable(coefficient_table, col.names = c("Term", "Estimate", "Std. Error", "t value", "p-value"), caption = "Regression Coefficients for the Transformed Model")
+
+fit_table <- glance(model3)[, c("r.squared", "adj.r.squared", "sigma", "statistic", "p.value", "df", "df.residual")]
+fit_table$p.value <- ifelse(fit_table$p.value < 0.0001, "< 0.0001", fit_table$p.value)
+
+kable(fit_table, col.names = c("R-squared", "Adjusted R-squared", "Residual SE", "F Statistic", "Model p-value", "df Model", "df Residual"), caption = "Overall Model Summary")
+
+best_model <- stepAIC(model3, direction = "both", trace = FALSE)
+
+coefficient_table <- tidy(best_model)[, c("term", "estimate", "std.error", "statistic", "p.value")]
+
+kable(coefficient_table, col.names = c("Term", "Estimate", "Std. Error", "t value", "p-value"), caption = "Regression Coefficients for the Best Model")
+
+fit_table <- glance(best_model)[, c("r.squared", "adj.r.squared", "sigma", "statistic", "p.value", "df", "df.residual")]
+fit_table$p.value <- ifelse(fit_table$p.value < 0.0001, "< 0.0001", fit_table$p.value)
+
+kable(fit_table, col.names = c("R-squared", "Adjusted R-squared", "Residual SE", "F Statistic", "Model p-value", "df Model", "df Residual"), caption = "Overall Model Summary")
+
+leverage_model2 <- hatvalues(model2)
+leverage_best_model <- hatvalues(best_model)
+
+n <- nrow(data)
+
+p_model2 <- length(coef(model2)) - 1
+p_best <- length(coef(best_model)) - 1
+
+hbar_model2 <- (p_model2 + 1) / n
+hbar_best <- (p_best + 1) / n
+
+cutoff_model2 <- 3 * hbar_model2
+cutoff_best <- 3 * hbar_best
+
+high_leverage_model2 <- which(leverage_model2 > cutoff_model2)
+high_leverage_best <- which(leverage_best_model > cutoff_best)
+
+lev_summary <- data.frame(
+  Model = c("Initial Model", "Best Model"),
+  Predictors = c(p_model2, p_best),
+  n = c(n, n),
+  Average_Leverage = c(hbar_model2, hbar_best),
+  Cutoff = c(cutoff_model2, cutoff_best)
+)
+
+kable(lev_summary, caption = "Leverage Cutoffs for the Two Models")
+
+
+high_leverage_table1 <- data.frame(
+  Observation = high_leverage_model2,
+  Leverage = leverage_model2[high_leverage_model2],
+  row.names = NULL
+)
+
+high_leverage_table2 <- data.frame(
+  Observation = high_leverage_best,
+  Leverage = leverage_best_model[high_leverage_best],
+  row.names = NULL
+)
+
+kable(high_leverage_table1, caption = "High Leverage Points in the Initial Model")
+kable(high_leverage_table2, caption = "High Leverage Points in the Best Model")
+```
+
+**Division of Work**  
+I worked independently on this project.

@@ -1,0 +1,402 @@
+"id","name","cr","type","size","ac","hp","speed","align","legendary","str","dex","con","int","wis","cha","proficiency_bonus","xp"
+"1","aarakocra",0.25,"humanoid (aarakocra)",0,12,13,"fly","neutral good",0,10,14,10,11,12,11,2,50
+"3","aboleth",10,"aberration",1,17,135,"swim","lawful evil",1,21,9,15,18,15,18,4,5900
+"6","acolyte",0.25,"humanoid (any race)",0,10,9,"","any alignment",0,10,10,10,10,14,11,2,50
+"7","adult-black-dragon",14,"dragon",1,19,195,"fly, swim","chaotic evil",1,23,14,21,14,13,17,5,11500
+"9","adult-blue-dragon",16,"dragon",1,19,225,"fly","lawful evil",1,25,10,23,16,15,19,5,15000
+"10","adult-brass-dragon",13,"dragon",1,18,172,"fly","chaotic good",1,23,10,21,14,13,17,5,10000
+"11","adult-bronze-dragon",15,"dragon",1,19,212,"fly, swim","lawful good",1,25,10,23,16,15,19,5,13000
+"12","adult-copper-dragon",14,"dragon",1,18,184,"fly","chaotic good",1,23,12,21,18,15,17,5,11500
+"13","adult-gold-dragon",17,"dragon",1,19,256,"fly, swim","lawful good",1,27,14,25,16,15,24,6,18000
+"14","adult-green-dragon",15,"dragon",1,19,207,"fly, swim","lawful evil",1,23,12,21,18,15,17,5,13000
+"17","adult-red-dragon",17,"dragon",1,19,256,"fly","chaotic evil",1,27,10,25,16,13,21,6,18000
+"18","adult-silver-dragon",16,"dragon",1,19,243,"fly","lawful good",1,27,10,25,16,13,21,5,15000
+"19","adult-white-dragon",13,"dragon",1,18,200,"fly, swim","chaotic evil",1,22,10,22,8,12,12,5,10000
+"20","air-elemental",5,"elemental",1,15,90,"fly","neutral",0,14,20,14,6,10,6,3,1800
+"27","allosaurus",2,"beast",1,13,51,"","unaligned",0,19,13,17,2,12,5,2,450
+"30","ancient-black-dragon",21,"dragon",1,22,367,"fly, swim","chaotic evil",1,27,14,25,16,15,19,7,33000
+"31","ancient-blue-dragon",23,"dragon",1,22,481,"fly","lawful evil",1,29,10,27,18,17,21,7,50000
+"32","ancient-brass-dragon",20,"dragon",1,20,297,"fly","chaotic good",1,27,10,25,16,15,19,6,25000
+"33","ancient-bronze-dragon",22,"dragon",1,22,444,"fly, swim","lawful good",1,29,10,27,18,17,21,7,41000
+"34","ancient-copper-dragon",21,"dragon",1,21,350,"fly","chaotic good",1,27,12,25,20,17,19,7,33000
+"35","ancient-gold-dragon",24,"dragon",1,22,546,"fly, swim","lawful good",1,30,14,29,18,17,28,7,62000
+"36","ancient-green-dragon",22,"dragon",1,21,385,"fly, swim","lawful evil",1,27,12,25,20,17,19,7,41000
+"37","ancient-red-dragon",24,"dragon",1,22,546,"fly","chaotic evil",1,30,10,29,18,15,23,7,62000
+"38","ancient-shadow",1,"undead",0,13,32,"","chaotic evil",0,6,16,14,6,10,8,2,200
+"39","ancient-silver-dragon",23,"dragon",1,22,487,"fly","lawful good",1,30,10,29,18,15,23,7,50000
+"40","ancient-white-dragon",20,"dragon",1,20,333,"fly, swim","chaotic evil",1,26,10,26,10,13,14,6,25000
+"41","androsphinx",17,"monstrosity",1,17,199,"fly","lawful neutral",1,22,10,20,16,18,23,6,18000
+"42","animated-armor",1,"construct",0,18,33,"","unaligned",0,14,11,13,1,3,1,2,200
+"43","ankheg",2,"monstrosity",1,14,39,"","unaligned",0,17,11,13,1,13,6,2,450
+"44","ankylosaurus",3,"beast",1,15,68,"","unaligned",0,19,11,15,2,12,5,2,700
+"45","annis-hag",6,"fey",1,17,75,"","chaotic evil",0,21,12,14,13,14,15,3,2300
+"46","ape",0.5,"beast",0,12,19,"","unaligned",0,16,14,14,6,12,7,2,100
+"51","archmage",12,"humanoid (any race)",0,12,99,"","any alignment",0,10,14,12,20,15,16,4,8400
+"53","assassin",8,"humanoid (any race)",0,15,78,"","any non-good alignment",0,11,16,14,13,11,10,3,3900
+"55","astral-dreadnought",21,"monstrosity (titan)",1,20,297,"fly","unaligned",1,28,7,25,5,14,18,7,33000
+"57","aurochs",2,"beast",1,11,38,"","unaligned",0,20,10,19,2,12,5,2,450
+"59","awakened-shrub",0,"plant",0,9,10,"","unaligned",0,3,8,11,10,10,6,2,10
+"60","awakened-tree",2,"plant",1,13,59,"","unaligned",0,19,6,15,10,10,7,2,450
+"61","axe-beak",0.25,"beast",1,11,19,"","unaligned",0,14,12,12,2,10,5,2,50
+"62","azer",2,"elemental",0,17,39,"","lawful neutral",0,17,12,15,12,13,10,2,450
+"64","baboon",0,"beast",0,12,3,"","unaligned",0,8,14,11,4,12,6,2,10
+"65","badger",0,"beast",0,10,3,"","unaligned",0,4,11,12,2,12,5,2,10
+"68","balor",19,"fiend (demon)",1,19,262,"fly","chaotic evil",0,26,15,22,20,16,22,6,22000
+"70","bandit",0.125,"humanoid (any race)",0,12,11,"","any non-lawful alignment",0,11,12,12,10,10,10,2,25
+"71","bandit-captain",2,"humanoid (any race)",0,15,65,"","any non-lawful alignment",0,15,16,14,14,11,14,2,450
+"72","banshee",4,"undead",0,12,58,"fly","chaotic evil",0,1,14,10,12,11,17,2,1100
+"74","barbed-devil",5,"fiend (devil)",0,15,110,"","lawful evil",0,16,17,18,12,14,14,3,1800
+"76","barghest",4,"fiend (shapechanger)",1,17,90,"","neutral evil",0,19,15,14,13,12,14,2,1100
+"77","barlgura",5,"fiend (demon)",1,15,68,"","chaotic evil",0,18,15,16,7,14,9,3,1800
+"78","basilisk",3,"monstrosity",0,15,52,"","unaligned",0,16,8,15,2,8,7,2,700
+"79","bat",0,"beast",0,12,1,"fly","unaligned",0,2,15,8,2,12,4,2,10
+"80","bearded-devil",3,"fiend (devil)",0,13,52,"","lawful evil",0,16,15,15,9,11,11,2,700
+"81","behir",11,"monstrosity",1,17,168,"","neutral evil",0,23,16,18,7,14,12,4,7200
+"84","belaphoss",20,"fiend (demon)",1,19,262,"fly","chaotic evil",0,26,15,22,20,16,22,6,25000
+"86","berserker",2,"humanoid (any race)",0,13,67,"","any chaotic alignment",0,16,12,17,9,11,9,2,450
+"89","black-bear",0.5,"beast",0,11,19,"","unaligned",0,15,10,14,2,12,7,2,100
+"90","black-dragon-wyrmling",2,"dragon",0,17,33,"fly, swim","chaotic evil",0,15,14,13,10,11,13,2,450
+"92","black-pudding",4,"ooze",1,7,85,"","unaligned",0,16,5,16,1,6,1,2,1100
+"94","blink-dog",0.25,"fey",0,13,22,"","lawful good",0,12,17,12,10,13,11,2,50
+"95","blood-hawk",0.125,"beast",0,12,7,"fly","unaligned",0,6,14,10,3,14,5,2,25
+"97","blue-dragon-wyrmling",3,"dragon",0,17,52,"fly","lawful evil",0,17,10,15,12,11,15,2,700
+"99","boar",0.25,"beast",0,11,11,"","unaligned",0,13,11,12,2,9,5,2,50
+"102","bone-devil",9,"fiend (devil)",1,19,142,"fly","lawful evil",0,18,16,18,13,14,16,4,5000
+"105","brass-dragon-wyrmling",1,"dragon",0,16,16,"fly","chaotic good",0,15,10,13,10,11,13,2,200
+"107","bronze-dragon-wyrmling",2,"dragon",0,17,32,"fly, swim","lawful good",0,17,10,15,12,11,15,2,450
+"108","brown-bear",1,"beast",1,11,34,"","unaligned",0,19,10,16,2,13,7,2,200
+"109","bugbear",1,"humanoid (goblinoid)",0,16,27,"","chaotic evil",0,15,14,13,8,11,9,2,200
+"111","bulette",5,"monstrosity",1,17,94,"","unaligned",0,19,11,21,2,10,5,3,1800
+"113","bullywug",0.25,"humanoid (bullywug)",0,15,11,"swim","neutral evil",0,12,12,13,7,10,7,2,50
+"116","camel",0.125,"beast",1,9,15,"","unaligned",0,16,8,14,2,8,5,2,25
+"119","cat",0,"beast",0,12,2,"","unaligned",0,3,15,10,3,12,7,2,10
+"122","centaur",2,"monstrosity",1,12,45,"","neutral good",0,18,14,14,9,13,11,2,450
+"123","chain-devil",8,"fiend (devil)",0,16,85,"","lawful evil",0,18,15,18,11,12,14,3,3900
+"126","chimera",6,"monstrosity",1,14,114,"fly","chaotic evil",0,19,11,19,3,14,10,3,2300
+"130","chuul",4,"aberration",1,16,93,"swim","chaotic evil",0,19,10,16,5,11,5,2,1100
+"131","clay-golem",9,"construct",1,14,133,"","unaligned",0,20,9,18,3,8,1,4,5000
+"132","cloaker",8,"aberration",1,14,78,"fly","chaotic neutral",0,17,15,12,13,12,14,3,3900
+"133","cloud-giant",9,"giant",1,14,200,"","neutral good ",0,27,10,22,12,16,16,4,5000
+"135","cockatrice",0.5,"monstrosity",0,11,27,"fly","unaligned",0,6,12,12,2,13,5,2,100
+"136","commoner",0,"humanoid (any race)",0,10,4,"","any alignment",0,10,10,10,10,10,10,2,10
+"138","constrictor-snake",0.25,"beast",1,12,13,"swim","unaligned",0,15,14,12,1,10,3,2,50
+"139","copper-dragon-wyrmling",1,"dragon",0,16,22,"fly","chaotic good",0,15,12,13,14,11,13,2,200
+"141","couatl",4,"celestial",0,19,97,"fly","lawful good",0,16,20,17,18,20,18,2,1100
+"142","cow",0.25,"beast",1,10,15,"","unaligned",0,18,10,14,2,10,4,2,50
+"143","crab",0,"beast",0,11,2,"swim","unaligned",0,2,11,10,1,8,2,2,10
+"146","crawling-claw",0,"undead",0,12,2,"","neutral evil",0,13,14,11,5,10,4,2,10
+"147","crocodile",0.5,"beast",1,12,19,"swim","unaligned",0,15,10,13,2,10,5,2,100
+"149","cult-fanatic",2,"humanoid (any race)",0,13,33,"","any non-good alignment",0,11,14,12,10,13,14,2,450
+"150","cultist",0.125,"humanoid (any race)",0,12,9,"","any non-good alignment",0,11,12,10,10,11,10,2,25
+"151","cyclops",6,"giant",1,14,138,"","chaotic neutral",0,22,11,20,8,6,10,3,2300
+"152","dao",11,"elemental",1,18,187,"fly","neutral evil",0,23,12,24,12,13,14,4,7200
+"155","darkmantle",0.5,"monstrosity",0,11,22,"fly","unaligned",0,16,12,13,2,10,5,2,100
+"156","death-dog",1,"monstrosity",0,12,39,"","neutral evil",0,15,14,14,3,13,6,2,200
+"165","deep-gnome-svirfneblin",0.5,"humanoid (gnome)",0,15,16,"","neutral good",0,15,14,14,12,10,9,2,100
+"167","deer",0,"beast",0,13,4,"","unaligned",0,11,16,11,2,14,5,2,10
+"173","deva",10,"celestial",0,17,136,"fly","lawful good",0,18,18,18,17,20,20,4,5900
+"174","devilroot",7,"plant",0,15,105,"","neutral evil",0,17,11,17,12,14,14,3,2900
+"179","dire-wolf",1,"beast",1,14,37,"","unaligned",0,17,15,15,3,12,7,2,200
+"182","djinni",11,"elemental",1,17,161,"fly","chaotic good",0,21,15,22,15,16,20,4,7200
+"183","dolphin",0.125,"beast",0,12,11,"swim","unaligned",0,14,13,13,6,12,7,2,25
+"184","doppelganger",3,"monstrosity (shapechanger)",0,14,52,"","neutral",0,11,18,14,11,12,14,2,700
+"186","draft-horse",0.25,"beast",1,10,19,"","unaligned",0,18,10,12,2,11,7,2,50
+"187","dragon-turtle",17,"dragon",1,20,341,"swim","neutral",0,25,10,20,10,12,12,6,18000
+"189","dretch",0.25,"fiend (demon)",0,11,18,"","chaotic evil",0,11,11,12,5,8,3,2,50
+"190","drider",6,"monstrosity",1,19,123,"","chaotic evil",0,16,16,18,13,14,12,3,2300
+"191","drow",0.25,"humanoid (elf)",0,15,13,"","neutral evil",0,10,14,10,11,11,12,2,50
+"195","drow-house-captain",9,"humanoid (elf)",0,16,162,"","neutral evil",0,14,19,15,12,14,13,4,5000
+"196","drow-inquisitor",14,"humanoid (elf)",0,16,143,"","neutral evil",0,11,15,14,16,21,20,5,11500
+"197","drow-mage",7,"humanoid (elf)",0,12,45,"","neutral evil",0,9,14,10,17,13,12,3,2900
+"201","druid",2,"humanoid (any race)",0,11,27,"","any alignment",0,10,12,13,12,15,11,2,450
+"202","dryad",1,"fey",0,11,22,"","neutral",0,10,12,11,14,15,18,2,200
+"203","duergar",1,"humanoid (dwarf)",0,16,26,"","lawful evil",0,14,11,14,11,10,9,2,200
+"212","dust-mephit",0.5,"elemental",0,12,17,"fly","neutral evil",0,5,14,10,9,11,10,2,100
+"214","eagle",0,"beast",0,12,3,"fly","unaligned",0,6,15,10,2,14,7,2,10
+"215","earth-elemental",5,"elemental",1,17,126,"","neutral",0,20,8,20,5,10,5,3,1800
+"218","efreeti",11,"elemental",1,17,200,"fly","lawful evil",0,22,12,24,16,15,16,4,7200
+"223","elephant",4,"beast",1,12,76,"","unaligned",0,22,9,17,3,11,6,2,1100
+"224","elk",0.25,"beast",1,10,13,"","unaligned",0,16,10,12,2,10,6,2,50
+"227","erinyes",12,"fiend (devil)",0,18,153,"fly","lawful evil",0,18,16,18,14,14,18,4,8400
+"228","ettercap",2,"monstrosity",0,13,44,"","neutral evil",0,14,15,13,7,12,8,2,450
+"229","ettin",4,"giant",1,12,85,"","chaotic evil",0,21,8,17,6,10,8,2,1100
+"239","fire-elemental",5,"elemental",1,13,102,"","neutral",0,10,17,16,6,10,7,3,1800
+"241","fire-giant",9,"giant",1,18,162,"","lawful evil",0,25,9,23,10,14,13,4,5000
+"243","fire-snake",1,"elemental",0,14,22,"","neutral evil",0,12,14,11,7,10,8,2,200
+"248","flameskull",4,"undead",0,13,40,"fly","neutral evil",0,1,17,14,16,10,11,2,1100
+"249","flesh-golem",5,"construct",0,9,93,"","neutral",0,19,9,18,6,10,5,3,1800
+"250","flind",9,"humanoid (gnoll)",0,16,127,"","chaotic evil",0,20,10,19,11,13,12,4,5000
+"252","flying-snake",0.125,"beast",0,14,5,"fly, swim","unaligned",0,4,18,11,2,12,5,2,25
+"253","flying-sword",0.25,"construct",0,17,17,"fly","unaligned",0,12,15,11,1,5,1,2,50
+"256","frog",0,"beast",0,11,1,"swim","unaligned",0,1,13,8,1,8,3,2,10
+"257","froghemoth",10,"monstrosity",1,14,184,"swim","unaligned",0,23,13,20,2,12,5,4,5900
+"258","frost-giant",8,"giant",1,15,138,"","neutral evil",0,23,9,21,9,10,12,3,3900
+"261","galeb-duhr",6,"elemental",0,16,85,"","neutral",0,20,14,20,11,12,11,3,2300
+"262","gargoyle",2,"elemental",0,15,52,"fly","chaotic evil",0,15,11,16,6,11,7,2,450
+"264","gauth",6,"aberration",0,15,67,"fly","lawful evil",0,10,14,16,15,15,13,3,2300
+"266","gelatinous-cube",2,"ooze",1,6,84,"","unaligned",0,14,3,20,1,6,1,2,450
+"268","ghast",2,"undead",0,13,36,"","chaotic evil",0,16,17,10,11,10,8,2,450
+"269","ghost",4,"undead",0,11,45,"fly","any alignment",0,7,13,10,10,12,17,2,1100
+"270","ghoul",1,"undead",0,12,22,"","chaotic evil",0,13,15,10,7,10,6,2,200
+"271","giant-ape",7,"beast",1,12,157,"","unaligned",0,23,14,18,7,12,7,3,2900
+"272","giant-badger",0.25,"beast",0,10,13,"","unaligned",0,13,10,15,2,12,5,2,50
+"273","giant-bat",0.25,"beast",1,13,22,"fly","unaligned",0,15,16,11,2,12,6,2,50
+"274","giant-boar",2,"beast",1,12,42,"","unaligned",0,17,10,16,2,7,5,2,450
+"275","giant-centipede",0.25,"beast",0,13,4,"","unaligned",0,5,14,12,1,7,3,2,50
+"276","giant-constrictor-snake",2,"beast",1,12,60,"swim","unaligned",0,19,14,12,1,10,3,2,450
+"277","giant-crab",0.125,"beast",0,15,13,"swim","unaligned",0,13,15,11,1,9,3,2,25
+"278","giant-crocodile",5,"beast",1,14,85,"swim","unaligned",0,21,9,17,2,10,7,3,1800
+"279","giant-eagle",1,"beast",1,13,26,"fly","neutral good",0,16,17,13,8,14,10,2,200
+"280","giant-elk",2,"beast",1,14,42,"","unaligned",0,19,16,14,7,14,10,2,450
+"281","giant-fire-beetle",0,"beast",0,13,4,"","unaligned",0,8,10,12,1,7,3,2,10
+"283","giant-frog",0.25,"beast",0,11,18,"swim","unaligned",0,12,13,11,2,10,3,2,50
+"284","giant-goat",0.5,"beast",1,11,19,"","unaligned",0,17,11,12,3,12,6,2,100
+"285","giant-hyena",1,"beast",1,12,45,"","unaligned",0,16,14,14,2,12,7,2,200
+"286","giant-lizard",0.25,"beast",1,12,19,"","unaligned",0,15,12,13,2,10,5,2,50
+"287","giant-octopus",1,"beast",1,11,52,"swim","unaligned",0,17,13,13,4,10,4,2,200
+"288","giant-owl",0.25,"beast",1,12,19,"fly","neutral",0,13,15,12,8,13,10,2,50
+"289","giant-poisonous-snake",0.25,"beast",0,14,11,"swim","unaligned",0,10,18,13,2,10,3,2,50
+"290","giant-rat",0.125,"beast",0,12,7,"","unaligned",0,7,15,11,2,10,4,2,25
+"291","giant-scorpion",3,"beast",1,15,52,"","unaligned",0,15,13,15,1,9,3,2,700
+"292","giant-sea-horse",0.5,"beast",1,13,16,"swim","unaligned",0,12,15,11,2,12,5,2,100
+"293","giant-shark",5,"beast",1,13,126,"swim","unaligned",0,23,11,21,1,10,5,3,1800
+"294","giant-spider",1,"beast",1,14,26,"","unaligned",0,14,16,12,2,11,4,2,200
+"296","giant-toad",1,"beast",1,11,39,"swim","unaligned",0,15,13,13,2,10,3,2,200
+"297","giant-two-headed-goat",0.5,"beast",1,11,19,"","unaligned",0,17,11,12,3,12,6,2,100
+"298","giant-vulture",1,"beast",1,10,22,"fly","neutral evil",0,15,10,15,6,12,7,2,200
+"299","giant-wasp",0.5,"beast",0,12,13,"fly","unaligned",0,10,14,10,1,10,3,2,100
+"300","giant-weasel",0.125,"beast",0,13,9,"","unaligned",0,11,16,10,4,12,5,2,25
+"301","giant-wolf-spider",0.25,"beast",0,13,11,"","unaligned",0,12,16,13,3,12,4,2,50
+"302","gibbering-mouther",2,"aberration",0,9,67,"swim","neutral",0,10,8,16,3,10,6,2,450
+"314","glabrezu",9,"fiend (demon)",1,17,157,"","chaotic evil",0,20,15,21,19,17,16,4,5000
+"315","gladiator",5,"humanoid (any race)",0,16,112,"","any alignment",0,18,15,16,10,12,15,3,1800
+"317","gnoll",0.5,"humanoid (gnoll)",0,15,22,"","chaotic evil",0,14,12,11,6,10,7,2,100
+"321","gnoll-pack-lord",2,"humanoid (gnoll)",0,15,49,"","chaotic evil",0,16,14,13,8,11,9,2,450
+"323","goat",0,"beast",0,10,4,"","unaligned",0,12,10,11,2,10,5,2,10
+"324","goblin",0.25,"humanoid (goblinoid)",0,15,7,"","neutral evil",0,8,14,10,10,8,8,2,50
+"326","gold-dragon-wyrmling",3,"dragon",0,17,60,"fly, swim","lawful good",0,19,14,17,14,11,16,2,700
+"327","gorgon",5,"monstrosity",1,19,114,"","unaligned",0,20,11,18,2,12,7,3,1800
+"329","gray-ooze",0.5,"ooze",0,8,22,"","unaligned",0,12,6,16,1,6,2,2,100
+"334","green-dragon-wyrmling",2,"dragon",0,17,38,"fly, swim","lawful evil",0,15,12,13,14,11,13,2,450
+"335","green-hag",3,"fey",0,17,82,"","neutral evil",0,18,12,16,13,14,14,2,700
+"337","grell",3,"aberration",0,12,55,"fly","neutral evil",0,15,14,13,12,11,9,2,700
+"338","grick",2,"monstrosity",0,14,27,"","neutral",0,14,14,11,3,14,5,2,450
+"340","griffon",2,"monstrosity",1,12,59,"fly","unaligned",0,18,15,16,2,13,8,2,450
+"341","grimlock",0.25,"humanoid (grimlock)",0,11,11,"","neutral evil",0,16,12,12,9,8,6,2,50
+"345","guard",0.125,"humanoid (any race)",0,16,11,"","any alignment",0,13,12,12,10,11,10,2,25
+"347","guardian-naga",10,"monstrosity",1,18,127,"","lawful good",0,19,18,16,16,19,18,4,5900
+"348","gynosphinx",11,"monstrosity",1,17,136,"fly","lawful neutral",1,18,15,16,18,18,18,4,7200
+"350","half-ogre",1,"giant",1,12,30,"","any chaotic alignment",0,17,10,14,7,9,10,2,200
+"351","half-red-dragon-veteran",5,"humanoid (human)",0,18,65,"","any alignment",0,16,13,14,10,11,10,3,1800
+"352","harpy",1,"monstrosity",0,11,38,"fly","chaotic evil",0,12,13,12,7,10,13,2,200
+"353","hawk",0,"beast",0,13,1,"fly","unaligned",0,5,16,8,2,14,6,2,10
+"354","hell-hound",3,"fiend",0,15,45,"","lawful evil",0,17,12,14,6,13,6,2,700
+"357","helmed-horror",4,"construct",0,20,60,"fly","neutral",0,18,13,16,10,10,10,2,1100
+"358","hezrou",8,"fiend (demon)",1,16,136,"","chaotic evil",0,19,17,20,5,12,13,3,3900
+"359","hill-giant",5,"giant",1,13,105,"","chaotic evil",0,21,8,19,5,9,6,3,1800
+"360","hippogriff",1,"monstrosity",1,11,19,"fly","unaligned",0,17,13,13,2,12,8,2,200
+"361","hobgoblin",0.5,"humanoid (goblinoid)",0,18,11,"","lawful evil",0,13,12,12,10,10,9,2,100
+"362","hobgoblin-captain",3,"humanoid (goblinoid)",0,17,39,"","lawful evil",0,15,14,14,12,10,13,2,700
+"364","hobgoblin-iron-shadow",2,"humanoid (goblinoid)",0,15,32,"","lawful evil",0,14,16,15,14,15,11,2,450
+"366","homunculus",0,"construct",0,13,5,"fly","neutral",0,4,15,11,10,10,7,2,10
+"367","hook-horror",3,"monstrosity",1,15,75,"","neutral",0,18,10,15,6,12,7,2,700
+"368","horned-devil",11,"fiend (devil)",1,18,178,"fly","lawful evil",0,22,17,21,12,16,17,4,7200
+"371","hunter-shark",2,"beast",1,12,45,"swim","unaligned",0,18,13,15,1,10,4,2,450
+"373","hydra",8,"monstrosity",1,15,172,"swim","unaligned",0,20,12,20,2,10,7,3,3900
+"375","hyena",0,"beast",0,11,5,"","unaligned",0,11,13,12,2,12,5,2,10
+"376","ice-devil",14,"fiend (devil)",1,18,180,"","lawful evil",0,21,14,18,18,15,18,5,11500
+"377","ice-mephit",0.5,"elemental",0,11,21,"fly","neutral evil",0,7,13,10,9,11,12,2,100
+"381","imp",1,"fiend (devil, shapechanger)",0,13,10,"fly","lawful evil",0,6,17,13,11,12,14,2,200
+"383","invisible-stalker",6,"elemental",0,14,104,"fly","neutral",0,16,19,14,10,15,11,3,2300
+"386","iron-golem",16,"construct",1,20,210,"","unaligned",0,24,9,20,3,11,1,5,15000
+"387","jackal",0,"beast",0,12,3,"","unaligned",0,8,15,11,3,12,6,2,10
+"388","jackalwere",0.5,"humanoid (shapechanger)",0,12,18,"","chaotic evil",0,11,15,11,13,11,10,2,100
+"393","kenku",0.25,"humanoid (kenku)",0,13,13,"","chaotic neutral",0,10,16,10,11,10,10,2,50
+"395","killer-whale",3,"beast",1,12,90,"swim","unaligned",0,19,10,13,3,12,7,2,700
+"396","knight",3,"humanoid (any race)",0,18,52,"","any alignment",0,16,11,14,11,11,15,2,700
+"397","kobold",0.125,"humanoid (kobold)",0,12,5,"","lawful evil",0,7,15,9,8,7,8,2,25
+"399","kobold-inventor",0.25,"humanoid (kobold)",0,12,13,"","lawful evil",0,7,15,12,8,7,8,2,50
+"402","kraken",23,"monstrosity (titan)",1,18,472,"swim","chaotic evil",1,30,11,25,22,18,20,7,50000
+"405","kuo-toa",0.25,"humanoid (kuo-toa)",0,13,18,"swim","neutral evil",0,13,10,11,11,10,8,2,50
+"406","kuo-toa-archpriest",6,"humanoid (kuo-toa)",0,13,97,"swim","neutral evil",0,16,14,16,13,16,14,3,2300
+"407","kuo-toa-whip",1,"humanoid (kuo-toa)",0,11,65,"swim","neutral evil",0,14,10,14,12,14,11,2,200
+"408","laeral-silverhand",17,"humanoid (human)",0,18,228,"","chaotic good",0,13,17,20,20,20,19,6,18000
+"409","lamia",4,"monstrosity",1,13,97,"","chaotic evil",0,16,13,15,14,15,16,2,1100
+"410","lemure",0,"fiend (devil)",0,7,13,"","lawful evil",0,10,5,11,1,11,3,2,10
+"413","lich",21,"undead",0,17,135,"","any evil alignment",1,11,16,16,20,14,16,7,33000
+"414","lion",1,"beast",1,12,26,"","unaligned",0,17,15,13,3,12,8,2,200
+"415","lizard",0,"beast",0,10,2,"","unaligned",0,2,11,10,1,8,3,2,10
+"416","lizard-king-queen",4,"humanoid (lizardfolk)",0,15,78,"swim","chaotic evil",0,17,12,15,11,11,15,2,1100
+"417","lizardfolk",0.5,"humanoid (lizardfolk)",0,15,22,"swim","neutral",0,15,10,13,7,12,7,2,100
+"418","lizardfolk-shaman",2,"humanoid (lizardfolk)",0,13,27,"swim","neutral",0,15,10,13,10,15,8,2,450
+"419","mage",6,"humanoid (any race)",0,12,40,"","any alignment",0,9,14,11,17,12,11,3,2300
+"420","magma-mephit",0.5,"elemental",0,11,22,"fly","neutral evil",0,8,12,12,7,10,10,2,100
+"421","magmin",0.5,"elemental",0,14,9,"","chaotic neutral",0,7,15,12,8,11,10,2,100
+"423","mammoth",6,"beast",1,13,126,"","unaligned",0,24,9,21,3,11,6,3,2300
+"426","manticore",3,"monstrosity",1,14,68,"fly","lawful evil",0,17,16,17,7,12,8,2,700
+"429","marilith",16,"fiend (demon)",1,18,189,"","chaotic evil",0,18,20,20,18,16,20,5,15000
+"434","mastiff",0.125,"beast",0,12,5,"","unaligned",0,13,14,12,3,12,7,2,25
+"438","medusa",6,"monstrosity",0,15,127,"","lawful evil",0,10,15,16,12,13,15,3,2300
+"440","merfolk",0.125,"humanoid (merfolk)",0,11,11,"swim","neutral",0,10,13,12,11,11,12,2,25
+"443","merrow",2,"monstrosity",1,13,45,"swim","chaotic evil",0,18,10,15,8,10,9,2,450
+"444","mezzoloth",5,"fiend (yugoloth)",0,18,75,"","neutral evil",0,18,11,16,7,10,11,3,1800
+"445","mimic",2,"monstrosity (shapechanger)",0,12,58,"","neutral",0,17,12,15,5,13,8,2,450
+"447","mindwitness",5,"aberration",1,15,75,"fly","lawful evil",0,10,14,14,15,15,10,3,1800
+"448","minotaur",3,"monstrosity",1,14,76,"","chaotic evil",0,18,11,16,6,16,9,2,700
+"449","minotaur-skeleton",2,"undead",1,12,67,"","lawful evil",0,18,11,15,6,8,5,2,450
+"450","moloch",21,"fiend (devil)",1,19,253,"","lawful evil",1,26,19,22,21,18,23,7,33000
+"455","mud-mephit",0.25,"elemental",0,11,27,"fly, swim","neutral evil",0,8,12,12,9,11,7,2,50
+"456","mule",0.125,"beast",0,10,11,"","unaligned",0,14,10,13,2,10,5,2,25
+"457","mummified-warrior",0.25,"undead",0,8,19,"","neutral",0,13,6,14,8,6,8,2,50
+"458","mummy",3,"undead",0,11,58,"","lawful evil",0,16,8,15,6,10,12,2,700
+"459","mummy-lord",15,"undead",0,17,97,"","lawful evil",1,18,10,17,11,18,16,5,13000
+"465","nalfeshnee",13,"fiend (demon)",1,18,184,"fly","chaotic evil",0,21,10,22,19,12,15,5,10000
+"466","narzugon",13,"fiend (devil)",0,20,112,"","lawful evil",0,20,10,17,16,14,19,5,10000
+"475","night-hag",5,"fiend",0,17,112,"","neutral evil",0,18,15,16,16,14,16,3,1800
+"476","nightmare",3,"fiend",1,13,68,"fly","neutral evil",0,18,15,16,10,13,15,2,700
+"478","nilbog",1,"humanoid (goblinoid)",0,13,7,"","chaotic evil",0,8,14,10,10,8,15,2,200
+"479","noble",0.125,"humanoid (any race)",0,15,9,"","any alignment",0,11,12,11,12,14,16,2,25
+"480","nothic",2,"aberration",0,15,45,"","neutral evil",0,14,16,16,13,10,8,2,450
+"482","nycaloth",9,"fiend (yugoloth)",1,18,123,"fly","neutral evil",0,20,11,19,12,10,15,4,5000
+"484","ochre-jelly",2,"ooze",1,8,45,"","unaligned",0,15,6,14,2,6,1,2,450
+"485","octopus",0,"beast",0,12,3,"swim","unaligned",0,4,15,11,3,10,4,2,10
+"486","ogre",2,"giant",1,11,59,"","chaotic evil",0,19,8,16,5,7,7,2,450
+"491","ogre-zombie",2,"undead",1,8,85,"","neutral evil",0,19,6,18,3,6,5,2,450
+"495","oni",7,"giant",1,16,110,"fly","lawful evil",0,19,11,16,14,12,15,3,2900
+"496","orc",0.5,"humanoid (orc)",0,13,15,"","chaotic evil",0,16,12,16,7,11,10,2,100
+"499","orc-eye-of-gruumsh",2,"humanoid (orc)",0,16,45,"","chaotic evil",0,16,12,16,9,13,12,2,450
+"503","orcus",26,"fiend (demon)",1,17,405,"fly","chaotic evil",1,27,14,25,20,20,25,8,90000
+"504","orog",2,"humanoid (orc)",0,18,42,"","chaotic evil",0,18,12,18,12,11,12,2,450
+"506","otyugh",5,"aberration",1,14,114,"","neutral",0,16,11,19,6,13,6,3,1800
+"507","owl",0,"beast",0,11,1,"fly","unaligned",0,3,13,8,2,12,7,2,10
+"508","owlbear",3,"monstrosity",1,13,59,"","unaligned",0,20,12,17,3,12,7,2,700
+"509","panther",0.25,"beast",0,12,13,"","unaligned",0,14,15,10,3,14,7,2,50
+"510","pegasus",2,"celestial",1,12,59,"fly","chaotic good",0,18,15,16,10,15,13,2,450
+"512","peryton",2,"monstrosity",0,13,33,"fly","chaotic evil",0,16,12,13,9,12,10,2,450
+"513","phase-spider",3,"monstrosity",1,13,32,"","unaligned",0,15,15,12,6,10,6,2,700
+"515","piercer",0.5,"monstrosity",0,15,22,"","unaligned",0,10,13,16,1,7,3,2,100
+"516","pit-fiend",20,"fiend (devil)",1,19,300,"fly","lawful evil",0,26,14,24,22,18,24,6,25000
+"518","planetar",16,"celestial",1,19,200,"fly","lawful good",0,24,20,24,19,22,25,5,15000
+"519","plesiosaurus",2,"beast",1,13,68,"swim","unaligned",0,18,15,16,2,12,5,2,450
+"520","poisonous-snake",0.125,"beast",0,13,2,"swim","unaligned",0,2,16,11,1,10,3,2,25
+"521","polar-bear",2,"beast",1,12,42,"swim","unaligned",0,20,10,16,2,13,7,2,450
+"522","pony",0.125,"beast",0,10,11,"","unaligned",0,15,10,13,2,11,7,2,25
+"523","priest",2,"humanoid (any race)",0,13,27,"","any alignment",0,10,10,12,13,16,13,2,450
+"524","pseudodragon",0.25,"dragon",0,13,7,"fly","neutral good",0,6,15,13,10,12,10,2,50
+"526","pteranodon",0.25,"beast",0,13,13,"fly","unaligned",0,12,15,10,2,9,5,2,50
+"527","purple-worm",15,"monstrosity",1,18,247,"","unaligned",0,28,7,22,1,8,4,5,13000
+"532","quasit",1,"fiend (demon, shapechanger)",0,13,7,"","chaotic evil",0,5,17,10,7,10,10,2,200
+"533","quetzalcoatlus",2,"beast",1,13,30,"fly","unaligned",0,15,13,13,2,10,5,2,450
+"535","quipper",0,"beast",0,13,1,"swim","unaligned",0,2,16,9,1,7,2,2,10
+"536","rakshasa",13,"fiend",0,16,110,"","lawful evil",0,14,17,18,13,16,20,5,10000
+"537","rat",0,"beast",0,10,1,"","unaligned",0,2,11,9,2,10,4,2,10
+"538","raven",0,"beast",0,12,1,"fly","unaligned",0,2,14,8,2,12,6,2,10
+"541","red-dragon-wyrmling",4,"dragon",0,17,75,"fly","chaotic evil",0,19,10,17,12,11,15,2,1100
+"544","reef-manta-ray",0.5,"beast",1,12,16,"swim","unaligned",0,13,12,12,1,12,4,2,100
+"545","reef-shark",0.5,"beast",0,12,22,"swim","unaligned",0,14,13,13,1,10,4,2,100
+"546","remorhaz",11,"monstrosity",1,17,195,"","unaligned",0,24,13,21,4,10,5,4,7200
+"548","revenant",5,"undead",0,13,136,"","neutral",0,18,14,18,13,16,18,3,1800
+"549","rhinoceros",2,"beast",1,11,45,"","unaligned",0,21,8,15,2,12,6,2,450
+"550","riding-horse",0.25,"beast",1,10,13,"","unaligned",0,16,10,12,2,11,7,2,50
+"551","roc",11,"monstrosity",1,15,248,"fly","unaligned",0,28,10,20,3,10,9,4,7200
+"552","roper",5,"monstrosity",1,20,93,"","neutral evil",0,18,8,17,7,16,6,3,1800
+"554","rug-of-smothering",2,"construct",1,12,33,"","unaligned",0,17,14,10,1,3,1,2,450
+"555","rust-monster",0.5,"monstrosity",0,14,27,"","unaligned",0,13,12,13,2,13,6,2,100
+"557","saber-toothed-tiger",2,"beast",1,12,52,"","unaligned",0,18,14,15,3,12,8,2,450
+"558","sahuagin",0.5,"humanoid (sahuagin)",0,12,22,"swim","lawful evil",0,13,11,12,12,13,9,2,100
+"561","salamander",5,"elemental",1,15,90,"","neutral evil",0,18,14,15,11,10,12,3,1800
+"562","satyr",0.5,"fey",0,14,31,"","chaotic neutral",0,12,16,11,12,10,14,2,100
+"564","scorpion",0,"beast",0,11,1,"","unaligned",0,2,11,8,1,8,2,2,10
+"565","scout",0.5,"humanoid (any race)",0,13,16,"","any alignment",0,11,14,12,11,13,11,2,100
+"566","sea-hag",2,"fey",0,14,52,"swim","chaotic evil",0,16,13,16,12,12,13,2,450
+"567","sea-horse",0,"beast",0,11,1,"swim","unaligned",0,1,12,8,1,10,2,2,10
+"569","shadow",0.5,"undead",0,12,16,"","chaotic evil",0,6,14,13,6,10,8,2,100
+"571","shadow-demon",4,"fiend (demon)",0,13,66,"fly","chaotic evil",0,1,17,12,14,13,14,2,1100
+"573","shambling-mound",5,"plant",1,15,136,"swim","unaligned",0,18,8,16,5,10,5,3,1800
+"574","shield-guardian",7,"construct",1,17,142,"","unaligned",0,18,8,18,7,10,3,3,2900
+"576","shrieker",0,"plant",0,5,13,"","unaligned",0,1,1,10,1,3,1,2,10
+"577","sibriex",18,"fiend (demon)",1,19,150,"fly","chaotic evil",1,10,3,23,25,24,25,6,20000
+"578","silver-dragon-wyrmling",2,"dragon",0,17,45,"fly","lawful good",0,19,10,17,12,11,15,2,450
+"579","skeleton",0.25,"undead",0,13,13,"","lawful evil",0,10,14,15,6,8,5,2,50
+"584","slithering-tracker",3,"ooze",0,14,32,"swim","chaotic evil",0,16,19,15,10,14,11,2,700
+"585","smoke-mephit",0.25,"elemental",0,12,22,"fly","neutral evil",0,6,14,12,10,10,11,2,50
+"586","solar",21,"celestial",1,21,243,"fly","lawful good",1,26,22,26,25,25,30,7,33000
+"589","spectator",3,"aberration",0,14,39,"fly","lawful neutral",0,8,14,14,13,14,11,2,700
+"590","specter",1,"undead",0,12,22,"fly","chaotic evil",0,1,14,11,10,10,11,2,200
+"603","spider",0,"beast",0,12,1,"","unaligned",0,2,14,8,1,10,2,2,10
+"605","spirit-naga",8,"monstrosity",1,15,75,"","chaotic evil",0,18,17,14,16,15,16,3,3900
+"608","sprite",0.25,"fey",0,15,2,"fly","neutral good",0,3,18,10,14,13,11,2,50
+"609","spy",1,"humanoid (any race)",0,12,27,"","any alignment",0,10,15,10,12,14,16,2,200
+"615","steam-mephit",0.25,"elemental",0,10,21,"fly","neutral evil",0,5,11,10,11,10,12,2,50
+"618","stirge",0.125,"beast",0,14,2,"fly","unaligned",0,4,16,11,2,8,6,2,25
+"620","stone-giant",7,"giant",1,17,126,"","neutral",0,23,15,20,10,12,9,3,2900
+"621","stone-giant-dreamwalker",10,"giant (stone giant)",1,18,161,"","chaotic neutral",0,23,14,21,10,8,12,4,5900
+"622","stone-golem",10,"construct",1,17,178,"","unaligned",0,22,9,20,3,11,1,4,5900
+"624","storm-giant",13,"giant",1,16,230,"swim","chaotic good",0,29,14,20,16,18,18,5,10000
+"628","succubus",4,"fiend (shapechanger)",0,15,66,"fly","neutral evil",0,8,17,13,15,12,20,2,1100
+"630","swarm-of-bats",0.25,"swarm of Tiny beasts",0,12,22,"fly","unaligned",0,5,15,10,2,12,4,2,50
+"632","swarm-of-insects",0.5,"swarm of Tiny beasts",0,12,22,"","unaligned",0,3,13,10,1,7,1,2,100
+"633","swarm-of-poisonous-snakes",2,"swarm of Tiny beasts",0,14,36,"swim","unaligned",0,8,18,11,1,10,3,2,450
+"634","swarm-of-quippers",1,"swarm of Tiny beasts",0,13,28,"swim","unaligned",0,13,16,9,1,7,2,2,200
+"635","swarm-of-rats",0.25,"swarm of Tiny beasts",0,10,24,"","unaligned",0,9,11,9,2,10,3,2,50
+"636","swarm-of-ravens",0.25,"swarm of Tiny beasts",0,12,24,"fly","unaligned",0,6,14,8,3,12,6,2,50
+"637","swarm-of-rot-grubs",0.5,"swarm of Tiny beasts",0,8,22,"","unaligned",0,2,7,10,1,2,1,2,100
+"643","tanarukk",5,"fiend (demon, orc)",0,14,95,"","chaotic evil",0,18,13,20,9,9,9,3,1800
+"644","tarrasque",30,"monstrosity (titan)",1,25,676,"","unaligned",1,30,11,30,3,11,11,9,155000
+"652","thug",0.5,"humanoid (any race)",0,11,32,"","any non-good alignment",0,15,11,14,10,10,11,2,100
+"654","tiger",1,"beast",1,12,37,"","unaligned",0,17,15,14,3,12,8,2,200
+"661","treant",9,"plant",1,16,138,"","chaotic good",0,23,8,21,12,16,12,4,5000
+"663","tribal-warrior",0.125,"humanoid (any race)",0,12,11,"","any alignment",0,13,11,12,8,11,8,2,25
+"664","triceratops",5,"beast",1,13,95,"","unaligned",0,22,9,17,2,11,5,3,1800
+"666","troglodyte",0.25,"humanoid (troglodyte)",0,11,13,"","chaotic evil",0,14,10,14,6,10,6,2,50
+"667","troll",5,"giant",1,15,84,"","chaotic evil",0,18,13,20,7,9,7,3,1800
+"668","twig-blight",0.125,"plant",0,13,4,"","neutral evil",0,6,13,12,4,8,3,2,25
+"669","tyrannosaurus-rex",8,"beast",1,13,136,"","unaligned",0,25,10,19,2,12,9,3,3900
+"672","umber-hulk",5,"monstrosity",1,18,93,"","chaotic evil",0,20,13,16,9,10,10,3,1800
+"673","unicorn",5,"celestial",1,12,67,"","lawful good",1,18,14,15,11,17,16,3,1800
+"676","vampire",13,"undead (shapechanger)",0,16,144,"","lawful evil",1,18,18,18,17,15,18,5,10000
+"677","vampire-spawn",5,"undead",0,15,82,"","neutral evil",0,16,16,16,11,10,12,3,1800
+"683","venerable-shadow",2,"undead",0,13,27,"","chaotic evil",0,6,16,13,6,12,10,2,450
+"685","veteran",3,"humanoid (any race)",0,17,58,"","any alignment",0,16,13,14,10,11,10,2,700
+"687","violet-fungus",0.25,"plant",0,5,18,"","unaligned",0,3,1,10,1,3,1,2,50
+"688","vrock",6,"fiend (demon)",1,15,104,"fly","chaotic evil",0,17,15,18,8,13,8,3,2300
+"689","vulture",0,"beast",0,10,5,"fly","unaligned",0,7,10,13,2,12,4,2,10
+"691","warhorse",0.5,"beast",1,11,19,"","unaligned",0,18,12,13,2,12,7,2,100
+"692","warhorse-skeleton",0.5,"undead",1,13,22,"","lawful evil",0,18,12,15,2,8,5,2,100
+"704","water-elemental",5,"elemental",1,14,114,"swim","neutral",0,18,14,18,5,10,8,3,1800
+"706","water-weird",3,"elemental",1,13,58,"swim","neutral",0,17,16,13,11,10,10,2,700
+"707","weasel",0,"beast",0,13,1,"","unaligned",0,3,16,8,2,12,3,2,10
+"708","werebear",5,"humanoid (human, shapechanger)",0,10,135,"","neutral good",0,19,10,17,11,12,12,3,1800
+"709","wereboar",4,"humanoid (human, shapechanger)",0,10,78,"","neutral evil",0,17,10,15,10,11,8,2,1100
+"710","wererat",2,"humanoid (human, shapechanger)",0,12,33,"","lawful evil",0,10,15,12,11,10,8,2,450
+"711","weretiger",4,"humanoid (human, shapechanger)",0,12,120,"","neutral",0,17,15,16,10,13,11,2,1100
+"712","werewolf",3,"humanoid (human, shapechanger)",0,11,58,"","chaotic evil",0,15,13,14,10,11,10,2,700
+"714","white-dragon-wyrmling",2,"dragon",0,16,32,"fly, swim","chaotic evil",0,14,10,14,5,10,11,2,450
+"715","wight",3,"undead",0,14,45,"","neutral evil",0,15,14,16,10,13,15,2,700
+"716","wild-dog",0.125,"beast",0,12,5,"","unaligned",0,13,14,12,3,12,7,2,25
+"717","wild-dog-alpha",1,"beast",1,12,26,"","unaligned",0,17,15,13,3,12,8,2,200
+"718","will-o--wisp",2,"undead",0,19,22,"fly","chaotic evil",0,1,28,10,13,14,11,2,450
+"719","winged-kobold",0.25,"humanoid (kobold)",0,13,7,"fly","lawful evil",0,7,16,9,8,7,8,2,50
+"721","winter-wolf",3,"monstrosity",1,13,75,"","neutral evil",0,18,13,14,7,12,8,2,700
+"722","wolf",0.25,"beast",0,13,11,"","unaligned",0,12,15,12,3,12,6,2,50
+"724","worg",0.5,"monstrosity",1,13,26,"","neutral evil",0,16,13,13,7,11,8,2,100
+"725","wraith",5,"undead",0,13,67,"fly","neutral evil",0,6,16,16,12,14,15,3,1800
+"726","wyvern",6,"dragon",1,13,110,"fly","unaligned",0,19,10,16,5,12,6,3,2300
+"727","xorn",5,"elemental",0,19,73,"","neutral",0,17,10,22,11,10,11,3,1800
+"736","yeti",3,"monstrosity",1,12,51,"","chaotic evil",0,18,13,16,8,12,7,2,700
+"738","young-black-dragon",7,"dragon",1,18,127,"fly, swim","chaotic evil",0,19,14,17,12,11,15,3,2900
+"739","young-blue-dragon",9,"dragon",1,18,152,"fly","lawful evil",0,21,10,19,14,13,17,4,5000
+"740","young-brass-dragon",6,"dragon",1,17,110,"fly","chaotic good",0,19,10,17,12,11,15,3,2300
+"741","young-bronze-dragon",8,"dragon",1,18,142,"fly, swim","lawful good",0,21,10,19,14,13,17,3,3900
+"742","young-copper-dragon",7,"dragon",1,17,119,"fly","chaotic good",0,19,12,17,16,13,15,3,2900
+"743","young-gold-dragon",10,"dragon",1,18,178,"fly, swim","lawful good",0,23,14,21,16,13,20,4,5900
+"744","young-green-dragon",8,"dragon",1,18,136,"fly, swim","lawful evil",0,19,12,17,16,13,15,3,3900
+"746","young-red-dragon",10,"dragon",1,18,178,"fly","chaotic evil",0,23,10,21,14,11,19,4,5900
+"749","young-silver-dragon",9,"dragon",1,18,168,"fly","lawful good",0,23,10,21,14,11,19,4,5000
+"750","young-white-dragon",6,"dragon",1,17,133,"fly, swim","chaotic evil",0,18,10,18,6,11,12,3,2300
+"751","yuan-ti-abomination",7,"monstrosity (shapechanger, yuan-ti)",1,15,127,"","neutral evil",0,19,16,17,17,15,18,3,2900
+"754","yuan-ti-malison",3,"monstrosity (shapechanger, yuan-ti)",0,12,66,"","neutral evil",0,16,14,13,14,12,16,2,700
+"756","yuan-ti-nightmare-speaker",4,"monstrosity (shapechanger, yuan-ti)",0,14,71,"","neutral evil",0,16,14,13,14,12,16,2,1100
+"758","yuan-ti-pureblood",1,"humanoid (yuan-ti)",0,11,40,"","neutral evil",0,11,12,11,13,12,14,2,200
+"760","zariel",26,"fiend (devil)",1,21,580,"fly","lawful evil",1,27,24,28,26,27,30,8,90000
+"761","zombie",0.25,"undead",0,8,22,"","neutral evil",0,13,6,16,3,6,5,2,50
