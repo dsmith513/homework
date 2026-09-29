@@ -1,0 +1,10 @@
+import gurobipy as gp
+print("Gurobi version:", gp.gurobi.version())
+m = gp.Model("test")
+x = m.addVar(name="x")
+y = m.addVar(name="y")
+m.setObjective(3 * x + 2 * y, gp.GRB.MAXIMIZE)
+m.addConstr(x + y <= 4)
+m.addConstr(x <= 2)
+m.optimize()
+print("Optimal x =", x.X, ", y =", y.X)

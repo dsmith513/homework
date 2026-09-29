@@ -1,0 +1,359 @@
+---
+title: "homework-3"
+output:
+  pdf_document: default
+  html_document: default
+date: "2026-09-17"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo = TRUE,
+  fig.width = 6,
+  fig.height = 4,
+  out.width = if (knitr::is_latex_output()) "\\linewidth" else "100%",
+  fig.align = "center"
+)
+library("ISLR2")
+```
+
+# Dylan Smith Homework 3
+
+## Question 1: Multiple Linear Regression on Carseats
+
+### (a) Full Model: Sales ~ Population + Income + US
+
+```{r question-1-code-1}
+carseats_full <- lm(Sales ~ Population + Income + US, data = Carseats)
+summary(carseats_full)
+```
+
+### (b) Coefficient Interpretations and US Reference Level
+
+The intercept predicts what the sales will be when all of the predictor variables are equal to zero. In this case, the intercept is 5.7134361. The coefficient for the predictor variable Population is 0.0007997. This means that if we hold the other two predictor variables Income and US constant, an increase of one in Population will increase Sales by 0.0007997. The coefficient for the predictor variable Income is 0.0139000. This means taht if we hold Population and US constant, an increase of one in Income will increase Sales by 0.0139000. The coefficient for US is 0.9562235. US is a categorical variable, so the coefficient compares the value of US = Yes to the value of US = No. This means that if we hold Population and Income constant, a store located in the US will result in an increase of 0.9562235 in Sales.
+
+### (c) Fitted Regression Equation and Indicator Definitions
+
+The fitted regression equation is
+
+$$
+\widehat{\mathrm{Sales}} = 5.7134361
++ 0.0007997\,\mathrm{Population}
++ 0.0139000\,\mathrm{Income}
++ 0.9562235\,I_{\mathrm{US}},
+$$
+
+where the dummy variable for US is defined as
+
+$$
+I_{\mathrm{US}} =
+\begin{cases}
+1, & \text{if US = Yes (the store is in the United States)}, \\
+0, & \text{if US = No (the store is outside the United States)}.
+\end{cases}
+$$
+
+$\widehat{\mathrm{Sales}}$ represents predicted sales.
+
+### (d) Significant Predictors at $\alpha = 0.05$
+
+At $\alpha = 0.05$ reject the null hypothesis for the predictors Income and US. Their p-values are 0.00531 and 0.00107 respectively which are both less than 0.05.
+
+### (e) Reduced Model Using Significant Predictors
+
+```{r question-1-code-2}
+carseats_reduced <- lm(Sales ~ Income + US, data = Carseats)
+summary(carseats_reduced)
+```
+
+### (f) Full vs. Reduced Model: $R^2$, Adjusted $R^2$, RSE, F-Statistic, and Model Preference
+
+The full models has a slightly higher $R^2$ value of 0.05177 compared to the reduced model which has a value of 0.05003. This means that removing the predictor variable Population results in a very slight loss in the model's explanatory ability for predicting Sales.
+
+For the Adjusted $R^2$ value, the reduced model has a slightly larger value of 0.04524 compared to the full model's value of 0.04458. This very small difference in both the Adjusted and Multiple $R^2$ values in both models suggests that the predictor variable Population is not statistically significant.
+
+The RSE for the full model is 2.760 and the RSE for the reduced model is 2.759. This very small difference between the RSE values continues to suggest that Population is not statistically significant.
+
+For the full model, the F-statistic is F = 7.206 and for the reduced model the F-statistic is F = 10.45. Both models are shown to be statistically significant, meaning that they each contain at least one predictor variable associated with Sales.
+
+Overall, the reduced model is preferred. Removing the predictor variable Population results in almost no change in the Multiple $R^2$, the Adjusted $R^2$, or the RSE. The reduced model is also still statistically significant after removing Population, as shown by the F-statistic.
+
+### (g) Reduced Model: 95% Confidence Intervals for All Coefficients
+
+```{r question-1-code-4}
+confint(carseats_reduced, level = 0.95)
+```
+
+The 95% confidence intervals for the reduced model's regression coefficients are:
+
+- Intercept ($\beta_0$): $(5.137081100,\ 6.70151976)$.
+- Income ($\beta_{\mathrm{Income}}$): $(0.004099784,\ 0.02358724)$.
+- USYes ($\beta_{\mathrm{USYes}}$): $(0.402263922,\ 1.54056948)$.
+
+The USYes coefficient compares US stores to non-US stores, holding Income constant. Neither the Income nor the USYes confidence interval includes zero, consistent with both predictors being statistically significant at the 5% level in the reduced model.
+
+## Question 2: Simulation Study & Simple Linear Regression
+
+### (a) Generate x: 150 Standard Normal Observations, with Seed 2025
+
+```{r question-2-code-5}
+set.seed(2025)
+x <- rnorm(n = 150, mean = 0, sd = 1)
+```
+
+### (b) Generate Error Terms: Mean 0 and Variance 0.36
+
+```{r question-2-code-6}
+epsilon <- rnorm(n = 150, mean = 0, sd = 0.6)
+```
+
+### (c) Generate y: Vector Length and True Population Parameters
+
+```{r question-2-code-7}
+y <- 5 + 0.8 * x + epsilon
+length(y)
+```
+
+The length of vector $y$ is $150$. The true population intercept is $\beta_0 = 5$, and the slope is $\beta_1 = 0.8$.
+
+### (d) Scatterplot of x and y: Patterns, Direction, and Spread
+
+```{r question-2-code-8}
+plot(x, y,
+     main = "Scatterplot of x and y",
+     xlab = "x", ylab = "y")
+```
+
+The scatterplot shows a strong positive, approximately linear relationship: as $x$ increases, $y$ tends to increase. The points show moderate vertical spread around the linear trend, likely due to random variation. There is no obvious curvature or clear change in the spread as $x$ increases.
+
+### (e) Least-Squares Model: Estimated vs. True Parameters
+
+```{r question-2-code-9}
+simple_regression_model <- lm(y ~ x)
+summary(simple_regression_model)
+```
+
+The estimated intercept is $\hat{\beta}_0 = 5.06374$, and the estimated slope is $\hat{\beta}_1 = 0.85355$. Thus, the fitted regression equation is
+
+$$
+\hat{y} = 5.06374 + 0.85355x.
+$$
+
+Both estimates are close to the true population parameters, $\beta_0 = 5$ and $\beta_1 = 0.8$. The differences between the estimates and the true population parameters reflect sampling variability from the randomly generated data.
+
+### (f) Scatterplot with Estimated and True Regression Lines and Legend
+
+```{r question-2-code-10}
+plot(x, y,
+     main = "Estimated and True Regression Lines",
+     xlab = "x", ylab = "y")
+abline(simple_regression_model, col = "blue", lty = 1, lwd = 2)
+abline(a = 5, b = 0.8, col = "red", lty = 2, lwd = 2)
+legend("topleft",
+       legend = c("Estimated least-squares line", "True line: Y = 5 + 0.8X"),
+       col = c("blue", "red"), lty = c(1, 2), lwd = 2,
+       bty = "n")
+```
+
+### (g) Quadratic Model: Evidence from the $x^2$ Term's p-Value
+
+```{r question-2-code-11}
+quadratic_model <- lm(y ~ x + I(x^2))
+summary(quadratic_model)
+```
+
+The fitted quadratic model is
+
+$$
+\hat{y} = 5.03825 + 0.85412x + 0.02599x^2.
+$$
+
+To determine whether the quadratic term improves the model fit, we test $H_0: \beta_2 = 0$ against $H_1: \beta_2 \ne 0$ in the model $Y = \beta_0 + \beta_1 X + \beta_2 X^2 + \epsilon$. The p-value for the $x^2$ term is $0.496$. Since this is greater than the significance level of $0.05$ that we have been using previously, we do not reject $H_0$. There is insufficient statistical evidence that adding the quadratic term improves the fit over the simple linear model.
+
+### (h) Noise Reduction Analysis
+
+#### Repeat (a)–(c): Generate Data with Lower Error Variance
+
+```{r question-2-code-12}
+x_low_noise <- rnorm(n = 150, mean = 0, sd = 1)
+epsilon_low_noise <- rnorm(n = 150, mean = 0, sd = 0.2)
+y_low_noise <- 5 + 0.8 * x_low_noise + epsilon_low_noise
+length(y_low_noise)
+```
+
+#### Repeat (d): Scatterplot with Lower Noise
+
+```{r question-2-code-13}
+plot(x_low_noise, y_low_noise,
+     main = "Scatterplot with Lower Noise",
+     xlab = "x", ylab = "y",
+     xlim = range(x, x_low_noise), ylim = range(y, y_low_noise))
+```
+
+#### Repeat (e): Fit the Lower-Noise Model and Compare Parameters
+
+```{r question-2-code-14}
+low_noise_model <- lm(y_low_noise ~ x_low_noise)
+summary(low_noise_model)
+cbind(True = c(5, 0.8),
+      Original = coef(simple_regression_model),
+      Lower_noise = coef(low_noise_model))
+```
+
+#### Repeat (f): Overlay Estimated and True Regression Lines with a Legend
+
+```{r question-2-code-15}
+plot(x_low_noise, y_low_noise,
+     main = "Lower Noise: Estimated and True Regression Lines",
+     xlab = "x", ylab = "y",
+     xlim = range(x, x_low_noise), ylim = range(y, y_low_noise))
+abline(low_noise_model, col = "blue", lty = 1, lwd = 2)
+abline(a = 5, b = 0.8, col = "red", lty = 2, lwd = 2)
+legend("topleft",
+       legend = c("Estimated least-squares line", "True line: Y = 5 + 0.8X"),
+       col = c("blue", "red"), lty = c(1, 2), lwd = 2,
+       bty = "n")
+```
+
+#### Effects on the Scatterplot, Parameter Estimates, and Overall Fit
+
+Reducing the noise results in the points in the scatterplots being more tightly clustered around the regression line. This causes the linear pattern to become more clear. The estimated intercept changes from $5.0637427$ to $5.0067535$, and the estimated slope changes from $0.8535459$ to $0.7920648$. Both estimates from the lower noise model are closer to the true population parameters, $\beta_0 = 5$ and $\beta_1 = 0.8$. The overall fit also improves: $R^2$ increases from approximately $0.6770$ to $0.9248$, and the residual standard error decreases from approximately $0.5861$ to $0.2201$. This means that the lower noise model explains a larger proportion of the variation in $y$, and the observations lie closer to the fitted line.
+
+### (i) Original vs. Lower-Noise Models: 95% Confidence Intervals
+
+#### Confidence Intervals for the Intercept and Slope in Both Models
+
+```{r question-2-code-16}
+original_ci <- confint(simple_regression_model, level = 0.95)
+low_noise_ci <- confint(low_noise_model, level = 0.95)
+
+ci_table <- data.frame(
+  Dataset = rep(c("Original", "Lower noise"), each = 2),
+  Coefficient = rep(c("Intercept (beta_0)", "Slope (beta_1)"), times = 2),
+  Lower = c(original_ci[, 1], low_noise_ci[, 1]),
+  Upper = c(original_ci[, 2], low_noise_ci[, 2]),
+  row.names = NULL
+)
+knitr::kable(ci_table, digits = 5,
+             col.names = c("Dataset", "Coefficient", "Lower 95% bound", "Upper 95% bound"),
+             caption = "95% confidence intervals for the intercept and slope")
+```
+
+#### Comparison of Interval Widths and Theoretical Explanation
+
+The original intercept interval has width $5.15869 - 4.96879 = 0.18990$, while the lower-noise intercept interval has width $5.04227 - 4.97124 = 0.07103$. The original slope interval has width $0.94931 - 0.75778 = 0.19153$, while the lower-noise slope interval has width $0.82874 - 0.75539 = 0.07335$. This means reducing the noise makes both intervals substantially narrower, indicating more precise coefficient estimates.
+
+## Question 3: Predicting Crime Rates in the Boston Dataset
+
+### (a) Simple Linear Models: Results, Significance, and Scatterplots with Fitted Lines
+
+#### crim ~ nox
+
+```{r question-3-code-17}
+boston_nox_model <- lm(crim ~ nox, data = Boston)
+summary(boston_nox_model)
+plot(crim ~ nox, data = Boston,
+     main = "Crime Rate vs. Nitrogen Oxides Concentration",
+     xlab = "Nitrogen oxides concentration (nox)",
+     ylab = "Per capita crime rate (crim)")
+abline(boston_nox_model)
+```
+
+#### crim ~ tax
+
+```{r question-3-code-18}
+boston_tax_model <- lm(crim ~ tax, data = Boston)
+summary(boston_tax_model)
+plot(crim ~ tax, data = Boston,
+     main = "Crime Rate vs. Property Tax Rate",
+     xlab = "Property tax rate (tax)",
+     ylab = "Per capita crime rate (crim)")
+abline(boston_tax_model)
+```
+
+#### crim ~ dis
+
+```{r question-3-code-19}
+boston_dis_model <- lm(crim ~ dis, data = Boston)
+summary(boston_dis_model)
+plot(crim ~ dis, data = Boston,
+     main = "Crime Rate vs. Distance to Employment Centers",
+     xlab = "Weighted distance to employment centers (dis)",
+     ylab = "Per capita crime rate (crim)")
+abline(boston_dis_model)
+```
+
+#### crim ~ ptratio
+
+```{r question-3-code-20}
+boston_ptratio_model <- lm(crim ~ ptratio, data = Boston)
+summary(boston_ptratio_model)
+plot(crim ~ ptratio, data = Boston,
+     main = "Crime Rate vs. Pupil-Teacher Ratio",
+     xlab = "Pupil-teacher ratio (ptratio)",
+     ylab = "Per capita crime rate (crim)")
+abline(boston_ptratio_model)
+```
+
+All four models show a statistically significant relationship between their associated predictor variable and the response variable crim. Each model produces a p-value less than 0.05, meaning that each predictor variable is statistically significant.
+
+### (b) Multiple Regression with All Available Predictors: Results and Significance at $\alpha = 0.05$
+
+```{r question-3-code-21}
+boston_full <- lm(crim ~ ., data = Boston)
+summary(boston_full)
+```
+
+At $\alpha = 0.05$, we reject the null hypothesis $H_0: \beta_j = 0$ for the predictor variables zn ($p = 0.015344$), dis ($p = 0.000373$), rad ($p = 8.59 \times 10^{-12}$), and medv ($p = 0.000261$). Each has a p-value below $0.05$, which means that they are not statistically significant. We fail to reject the null hypothesis for the remaining predictors.
+
+### (c) Simple vs. Multiple Regression Results
+
+In the simple linear regression models, all four predictor variables nox, tax, dis, and ptratio were found to be statistically significant. This changes significantly in the multiple linear regression model. The predictor variables nox, tax, and ptratio change signs and are no longer statistically significant at $\alpha = 0.05$. The predictor variable dis remains negative and is still statistically significant, but it does decrease in magnitude from $-1.5509$ to $-1.0122467$. These differences can occur in the multiple linear regression model due to factors such as confounding and collinearity. Confounding occurs when a predictor may appear to be related to the response variable but is actually more closely related to other predictor variables that themselves are more closely related to the response variable. Collinearity occurs when the predictor variables are correlated with each other making it difficult for the multiple linear regression model to separate the individual effects. These effects can cause the changes in magnitude, sign, and statistical significance in the predictor variables.
+
+### (d) Cubic Polynomial Models for Each Predictor: Nonlinear Associations
+
+#### Model Fits and Hypothesis Tests for the Quadratic and Cubic Terms
+
+```{r question-3-code-22}
+predictors <- setdiff(names(Boston), "crim")
+cubic_models <- setNames(vector("list", length(predictors)), predictors)
+nonlinear_results <- data.frame(
+  Predictor = predictors,
+  Quadratic_p = NA_real_,
+  Cubic_p = NA_real_
+)
+
+for (j in seq_along(predictors)) {
+  predictor <- predictors[j]
+  quadratic_term <- paste0("I(", predictor, "^2)")
+  cubic_term <- paste0("I(", predictor, "^3)")
+  model_formula <- reformulate(
+    c(predictor, quadratic_term, cubic_term), response = "crim"
+  )
+  cubic_models[[predictor]] <- lm(model_formula, data = Boston)
+  coefficients <- coef(summary(cubic_models[[predictor]]))
+
+  # Aliased terms (such as chas^2 and chas^3) have no separate p-values.
+  nonlinear_results$Quadratic_p[j] <- coefficients[
+    match(quadratic_term, rownames(coefficients)), "Pr(>|t|)"
+  ]
+  nonlinear_results$Cubic_p[j] <- coefficients[
+    match(cubic_term, rownames(coefficients)), "Pr(>|t|)"
+  ]
+}
+
+p_value_table <- nonlinear_results
+p_value_table$Quadratic_p <- format.pval(nonlinear_results$Quadratic_p, digits = 4)
+p_value_table$Cubic_p <- format.pval(nonlinear_results$Cubic_p, digits = 4)
+knitr::kable(
+  p_value_table,
+  col.names = c("Predictor", "Quadratic term p-value", "Cubic term p-value"),
+  caption = "Tests of nonlinear terms in separate cubic regression models"
+)
+```
+
+#### Evidence and Conclusions Based on p-Values
+
+For each predictor, we test $H_0: \beta_2 = 0$ against $H_1: \beta_2 \ne 0$ and $H_0: \beta_3 = 0$ against $H_1: \beta_3 \ne 0$. We continue to use $\alpha = 0.05$.
+
+There is evidence of nonlinear association for indus, nox, age, dis, ptratio, and medv: both their quadratic and cubic terms have p-values below $0.05$. For zn, rm, rad, tax, and lstat, neither the quadratic nor the cubic term has a p-value below $0.05$. These individual tests do not provide sufficient evidence of nonlinear association at this significance level.

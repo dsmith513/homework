@@ -1,0 +1,23 @@
+import numpy as np
+
+def secant(f, x0=1.0, x1=2.0, tol=1e-10, max_iter=100):
+    for _ in range(max_iter):
+        f0, f1 = f(x0), f(x1)
+
+        if f1 == f0:
+            raise ValueError("Zero denominator in secant formula.")
+
+        x2 = x1 - f1 * (x1 - x0) / (f1 - f0)
+
+        if np.abs(x2 - x1) < tol:
+            return x2
+
+        x0, x1 = x1, x2
+
+    raise RuntimeError("Secant method did not converge.")
+
+a = secant(lambda x: x**3 - 2*x - 2)
+b = secant(lambda x: np.exp(x) + x - 7)
+
+print(f"(a) x = {a:.10f}")
+print(f"(b) x = {b:.10f}")
