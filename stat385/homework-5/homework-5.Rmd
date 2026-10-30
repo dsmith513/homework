@@ -1,0 +1,874 @@
+---
+title: "homework-5"
+output:
+  pdf_document: default
+  html_document: default
+date: "2026-10-29"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo = TRUE,
+  fig.width = 6,
+  fig.height = 4,
+  out.width = if (knitr::is_latex_output()) "\\linewidth" else "100%",
+  fig.align = "center"
+)
+```
+
+# Dylan Smith Homework 5
+
+## Question 1: Simulated Data and Variable Selection
+
+### (a) Generate Predictors and Errors
+
+```{r question-1-code-1}
+set.seed(2024)
+x <- rnorm(n = 100, mean = 0, sd = 1)
+epsilon <- rnorm(n = 100, mean = 0, sd = 0.25)
+```
+
+### (b) Generate the Response
+
+```{r question-1-code-2}
+y <- 1 + 3 * x + 2 * x^2 - x^4 + epsilon
+```
+
+### (c) Exhaustive Best Subset Selection
+
+```{r question-1-code-3}
+library(leaps)
+
+power_data <- data.frame(
+  Y = y,
+  X = x,
+  X2 = x^2,
+  X3 = x^3,
+  X4 = x^4,
+  X5 = x^5,
+  X6 = x^6,
+  X7 = x^7,
+  X8 = x^8,
+  X9 = x^9,
+  X10 = x^10
+)
+
+best_subsets <- regsubsets(
+  Y ~ ., data = power_data, nvmax = 10,
+  method = "exhaustive", really.big = TRUE
+)
+subset_summary <- summary(best_subsets)
+model_sizes <- 1:10
+
+best_cp_size <- which.min(subset_summary$cp)
+best_bic_size <- which.min(subset_summary$bic)
+best_adjr2_size <- which.max(subset_summary$adjr2)
+
+par(mfrow = c(1, 3))
+plot(model_sizes, subset_summary$cp, type = "b",
+     xlab = "Model size", ylab = "Mallows' Cp", main = "Mallows' Cp")
+points(best_cp_size, subset_summary$cp[best_cp_size], col = "red", pch = 19)
+
+plot(model_sizes, subset_summary$bic, type = "b",
+     xlab = "Model size", ylab = "BIC", main = "BIC")
+points(best_bic_size, subset_summary$bic[best_bic_size], col = "red", pch = 19)
+
+plot(model_sizes, subset_summary$adjr2, type = "b",
+     xlab = "Model size", ylab = "Adjusted R-squared",
+     main = "Adjusted R-squared")
+points(best_adjr2_size, subset_summary$adjr2[best_adjr2_size],
+       col = "red", pch = 19)
+par(mfrow = c(1, 1))
+
+report_subset <- function(criterion, model_size) {
+  model_coef <- coef(best_subsets, id = model_size)
+  selected_powers <- names(model_coef)[-1]
+  cat("\n", criterion, " selected model (size ", model_size, ")\n", sep = "")
+  cat("Selected powers: ", paste(selected_powers, collapse = ", "), "\n", sep = "")
+  print(model_coef)
+}
+
+report_subset("Minimum Mallows' Cp", best_cp_size)
+report_subset("Minimum BIC", best_bic_size)
+report_subset("Maximum adjusted R-squared", best_adjr2_size)
+```
+
+### (d) Forward and Backward Selection
+
+```{r question-1-code-4, fig.width=12, fig.height=8}
+forward_subsets <- regsubsets(
+  Y ~ ., data = power_data, nvmax = 10, method = "forward"
+)
+backward_subsets <- regsubsets(
+  Y ~ ., data = power_data, nvmax = 10, method = "backward"
+)
+
+subset_fits <- list(
+  Exhaustive = best_subsets,
+  Forward = forward_subsets,
+  Backward = backward_subsets
+)
+subset_summaries <- lapply(subset_fits, summary)
+
+criterion_names <- c("Cp", "BIC", "Adjusted R-squared")
+criterion_values <- list(
+  Cp = function(s) s$cp,
+  BIC = function(s) s$bic,
+  `Adjusted R-squared` = function(s) s$adjr2
+)
+criterion_optima <- lapply(subset_summaries, function(s) {
+  c(Cp = which.min(s$cp), BIC = which.min(s$bic),
+    `Adjusted R-squared` = which.max(s$adjr2))
+})
+
+# Plot each criterion for all three search methods, marking its optimum
+par(mfrow = c(3, 3), mar = c(4, 4, 3, 1))
+for (criterion in criterion_names) {
+  for (method in names(subset_fits)) {
+    values <- criterion_values[[criterion]](subset_summaries[[method]])
+    best_size <- criterion_optima[[method]][[criterion]]
+    plot(model_sizes, values, type = "b",
+         xlab = "Model size", ylab = criterion,
+         main = paste(method, "-", criterion))
+    points(best_size, values[best_size], col = "red", pch = 19)
+  }
+}
+par(mfrow = c(1, 1))
+
+# Compare selected model sizes and powers across all three search methods
+selection_comparison <- do.call(rbind, lapply(names(subset_fits), function(method) {
+  data.frame(
+    Method = method,
+    Criterion = criterion_names,
+    Model_Size = as.integer(criterion_optima[[method]][criterion_names]),
+    Selected_Powers = vapply(criterion_names, function(criterion) {
+      model_coef <- coef(
+        subset_fits[[method]],
+        id = criterion_optima[[method]][[criterion]]
+      )
+      paste(names(model_coef)[-1], collapse = ", ")
+    }, character(1)),
+    row.names = NULL
+  )
+}))
+print(selection_comparison, row.names = FALSE)
+
+# Print the coefficient estimates for every selected model
+for (method in names(subset_fits)) {
+  for (criterion in criterion_names) {
+    model_size <- criterion_optima[[method]][[criterion]]
+    cat("\n", method, " selection by ", criterion,
+        " (model size ", model_size, ")\n", sep = "")
+    print(coef(subset_fits[[method]], id = model_size))
+  }
+}
+```
+
+### (e) Lasso with Cross-Validation
+
+```{r question-1-code-5}
+library(glmnet)
+
+set.seed(2024)
+foldid <- sample(rep(1:10, length.out = nrow(power_data)))
+
+lasso_cv <- cv.glmnet(
+  x = as.matrix(power_data[, -1]),
+  y = power_data$Y,
+  alpha = 1,
+  standardize = TRUE,
+  intercept = TRUE,
+  foldid = foldid,
+  type.measure = "mse"
+)
+
+lambda_min <- lasso_cv$lambda.min
+plot(log(lasso_cv$lambda), lasso_cv$cvm, type = "b",
+     xlab = "log(lambda)", ylab = "10-fold CV MSE",
+     main = "Lasso Cross-Validation")
+points(log(lambda_min), min(lasso_cv$cvm), col = "red", pch = 19)
+
+lasso_coef <- as.matrix(coef(lasso_cv, s = "lambda.min"))
+lasso_intercept <- lasso_coef["(Intercept)", 1]
+nonzero_coef <- lasso_coef[
+  rownames(lasso_coef) != "(Intercept)" & lasso_coef[, 1] != 0,
+  , drop = FALSE
+]
+selected_powers_lasso <- rownames(nonzero_coef)
+true_powers <- c("X", "X2", "X4")
+recovers_true_powers <- setequal(selected_powers_lasso, true_powers)
+
+cat("Lambda minimizing CV MSE:", lambda_min, "\n")
+cat("Intercept:", lasso_intercept, "\n")
+cat("Nonzero predictor coefficients (original predictor scale):\n")
+print(data.frame(
+  Power = selected_powers_lasso,
+  Coefficient = as.numeric(nonzero_coef[, 1]),
+  row.names = NULL
+))
+cat("Recovers exactly the generating powers (X, X2, X4):",
+    recovers_true_powers, "\n")
+```
+
+The coefficient table is on the original predictor scale; `glmnet` returns coefficients transformed back from its internal predictor standardization. The final line reports whether the selected nonzero powers are exactly $X$, $X^2$, and $X^4$. Lasso is tuned here to minimize prediction error, not to guarantee recovery of the true terms. Since raw powers of the same $X$ are related to one another, they can compete to explain similar patterns; with a finite sample, cross-validation may therefore select a different set of powers. The lasso also shrinks coefficient estimates toward zero.
+
+### (f) Repeat the Analysis for the Fifth-Power Model
+
+```{r question-1-code-6}
+y_f <- 1 + x^5 + epsilon
+power_data_f <- power_data
+power_data_f$Y <- y_f
+
+best_subsets_f <- regsubsets(
+  Y ~ ., data = power_data_f, nvmax = 10,
+  method = "exhaustive", really.big = TRUE
+)
+subset_summary_f <- summary(best_subsets_f)
+
+best_cp_size_f <- which.min(subset_summary_f$cp)
+best_bic_size_f <- which.min(subset_summary_f$bic)
+best_adjr2_size_f <- which.max(subset_summary_f$adjr2)
+
+par(mfrow = c(1, 3))
+plot(model_sizes, subset_summary_f$cp, type = "b",
+     xlab = "Model size", ylab = "Mallows' Cp", main = "Mallows' Cp")
+points(best_cp_size_f, subset_summary_f$cp[best_cp_size_f], col = "red", pch = 19)
+
+plot(model_sizes, subset_summary_f$bic, type = "b",
+     xlab = "Model size", ylab = "BIC", main = "BIC")
+points(best_bic_size_f, subset_summary_f$bic[best_bic_size_f], col = "red", pch = 19)
+
+plot(model_sizes, subset_summary_f$adjr2, type = "b",
+     xlab = "Model size", ylab = "Adjusted R-squared",
+     main = "Adjusted R-squared")
+points(best_adjr2_size_f, subset_summary_f$adjr2[best_adjr2_size_f],
+       col = "red", pch = 19)
+par(mfrow = c(1, 1))
+
+best_sizes_f <- c(
+  `Minimum Mallows' Cp` = best_cp_size_f,
+  `Minimum BIC` = best_bic_size_f,
+  `Maximum adjusted R-squared` = best_adjr2_size_f
+)
+for (criterion in names(best_sizes_f)) {
+  model_size <- best_sizes_f[[criterion]]
+  model_coef <- coef(best_subsets_f, id = model_size)
+  cat("\n", criterion, " selected model (size ", model_size, ")\n", sep = "")
+  cat("Selected powers: ", paste(names(model_coef)[-1], collapse = ", "), "\n", sep = "")
+  print(model_coef)
+}
+
+# Use the same fold assignments as part (e) for the new response.
+lasso_cv_f <- cv.glmnet(
+  x = as.matrix(power_data_f[, -1]),
+  y = power_data_f$Y,
+  alpha = 1,
+  standardize = TRUE,
+  intercept = TRUE,
+  foldid = foldid,
+  type.measure = "mse"
+)
+
+lambda_min_f <- lasso_cv_f$lambda.min
+plot(log(lasso_cv_f$lambda), lasso_cv_f$cvm, type = "b",
+     xlab = "log(lambda)", ylab = "10-fold CV MSE",
+     main = "Lasso CV: Fifth-Power Response")
+points(log(lambda_min_f), min(lasso_cv_f$cvm), col = "red", pch = 19)
+
+lasso_coef_f <- as.matrix(coef(lasso_cv_f, s = "lambda.min"))
+lasso_intercept_f <- lasso_coef_f["(Intercept)", 1]
+nonzero_coef_f <- lasso_coef_f[
+  rownames(lasso_coef_f) != "(Intercept)" & lasso_coef_f[, 1] != 0,
+  , drop = FALSE
+]
+cat("\nLasso lambda minimizing CV MSE:", lambda_min_f, "\n")
+cat("Lasso intercept:", lasso_intercept_f, "\n")
+cat("Lasso nonzero coefficients (original predictor scale):\n")
+print(data.frame(
+  Power = rownames(nonzero_coef_f),
+  Coefficient = as.numeric(nonzero_coef_f[, 1]),
+  row.names = NULL
+))
+cat("True model: intercept = 1; selected power = X5; coefficient = 1.\n")
+```
+
+The true response uses only $X^5$, with intercept 1 and coefficient 1. Compare each selected powers list and coefficient estimates above with that true model. The subset criteria and lasso are tuned by different objectives, so they may select additional powers or shrink the $X^5$ coefficient; the CV lasso is chosen to predict well rather than to reproduce the generating coefficients exactly.
+
+## Question 2: Predicting College Applications
+
+### (a) Training/Test Split and Cross-Validation Folds
+
+```{r question-2-code-1}
+College <- ISLR2::College
+College$Private <- factor(College$Private)
+
+set.seed(2024)
+train_idx_college <- sample(
+  seq_len(nrow(College)), size = floor(0.70 * nrow(College))
+)
+college_train <- College[train_idx_college, ]
+college_test <- College[-train_idx_college, ]
+
+set.seed(2024)
+foldid_college <- sample(rep(1:10, length.out = nrow(college_train)))
+
+cat("Training observations:", nrow(college_train), "\n")
+cat("Test observations:", nrow(college_test), "\n")
+```
+
+### (b) Ordinary Least Squares
+
+```{r question-2-code-2}
+college_ols <- lm(Apps ~ ., data = college_train)
+college_ols_pred <- predict(college_ols, newdata = college_test)
+college_ols_mse <- mean((college_test$Apps - college_ols_pred)^2)
+college_ols_rmse <- sqrt(college_ols_mse)
+
+cat("OLS test MSE:", college_ols_mse, "\n")
+cat("OLS test RMSE:", college_ols_rmse, "\n")
+```
+
+### (c) Ridge Regression
+
+```{r question-2-code-3}
+library(glmnet)
+
+# Build one design matrix so the factor encoding is identical in train and test.
+college_x <- model.matrix(Apps ~ ., data = College)[, -1]
+college_x_train <- college_x[train_idx_college, , drop = FALSE]
+college_x_test <- college_x[-train_idx_college, , drop = FALSE]
+
+college_ridge_cv <- cv.glmnet(
+  x = college_x_train,
+  y = college_train$Apps,
+  alpha = 0,
+  standardize = TRUE,
+  intercept = TRUE,
+  foldid = foldid_college,
+  type.measure = "mse"
+)
+
+college_ridge_lambda <- college_ridge_cv$lambda.min
+college_ridge_pred <- predict(
+  college_ridge_cv, newx = college_x_test, s = "lambda.min"
+)
+college_ridge_mse <- mean((college_test$Apps - as.numeric(college_ridge_pred))^2)
+college_ridge_rmse <- sqrt(college_ridge_mse)
+
+cat("Ridge lambda minimizing training CV MSE:", college_ridge_lambda, "\n")
+cat("Ridge test MSE:", college_ridge_mse, "\n")
+cat("Ridge test RMSE:", college_ridge_rmse, "\n")
+```
+
+### (d) Lasso Regression
+
+```{r question-2-code-4}
+college_lasso_cv <- cv.glmnet(
+  x = college_x_train,
+  y = college_train$Apps,
+  alpha = 1,
+  standardize = TRUE,
+  intercept = TRUE,
+  foldid = foldid_college,
+  type.measure = "mse"
+)
+
+college_lasso_lambda <- college_lasso_cv$lambda.min
+college_lasso_pred <- predict(
+  college_lasso_cv, newx = college_x_test, s = "lambda.min"
+)
+college_lasso_mse <- mean((college_test$Apps - as.numeric(college_lasso_pred))^2)
+college_lasso_rmse <- sqrt(college_lasso_mse)
+
+college_lasso_coef <- as.matrix(coef(college_lasso_cv, s = "lambda.min"))
+college_lasso_predictor_coef <- college_lasso_coef[
+  rownames(college_lasso_coef) != "(Intercept)", , drop = FALSE
+]
+college_lasso_nonzero <- sum(college_lasso_predictor_coef[, 1] != 0)
+
+cat("Lasso lambda minimizing training CV MSE:", college_lasso_lambda, "\n")
+cat("Lasso test MSE:", college_lasso_mse, "\n")
+cat("Lasso test RMSE:", college_lasso_rmse, "\n")
+cat("Number of nonzero predictor coefficients:", college_lasso_nonzero, "\n")
+```
+
+### (e) Principal Components Regression
+
+```{r question-2-code-5}
+p_college <- ncol(college_x_train)
+college_pcr_cv_mse <- numeric(p_college + 1)
+
+# Cross-validate every component count, including M = 0 (training-fold mean).
+for (m in 0:p_college) {
+  cv_prediction <- numeric(nrow(college_x_train))
+
+  for (fold in sort(unique(foldid_college))) {
+    validation_rows <- which(foldid_college == fold)
+    analysis_rows <- which(foldid_college != fold)
+    x_analysis <- college_x_train[analysis_rows, , drop = FALSE]
+    x_validation <- college_x_train[validation_rows, , drop = FALSE]
+    y_analysis <- college_train$Apps[analysis_rows]
+
+    if (m == 0) {
+      cv_prediction[validation_rows] <- mean(y_analysis)
+    } else {
+      pca_fold <- prcomp(x_analysis, center = TRUE, scale. = TRUE)
+      analysis_scores <- pca_fold$x[, seq_len(m), drop = FALSE]
+      validation_scores <- predict(pca_fold, newdata = x_validation)[
+        , seq_len(m), drop = FALSE
+      ]
+      pcr_fold_fit <- lm.fit(
+        x = cbind(Intercept = 1, analysis_scores), y = y_analysis
+      )
+      cv_prediction[validation_rows] <- as.vector(
+        cbind(Intercept = 1, validation_scores) %*% pcr_fold_fit$coefficients
+      )
+    }
+  }
+
+  college_pcr_cv_mse[m + 1] <- mean((college_train$Apps - cv_prediction)^2)
+}
+
+college_pcr_M <- which.min(college_pcr_cv_mse) - 1
+
+# Fit the selected PCR model on all training observations and predict the test set.
+if (college_pcr_M == 0) {
+  college_pcr_pred <- rep(mean(college_train$Apps), nrow(college_x_test))
+} else {
+  college_pca <- prcomp(college_x_train, center = TRUE, scale. = TRUE)
+  college_train_scores <- college_pca$x[
+    , seq_len(college_pcr_M), drop = FALSE
+  ]
+  college_test_scores <- predict(college_pca, newdata = college_x_test)[
+    , seq_len(college_pcr_M), drop = FALSE
+  ]
+  college_pcr_fit <- lm.fit(
+    x = cbind(Intercept = 1, college_train_scores), y = college_train$Apps
+  )
+  college_pcr_pred <- as.vector(
+    cbind(Intercept = 1, college_test_scores) %*% college_pcr_fit$coefficients
+  )
+}
+
+college_pcr_mse <- mean((college_test$Apps - college_pcr_pred)^2)
+college_pcr_rmse <- sqrt(college_pcr_mse)
+cat("Number of encoded predictors p:", p_college, "\n")
+cat("Selected number of principal components M:", college_pcr_M, "\n")
+cat("Training CV MSE at selected M:", college_pcr_cv_mse[college_pcr_M + 1], "\n")
+cat("PCR test MSE:", college_pcr_mse, "\n")
+cat("PCR test RMSE:", college_pcr_rmse, "\n")
+```
+
+### (f) Partial Least Squares
+
+```{r question-2-code-6}
+library(pls)
+
+college_pls_cv_mse <- numeric(p_college + 1)
+
+# Cross-validate every component count, including M = 0 (training-fold mean).
+for (m in 0:p_college) {
+  cv_prediction <- numeric(nrow(college_x_train))
+
+  for (fold in sort(unique(foldid_college))) {
+    validation_rows <- which(foldid_college == fold)
+    analysis_rows <- which(foldid_college != fold)
+    x_analysis <- college_x_train[analysis_rows, , drop = FALSE]
+    x_validation <- college_x_train[validation_rows, , drop = FALSE]
+    y_analysis <- college_train$Apps[analysis_rows]
+
+    if (m == 0) {
+      cv_prediction[validation_rows] <- mean(y_analysis)
+    } else {
+      analysis_data <- data.frame(Apps = y_analysis, x_analysis,
+                                  check.names = FALSE)
+      validation_data <- as.data.frame(x_validation, check.names = FALSE)
+      pls_fold_fit <- pls::plsr(
+        Apps ~ ., data = analysis_data, ncomp = m,
+        scale = TRUE, validation = "none"
+      )
+      cv_prediction[validation_rows] <- as.vector(
+        predict(pls_fold_fit, newdata = validation_data, ncomp = m)
+      )
+    }
+  }
+
+  college_pls_cv_mse[m + 1] <- mean((college_train$Apps - cv_prediction)^2)
+}
+
+college_pls_M <- which.min(college_pls_cv_mse) - 1
+
+# Refit the selected PLS model on all training observations.
+if (college_pls_M == 0) {
+  college_pls_pred <- rep(mean(college_train$Apps), nrow(college_x_test))
+} else {
+  college_train_data <- data.frame(
+    Apps = college_train$Apps, college_x_train, check.names = FALSE
+  )
+  college_test_data <- as.data.frame(college_x_test, check.names = FALSE)
+  college_pls_fit <- pls::plsr(
+    Apps ~ ., data = college_train_data, ncomp = college_pls_M,
+    scale = TRUE, validation = "none"
+  )
+  college_pls_pred <- as.vector(
+    predict(college_pls_fit, newdata = college_test_data, ncomp = college_pls_M)
+  )
+}
+
+college_pls_mse <- mean((college_test$Apps - college_pls_pred)^2)
+college_pls_rmse <- sqrt(college_pls_mse)
+cat("Selected number of PLS components M:", college_pls_M, "\n")
+cat("Training CV MSE at selected M:", college_pls_cv_mse[college_pls_M + 1], "\n")
+cat("PLS test MSE:", college_pls_mse, "\n")
+cat("PLS test RMSE:", college_pls_rmse, "\n")
+```
+
+### (g) Compare Test Errors with the Intercept-Only Benchmark
+
+```{r question-2-code-7}
+college_benchmark_pred <- rep(mean(college_train$Apps), nrow(college_test))
+college_benchmark_mse <- mean((college_test$Apps - college_benchmark_pred)^2)
+college_benchmark_rmse <- sqrt(college_benchmark_mse)
+
+college_test_errors <- data.frame(
+  Method = c("OLS", "Ridge", "Lasso", "PCR", "PLS", "Intercept-only benchmark"),
+  Test_MSE = c(
+    college_ols_mse, college_ridge_mse, college_lasso_mse,
+    college_pcr_mse, college_pls_mse, college_benchmark_mse
+  ),
+  Test_RMSE = c(
+    college_ols_rmse, college_ridge_rmse, college_lasso_rmse,
+    college_pcr_rmse, college_pls_rmse, college_benchmark_rmse
+  )
+)
+college_test_errors$MSE_Reduction_vs_Benchmark_pct <- 100 * (
+  1 - college_test_errors$Test_MSE / college_benchmark_mse
+)
+
+knitr::kable(
+  college_test_errors, digits = 2,
+  col.names = c("Method", "Test MSE", "Test RMSE", "MSE reduction vs. benchmark (%)"),
+  caption = "Test-set prediction errors for College applications"
+)
+
+college_apps_scale <- c(
+  Minimum = min(College$Apps),
+  First_Quartile = unname(quantile(College$Apps, 0.25)),
+  Median = median(College$Apps),
+  Mean = mean(College$Apps),
+  Third_Quartile = unname(quantile(College$Apps, 0.75)),
+  Maximum = max(College$Apps)
+)
+cat("Apps response scale (applications):\n")
+print(college_apps_scale)
+
+college_methods <- college_test_errors[
+  college_test_errors$Method != "Intercept-only benchmark", , drop = FALSE
+]
+college_best_method <- college_methods$Method[which.min(college_methods$Test_MSE)]
+college_better_methods <- college_methods$Method[
+  college_methods$Test_MSE < college_benchmark_mse
+]
+cat("Lowest test MSE among the five methods:", college_best_method, "\n")
+if (length(college_better_methods) > 0) {
+  cat("Methods with lower test MSE than the benchmark:",
+      paste(college_better_methods, collapse = ", "), "\n")
+} else {
+  cat("None of the five methods has lower test MSE than the benchmark.\n")
+}
+```
+
+The benchmark predicts the training-set mean number of applications for every test college. The table shows which methods improve on that prediction on this test split; positive MSE reduction indicates an improvement, while negative reduction indicates worse test MSE than the benchmark. RMSE is measured in applications, and the response-scale summary gives context for interpreting its magnitude. A numerically large RMSE alone does not show that predictions are poor; compare it with the benchmark error and the broad range and spread of `Apps`.
+
+## Question 3: Predicting Boston Crime Rates
+
+### (a) Compare Prediction Methods Using Cross-Validation
+
+```{r question-3-code-1}
+library(leaps)
+library(glmnet)
+
+Boston <- ISLR2::Boston
+boston_predictors <- setdiff(names(Boston), "crim")
+boston_p <- length(boston_predictors)
+
+set.seed(2024)
+boston_train_idx <- sample(
+  seq_len(nrow(Boston)), size = floor(0.70 * nrow(Boston))
+)
+boston_train <- Boston[boston_train_idx, ]
+boston_test <- Boston[-boston_train_idx, ]
+
+set.seed(2024)
+boston_foldid <- sample(rep(1:10, length.out = nrow(boston_train)))
+
+boston_x <- as.matrix(Boston[, boston_predictors])
+boston_x_train <- boston_x[boston_train_idx, , drop = FALSE]
+boston_x_test <- boston_x[-boston_train_idx, , drop = FALSE]
+boston_y_train <- boston_train$crim
+boston_y_test <- boston_test$crim
+
+cat("Training observations:", nrow(boston_train), "\n")
+cat("Test observations:", nrow(boston_test), "\n")
+cat("Number of predictors p:", boston_p, "\n")
+
+# Exhaustive subset CV: repeat the complete subset search inside every fold.
+boston_subset_cv_pred <- matrix(
+  NA_real_, nrow = nrow(boston_train), ncol = boston_p + 1
+)
+
+for (fold in sort(unique(boston_foldid))) {
+  validation_rows <- which(boston_foldid == fold)
+  analysis_rows <- which(boston_foldid != fold)
+  subset_fold_fit <- regsubsets(
+    crim ~ ., data = boston_train[analysis_rows, ],
+    nvmax = boston_p, method = "exhaustive"
+  )
+  boston_subset_cv_pred[validation_rows, 1] <- mean(boston_y_train[analysis_rows])
+
+  for (model_size in 1:boston_p) {
+    model_coef <- coef(subset_fold_fit, id = model_size)
+    selected_terms <- names(model_coef)[-1]
+    boston_subset_cv_pred[validation_rows, model_size + 1] <- as.vector(
+      model_coef[1] +
+        as.matrix(boston_x_train[validation_rows, selected_terms, drop = FALSE]) %*%
+        model_coef[-1]
+    )
+  }
+}
+boston_subset_cv_mse <- colMeans(
+  (boston_subset_cv_pred - boston_y_train)^2
+)
+boston_subset_size <- which.min(boston_subset_cv_mse) - 1
+
+boston_subset_final <- regsubsets(
+  crim ~ ., data = boston_train, nvmax = boston_p, method = "exhaustive"
+)
+if (boston_subset_size == 0) {
+  boston_subset_test_pred <- rep(mean(boston_y_train), nrow(boston_test))
+  boston_subset_coef <- c("(Intercept)" = mean(boston_y_train))
+} else {
+  boston_subset_coef <- coef(boston_subset_final, id = boston_subset_size)
+  boston_subset_terms <- names(boston_subset_coef)[-1]
+  boston_subset_test_pred <- as.vector(
+    boston_subset_coef[1] +
+      boston_x_test[, boston_subset_terms, drop = FALSE] %*%
+      boston_subset_coef[-1]
+  )
+}
+boston_subset_test_mse <- mean((boston_y_test - boston_subset_test_pred)^2)
+boston_subset_test_rmse <- sqrt(boston_subset_test_mse)
+
+# Ridge and lasso use the same training folds.
+boston_ridge_cv <- cv.glmnet(
+  boston_x_train, boston_y_train, alpha = 0, standardize = TRUE,
+  intercept = TRUE, foldid = boston_foldid, type.measure = "mse"
+)
+boston_ridge_lambda <- boston_ridge_cv$lambda.min
+boston_ridge_cv_mse <- min(boston_ridge_cv$cvm)
+boston_ridge_test_pred <- as.numeric(predict(
+  boston_ridge_cv, newx = boston_x_test, s = "lambda.min"
+))
+boston_ridge_test_mse <- mean((boston_y_test - boston_ridge_test_pred)^2)
+boston_ridge_test_rmse <- sqrt(boston_ridge_test_mse)
+
+boston_lasso_cv <- cv.glmnet(
+  boston_x_train, boston_y_train, alpha = 1, standardize = TRUE,
+  intercept = TRUE, foldid = boston_foldid, type.measure = "mse"
+)
+boston_lasso_lambda <- boston_lasso_cv$lambda.min
+boston_lasso_cv_mse <- min(boston_lasso_cv$cvm)
+boston_lasso_test_pred <- as.numeric(predict(
+  boston_lasso_cv, newx = boston_x_test, s = "lambda.min"
+))
+boston_lasso_test_mse <- mean((boston_y_test - boston_lasso_test_pred)^2)
+boston_lasso_test_rmse <- sqrt(boston_lasso_test_mse)
+
+# PCR CV over M = 0,...,p, standardizing within each analysis fold.
+boston_pcr_cv_mse <- numeric(boston_p + 1)
+for (m in 0:boston_p) {
+  cv_prediction <- numeric(nrow(boston_train))
+  for (fold in sort(unique(boston_foldid))) {
+    validation_rows <- which(boston_foldid == fold)
+    analysis_rows <- which(boston_foldid != fold)
+    x_analysis <- boston_x_train[analysis_rows, , drop = FALSE]
+    x_validation <- boston_x_train[validation_rows, , drop = FALSE]
+    y_analysis <- boston_y_train[analysis_rows]
+
+    if (m == 0) {
+      cv_prediction[validation_rows] <- mean(y_analysis)
+    } else {
+      pca_fold <- prcomp(x_analysis, center = TRUE, scale. = TRUE)
+      analysis_scores <- pca_fold$x[, seq_len(m), drop = FALSE]
+      validation_scores <- predict(pca_fold, newdata = x_validation)[
+        , seq_len(m), drop = FALSE
+      ]
+      pcr_fold_fit <- lm.fit(
+        x = cbind(Intercept = 1, analysis_scores), y = y_analysis
+      )
+      cv_prediction[validation_rows] <- as.vector(
+        cbind(Intercept = 1, validation_scores) %*% pcr_fold_fit$coefficients
+      )
+    }
+  }
+  boston_pcr_cv_mse[m + 1] <- mean((boston_y_train - cv_prediction)^2)
+}
+boston_pcr_M <- which.min(boston_pcr_cv_mse) - 1
+
+if (boston_pcr_M == 0) {
+  boston_pcr_test_pred <- rep(mean(boston_y_train), nrow(boston_test))
+} else {
+  boston_pca <- prcomp(boston_x_train, center = TRUE, scale. = TRUE)
+  boston_train_scores <- boston_pca$x[, seq_len(boston_pcr_M), drop = FALSE]
+  boston_test_scores <- predict(boston_pca, newdata = boston_x_test)[
+    , seq_len(boston_pcr_M), drop = FALSE
+  ]
+  boston_pcr_fit <- lm.fit(
+    x = cbind(Intercept = 1, boston_train_scores), y = boston_y_train
+  )
+  boston_pcr_test_pred <- as.vector(
+    cbind(Intercept = 1, boston_test_scores) %*% boston_pcr_fit$coefficients
+  )
+}
+boston_pcr_test_mse <- mean((boston_y_test - boston_pcr_test_pred)^2)
+boston_pcr_test_rmse <- sqrt(boston_pcr_test_mse)
+
+boston_results <- data.frame(
+  Method = c("Exhaustive best subset", "Ridge", "Lasso", "PCR"),
+  Tuning_parameter = c(
+    paste0("Model size = ", boston_subset_size),
+    paste0("lambda = ", signif(boston_ridge_lambda, 5)),
+    paste0("lambda = ", signif(boston_lasso_lambda, 5)),
+    paste0("M = ", boston_pcr_M)
+  ),
+  Training_CV_MSE = c(
+    boston_subset_cv_mse[boston_subset_size + 1],
+    boston_ridge_cv_mse,
+    boston_lasso_cv_mse,
+    boston_pcr_cv_mse[boston_pcr_M + 1]
+  ),
+  Test_MSE = c(
+    boston_subset_test_mse, boston_ridge_test_mse,
+    boston_lasso_test_mse, boston_pcr_test_mse
+  ),
+  Test_RMSE = c(
+    boston_subset_test_rmse, boston_ridge_test_rmse,
+    boston_lasso_test_rmse, boston_pcr_test_rmse
+  )
+)
+knitr::kable(
+  boston_results, digits = 4,
+  col.names = c("Method", "Selected tuning parameter", "Training CV MSE",
+                "Test MSE", "Test RMSE"),
+  caption = "Boston crime-rate prediction results"
+)
+
+cat("Exhaustive subset selected predictors and coefficients:\n")
+print(boston_subset_coef)
+```
+
+### (b) Recommend a Method and Assess Test Performance
+
+```{r question-3-code-2}
+# The recommendation is fixed using training CV MSE only.
+boston_recommended_row <- which.min(boston_results$Training_CV_MSE)
+boston_recommended_method <- boston_results$Method[boston_recommended_row]
+boston_recommended_cv_mse <- boston_results$Training_CV_MSE[boston_recommended_row]
+boston_recommended_test_mse <- boston_results$Test_MSE[boston_recommended_row]
+boston_recommended_test_rmse <- boston_results$Test_RMSE[boston_recommended_row]
+
+# Ten-fold CV intercept-only benchmark: each validation fold is predicted
+# using the mean crim from the corresponding analysis folds.
+boston_intercept_cv_pred <- numeric(nrow(boston_train))
+for (fold in sort(unique(boston_foldid))) {
+  validation_rows <- which(boston_foldid == fold)
+  analysis_rows <- which(boston_foldid != fold)
+  boston_intercept_cv_pred[validation_rows] <- mean(boston_y_train[analysis_rows])
+}
+boston_intercept_cv_mse <- mean((boston_y_train - boston_intercept_cv_pred)^2)
+boston_intercept_test_pred <- rep(mean(boston_y_train), nrow(boston_test))
+boston_intercept_test_mse <- mean((boston_y_test - boston_intercept_test_pred)^2)
+boston_intercept_test_rmse <- sqrt(boston_intercept_test_mse)
+
+cat("Recommended by training CV:", boston_recommended_method, "\n")
+cat("Recommendation training CV MSE:", boston_recommended_cv_mse, "\n")
+cat("Intercept-only training CV MSE:", boston_intercept_cv_mse, "\n")
+cat("Recommendation fixed test MSE:", boston_recommended_test_mse, "\n")
+cat("Recommendation fixed test RMSE:", boston_recommended_test_rmse, "\n")
+cat("Intercept-only test MSE:", boston_intercept_test_mse, "\n")
+cat("Intercept-only test RMSE:", boston_intercept_test_rmse, "\n")
+cat("Recommendation CV MSE reduction vs. benchmark (%):",
+    100 * (1 - boston_recommended_cv_mse / boston_intercept_cv_mse), "\n")
+cat("Recommendation test MSE reduction vs. benchmark (%):",
+    100 * (1 - boston_recommended_test_mse / boston_intercept_test_mse), "\n")
+if (boston_recommended_test_mse < boston_intercept_test_mse) {
+  cat("The fixed recommendation improves on the benchmark test MSE.\n")
+} else {
+  cat("The fixed recommendation does not improve on the benchmark test MSE.\n")
+}
+```
+
+The recommendation is chosen from training CV MSE before comparing test errors. This uses CV for model selection and the held-out test set for a final assessment. Judge its prediction performance against the intercept-only benchmark; then weigh that performance against model complexity. A lower CV error supports the choice for prediction, while subset selection or lasso may use fewer original variables than ridge, and PCR represents predictors through components.
+
+### (c) Predictors in the Recommended Model
+
+```{r question-3-code-3}
+if (boston_recommended_method == "Exhaustive best subset") {
+  boston_recommended_predictors <- names(boston_subset_coef)[-1]
+  boston_recommended_complexity <- paste0(
+    "intercept plus ", boston_subset_size, " selected original predictors"
+  )
+} else if (boston_recommended_method == "Lasso") {
+  boston_lasso_coef <- as.matrix(coef(boston_lasso_cv, s = "lambda.min"))
+  boston_recommended_predictors <- rownames(boston_lasso_coef)[
+    rownames(boston_lasso_coef) != "(Intercept)" & boston_lasso_coef[, 1] != 0
+  ]
+  boston_recommended_complexity <- paste0(
+    "intercept plus ", length(boston_recommended_predictors),
+    " nonzero original-predictor coefficients"
+  )
+} else if (boston_recommended_method == "Ridge") {
+  boston_ridge_coef <- as.matrix(coef(boston_ridge_cv, s = "lambda.min"))
+  boston_recommended_predictors <- rownames(boston_ridge_coef)[
+    rownames(boston_ridge_coef) != "(Intercept)" & boston_ridge_coef[, 1] != 0
+  ]
+  boston_recommended_complexity <- paste0(
+    "intercept plus ", length(boston_recommended_predictors),
+    " nonzero predictor coefficients (shrunken)"
+  )
+} else {
+  boston_recommended_predictors <- if (boston_pcr_M == 0) {
+    character(0)
+  } else {
+    paste0("PC", seq_len(boston_pcr_M))
+  }
+  boston_recommended_complexity <- if (boston_pcr_M == 0) {
+    "intercept only"
+  } else {
+    paste0("intercept plus ", boston_pcr_M, " principal components")
+  }
+}
+
+cat("Recommended method:", boston_recommended_method, "\n")
+cat("Model complexity:", boston_recommended_complexity, "\n")
+if (length(boston_recommended_predictors) == 0) {
+  cat("Selected terms: none beyond the intercept.\n")
+} else {
+  cat("Selected predictors/terms:",
+      paste(boston_recommended_predictors, collapse = ", "), "\n")
+}
+if (boston_recommended_method == "Ridge" ||
+    (boston_recommended_method == "PCR" && boston_pcr_M > 0)) {
+  cat("Uses information from all", boston_p,
+      "available original predictors.\n")
+} else if (boston_recommended_method == "PCR") {
+  cat("The intercept-only PCR model uses no original predictors.\n")
+} else {
+  cat("Number of selected original predictors:",
+      length(boston_recommended_predictors), "of", boston_p, "\n")
+  cat("Uses all available original predictors:",
+      length(boston_recommended_predictors) == boston_p, "\n")
+}
+```
+
+Best subset selection and lasso select from the original predictor variables; their printed terms identify which variables enter the model. Ridge keeps all original predictors and shrinks their coefficients. PCR instead constructs principal components as weighted combinations of the original predictors and regresses on the selected components. Thus, a PCR model with fewer components does not mean it selected that many original variables: its components can use information from all 12 predictors.

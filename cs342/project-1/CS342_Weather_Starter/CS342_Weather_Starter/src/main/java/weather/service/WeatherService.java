@@ -1,17 +1,16 @@
 package weather.service;
 
-import weather.model.Location;
-import weather.model.WeatherComparison;
-import weather.model.WeatherData;
-import weather.provider.WeatherDataProvider;
-
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-/** Weather use cases independent of the concrete data source and console. */
+import weather.model.Location;
+import weather.model.WeatherComparison;
+import weather.model.WeatherData;
+import weather.provider.WeatherDataProvider;
+
 public final class WeatherService {
     private static final List<Location> LOCATIONS = List.of(
             new Location("Chicago", 41.8781, -87.6298),

@@ -4,7 +4,6 @@ import weather.cli.WeatherCLI;
 import weather.provider.OpenMeteoWeatherProvider;
 import weather.service.WeatherService;
 
-/** Application composition root. */
 public final class Main {
     private Main() { }
 

@@ -1,0 +1,406 @@
+---
+title: "homework-4"
+output:
+  pdf_document: default
+  html_document: default
+date: "2026-10-5"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo = TRUE,
+  fig.width = 6,
+  fig.height = 4,
+  out.width = if (knitr::is_latex_output()) "\\linewidth" else "100%",
+  fig.align = "center"
+)
+setwd("C:/source/homework/stat385/homework-4")
+chromoX <- read.table(file = "ChromoXmicroarray.txt", header = TRUE)
+BLClabels <- c(rep(1, 13), rep(2, 14), rep(3, 20))
+```
+
+# Dylan Smith Homework 4
+
+## Q1. Data Splitting and Reproducibility
+
+```{r question-1-code-1}
+set.seed(2026)
+train.set <- sample(1:47, 35)
+test.set <- setdiff(1:47, train.set)
+```
+
+## Q2. Feature Selection via ANOVA and Feature Normalization
+
+### (a) One-Way ANOVA for Each Gene Using the Training Set
+
+```{r question-2-code-2}
+expression.matrix <- t(as.matrix(chromoX[, 3:49]))
+storage.mode(expression.matrix) <- "numeric"
+colnames(expression.matrix) <- make.unique(as.character(chromoX$IDENTIFIER))
+
+training.groups <- factor(BLClabels[train.set])
+anova.p.values <- apply(expression.matrix[train.set, , drop = FALSE], 2, function(x) {
+  anova.table <- summary(aov(x ~ training.groups))[[1]]
+  anova.table[1, "Pr(>F)"]
+})
+
+anova.results <- data.frame(
+  Gene = names(anova.p.values),
+  P_value = as.numeric(anova.p.values),
+  row.names = NULL
+)
+```
+
+### (b) Select the Five Genes with the Smallest p-Values
+
+```{r question-2-code-3}
+selected.genes <- names(sort(anova.p.values))[1:5]
+selected.genes
+```
+
+### (c) Form the 47 by 5 Reduced Feature Matrix
+
+```{r question-2-code-4}
+selected.features <- expression.matrix[, selected.genes, drop = FALSE]
+dim(selected.features)
+```
+
+### (d) Min-Max Normalize the Selected Features Across All Samples
+
+```{r question-2-code-5}
+feature.mins <- apply(selected.features, 2, min)
+feature.maxs <- apply(selected.features, 2, max)
+normalized.features <- sweep(
+  sweep(selected.features, 2, feature.mins, "-"),
+  2, feature.maxs - feature.mins, "/"
+)
+dim(normalized.features)
+```
+
+## Q3. Model Training
+
+```{r question-3-code-6}
+model.training.data <- as.data.frame(
+  normalized.features[train.set, , drop = FALSE]
+)
+model.training.data$Class <- factor(
+  BLClabels[train.set],
+  levels = c(1, 2, 3),
+  labels = c("BLC", "non-BLC", "Normal")
+)
+
+# Multinomial Logistic Regression
+multinomial.model <- nnet::multinom(
+  Class ~ ., data = model.training.data, trace = FALSE
+)
+
+# LDA
+lda.model <- MASS::lda(Class ~ ., data = model.training.data)
+
+# Naive Bayes
+naive.bayes.model <- e1071::naiveBayes(
+  Class ~ ., data = model.training.data
+)
+
+# K-NN
+knn.training.features <- model.training.data[
+  , setdiff(names(model.training.data), "Class"), drop = FALSE
+]
+knn.training.classes <- model.training.data$Class
+knn.k <- c(4, 8, 12)
+
+summary(multinomial.model)
+lda.model
+naive.bayes.model
+knn.k
+```
+
+## Q4. Decision Boundary Equations
+
+### (a) Multinomial Logistic Regression Coefficients and Decision Boundaries
+
+```{r question-4-code-7}
+multinomial.coefficients <- coef(multinomial.model)
+feature.names <- setdiff(names(model.training.data), "Class")
+
+format.multinomial.linear <- function(beta) {
+  slope.terms <- sprintf("%+.6f * %s", beta[feature.names], feature.names)
+  paste(sprintf("%.6f", beta["(Intercept)"]),
+        paste(slope.terms, collapse = " "))
+}
+
+multinomial.boundaries <- c(
+  "BLC vs non-BLC" = paste0(
+    "0 = ", format.multinomial.linear(multinomial.coefficients["non-BLC", ])
+  ),
+  "BLC vs Normal" = paste0(
+    "0 = ", format.multinomial.linear(multinomial.coefficients["Normal", ])
+  ),
+  "non-BLC vs Normal" = paste0(
+    "0 = ", format.multinomial.linear(
+      multinomial.coefficients["non-BLC", ] -
+        multinomial.coefficients["Normal", ]
+    )
+  )
+)
+
+multinomial.coefficients
+multinomial.boundaries
+```
+
+### (b) LDA Projection Directions and Decision Boundary Lines
+
+```{r question-4-code-8}
+lda.projection.directions <- lda.model$scaling
+lda.projection.equations <- vapply(
+  seq_len(ncol(lda.projection.directions)),
+  function(j) {
+    slopes <- lda.projection.directions[feature.names, j]
+    paste0(colnames(lda.projection.directions)[j], " = ",
+           paste(sprintf("%+.6f * %s", slopes, feature.names), collapse = " "))
+  },
+  character(1)
+)
+
+lda.training.scores <- predict(
+  lda.model, newdata = knn.training.features
+)$x
+lda.class.levels <- levels(model.training.data$Class)
+lda.class.means <- lapply(lda.class.levels, function(class.name) {
+  colMeans(lda.training.scores[model.training.data$Class == class.name, , drop = FALSE])
+})
+names(lda.class.means) <- lda.class.levels
+
+lda.within.residuals <- do.call(rbind, lapply(lda.class.levels, function(class.name) {
+  class.scores <- lda.training.scores[model.training.data$Class == class.name, , drop = FALSE]
+  sweep(class.scores, 2, lda.class.means[[class.name]], "-")
+}))
+lda.within.covariance <- crossprod(lda.within.residuals) /
+  (nrow(lda.training.scores) - length(lda.class.levels))
+lda.class.priors <- prop.table(table(model.training.data$Class))
+
+lda.class.pairs <- combn(lda.class.levels, 2, simplify = FALSE)
+lda.boundary.table <- do.call(rbind, lapply(lda.class.pairs, function(class.pair) {
+  mean.1 <- lda.class.means[[class.pair[1]]]
+  mean.2 <- lda.class.means[[class.pair[2]]]
+  direction <- solve(lda.within.covariance, mean.1 - mean.2)
+  intercept <- -0.5 * drop(crossprod(mean.1 + mean.2, direction)) +
+    log(lda.class.priors[class.pair[1]] / lda.class.priors[class.pair[2]])
+
+  data.frame(
+    Class_1 = class.pair[1], Class_2 = class.pair[2],
+    LD1 = direction[1], LD2 = direction[2], Intercept = intercept,
+    Equation = sprintf("%.6f * LD1 %+.6f * LD2 %+.6f = 0",
+                       direction[1], direction[2], intercept)
+  )
+}))
+
+lda.projection.directions
+lda.projection.equations
+lda.boundary.table
+```
+
+## Q5. Visualization of Decision Boundaries
+
+### Choose Two Features and Create a Prediction Grid
+
+```{r question-5-code-9}
+plot.features <- colnames(knn.training.features)[1:2]
+grid.resolution <- 140
+feature1.values <- seq(0, 1, length.out = grid.resolution)
+feature2.values <- seq(0, 1, length.out = grid.resolution)
+prediction.grid <- expand.grid(
+  feature1.values,
+  feature2.values
+)
+names(prediction.grid) <- plot.features
+
+training.feature.means <- colMeans(knn.training.features)
+grid.data <- as.data.frame(lapply(training.feature.means, function(value) {
+  rep(value, nrow(prediction.grid))
+}))
+names(grid.data) <- names(training.feature.means)
+grid.data[[plot.features[1]]] <- prediction.grid[[plot.features[1]]]
+grid.data[[plot.features[2]]] <- prediction.grid[[plot.features[2]]]
+
+class.colors <- c(
+  "BLC" =  "lightblue",
+  "non-BLC" = "white",
+  "Normal" = "grey"
+)
+training.classes <- knn.training.classes
+```
+
+### Plot Decision Regions and Training Points
+
+```{r question-5-code-10}
+plot.class.regions <- function(predicted.classes, plot.title) {
+  region.matrix <- matrix(
+    as.integer(predicted.classes),
+    nrow = length(feature1.values),
+    ncol = length(feature2.values)
+  )
+
+  image(
+    x = feature1.values, y = feature2.values, z = region.matrix,
+    col = unname(class.colors), breaks = seq(0.5, 3.5, by = 1),
+    xlab = plot.features[1], ylab = plot.features[2],
+    main = plot.title, useRaster = TRUE
+  )
+  contour(
+    x = feature1.values, y = feature2.values, z = region.matrix,
+    levels = c(1.5, 2, 2.5), add = TRUE, drawlabels = FALSE,
+    col = "black", lwd = 1.2
+  )
+  points(
+    knn.training.features[[plot.features[1]]],
+    knn.training.features[[plot.features[2]]],
+    pch = 19, col = class.colors[as.character(training.classes)]
+  )
+  legend(
+    "topright", legend = names(class.colors),
+    fill = unname(class.colors), title = "Predicted class", cex = 0.8
+  )
+}
+
+lda.grid.classes <- predict(lda.model, newdata = grid.data)$class
+plot.class.regions(lda.grid.classes, "LDA Decision Regions")
+
+naive.bayes.grid.classes <- predict(
+  naive.bayes.model, newdata = grid.data, type = "class"
+)
+plot.class.regions(naive.bayes.grid.classes, "Naive Bayes Decision Regions")
+```
+
+### K-NN Decision Regions for k = 4, 8, 12, and 5
+
+```{r question-5-code-11}
+knn.plot.values <- c(4, 8, 12, 5)
+knn.grid.classes <- setNames(
+  lapply(knn.plot.values, function(k) {
+    class::knn(
+      train = knn.training.features,
+      test = grid.data,
+      cl = knn.training.classes,
+      k = k
+    )
+  }),
+  paste0("k = ", knn.plot.values)
+)
+
+for (model.name in names(knn.grid.classes)) {
+  plot.class.regions(
+    knn.grid.classes[[model.name]],
+    paste("K-NN Decision Regions (", model.name, ")", sep = "")
+  )
+}
+```
+
+## Q6. Test Set Evaluation & Performance Comparison
+
+### (a) Holdout Predictions and Confusion Matrices
+
+```{r question-6-code-12}
+test.features <- as.data.frame(
+  normalized.features[test.set, , drop = FALSE]
+)
+class.levels <- levels(model.training.data$Class)
+test.classes <- factor(
+  BLClabels[test.set], levels = c(1, 2, 3),
+  labels = c("BLC", "non-BLC", "Normal")
+)
+
+test.predictions <- list(
+  "Multinomial Logistic Regression" = predict(
+    multinomial.model, newdata = test.features, type = "class"
+  ),
+  "LDA" = predict(lda.model, newdata = test.features)$class,
+  "Naive Bayes" = predict(
+    naive.bayes.model, newdata = test.features, type = "class"
+  ),
+  "K-NN (k = 4)" = class::knn(
+    train = knn.training.features, test = test.features,
+    cl = knn.training.classes, k = 4
+  ),
+  "K-NN (k = 8)" = class::knn(
+    train = knn.training.features, test = test.features,
+    cl = knn.training.classes, k = 8
+  ),
+  "K-NN (k = 12)" = class::knn(
+    train = knn.training.features, test = test.features,
+    cl = knn.training.classes, k = 12
+  )
+)
+test.predictions <- lapply(test.predictions, function(x) {
+  factor(as.character(x), levels = class.levels)
+})
+
+multiclass.confusion.matrices <- lapply(test.predictions, function(predicted) {
+  table(
+    Actual = factor(test.classes, levels = class.levels),
+    Predicted = factor(predicted, levels = class.levels)
+  )
+})
+for (method in names(multiclass.confusion.matrices)) {
+  cat("\n", method, "\n", sep = "")
+  print(multiclass.confusion.matrices[[method]])
+}
+
+binary.levels <- c("Non-normal", "Normal")
+actual.binary <- factor(
+  ifelse(test.classes == "Normal", "Normal", "Non-normal"),
+  levels = binary.levels
+)
+to.binary.class <- function(x) {
+  factor(ifelse(x == "Normal", "Normal", "Non-normal"), levels = binary.levels)
+}
+binary.confusion.matrices <- lapply(test.predictions, function(predicted) {
+  table(Actual = actual.binary, Predicted = to.binary.class(predicted))
+})
+for (method in names(binary.confusion.matrices)) {
+  cat("\n", method, " (Normal is positive)\n", sep = "")
+  print(binary.confusion.matrices[[method]])
+}
+```
+
+### (b) False Positives, False Negatives, Precision, Recall, and F1-Score
+
+```{r question-6-code-13}
+performance.results <- do.call(rbind, lapply(names(binary.confusion.matrices), function(method) {
+  confusion <- binary.confusion.matrices[[method]]
+  true.negative <- confusion["Non-normal", "Non-normal"]
+  false.positive <- confusion["Non-normal", "Normal"]
+  false.negative <- confusion["Normal", "Non-normal"]
+  true.positive <- confusion["Normal", "Normal"]
+
+  precision <- if (true.positive + false.positive == 0) {
+    NA_real_
+  } else {
+    true.positive / (true.positive + false.positive)
+  }
+  recall <- if (true.positive + false.negative == 0) {
+    NA_real_
+  } else {
+    true.positive / (true.positive + false.negative)
+  }
+  f1.score <- if (2 * true.positive + false.positive + false.negative == 0) {
+    NA_real_
+  } else {
+    2 * true.positive /
+      (2 * true.positive + false.positive + false.negative)
+  }
+
+  data.frame(
+    Method = method,
+    FP = as.integer(false.positive), FN = as.integer(false.negative),
+    Precision = as.numeric(precision), Recall = as.numeric(recall),
+    F1 = as.numeric(f1.score),
+    row.names = NULL
+  )
+}))
+
+knitr::kable(
+  performance.results, digits = 3,
+  caption = "Holdout performance for Normal (positive) vs. Non-normal"
+)
+```

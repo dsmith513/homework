@@ -1,8 +1,5 @@
 package weather.provider;
 
-import weather.model.Location;
-import weather.model.WeatherData;
-
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -12,7 +9,9 @@ import java.time.Duration;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/** Production provider backed by the Open-Meteo Forecast API. */
+import weather.model.Location;
+import weather.model.WeatherData;
+
 public final class OpenMeteoWeatherProvider implements WeatherDataProvider {
     private static final String ENDPOINT = "https://api.open-meteo.com/v1/forecast";
     private static final Pattern NUMBER_TEMPLATE = Pattern.compile(
@@ -24,7 +23,6 @@ public final class OpenMeteoWeatherProvider implements WeatherDataProvider {
         this(HttpClient.newHttpClient());
     }
 
-    /** Constructor supports supplying a configured client while keeping HTTP behind the provider. */
     public OpenMeteoWeatherProvider(HttpClient httpClient) {
         this.httpClient = java.util.Objects.requireNonNull(httpClient, "httpClient");
     }

@@ -1,69 +1,84 @@
 package weather;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 import weather.model.Location;
 import weather.model.WeatherData;
 import weather.provider.WeatherDataProvider;
 import weather.provider.WeatherProviderException;
 import weather.service.WeatherService;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-@ExtendWith(MockitoExtension.class)
+import static org.junit.jupiter.api.Assertions.*;
+
 class WeatherServiceTest {
-    @Mock WeatherDataProvider provider;
-    @InjectMocks WeatherService service;
+    private StubWeatherProvider provider;
+    private WeatherService service;
+
+    @BeforeEach
+    void setUp() {
+        provider = new StubWeatherProvider();
+        service = new WeatherService(provider);
+    }
 
     @Test
     void returnsCurrentWeatherFromInjectedProvider() {
-        var expected = sample(service.getKnownLocations().getFirst(), 72);
-        when(provider.getCurrentWeather(expected.location())).thenReturn(expected);
+        var chicago = service.getKnownLocations().getFirst();
+        var expected = sample(chicago, 72);
+        provider.add(expected);
+
         assertEquals(expected, service.getCurrent("Chicago"));
-        verify(provider).getCurrentWeather(expected.location());
+        assertEquals(List.of(chicago), provider.requests);
     }
 
     @Test
     void knowsAllThreeRequiredLocations() {
-        assertEquals(java.util.List.of("Chicago", "Los Angeles", "New York"),
+        assertEquals(List.of("Chicago", "Los Angeles", "New York"),
                 service.getKnownLocations().stream().map(Location::name).toList());
     }
 
     @Test
     void locationLookupIgnoresCaseAndSurroundingWhitespace() {
-        var expected = sample(service.getKnownLocations().getFirst(), 70);
-        when(provider.getCurrentWeather(expected.location())).thenReturn(expected);
+        var chicago = service.getKnownLocations().getFirst();
+        var expected = sample(chicago, 70);
+        provider.add(expected);
+
         assertEquals(expected, service.getCurrent("  cHiCaGo "));
     }
 
     @Test
     void unknownLocationIsRejectedBeforeProviderIsCalled() {
         var error = assertThrows(IllegalArgumentException.class, () -> service.getCurrent("Boston"));
+
         assertTrue(error.getMessage().contains("Unknown location"));
-        verifyNoInteractions(provider);
+        assertTrue(provider.requests.isEmpty());
     }
 
     @Test
     void comparisonContainsCurrentConditionsForBothLocations() {
         var chicago = service.getKnownLocations().get(0);
-        var la = service.getKnownLocations().get(1);
-        when(provider.getCurrentWeather(chicago)).thenReturn(sample(chicago, 68));
-        when(provider.getCurrentWeather(la)).thenReturn(sample(la, 82));
+        var losAngeles = service.getKnownLocations().get(1);
+        provider.add(sample(chicago, 68));
+        provider.add(sample(losAngeles, 82));
+
         var result = service.compareCurrent("Chicago", "Los Angeles");
-        assertEquals(68, result.first().temperatureFahrenheit());
-        assertEquals(82, result.second().temperatureFahrenheit());
+
+        assertEquals(68.0, result.first().temperatureFahrenheit(), 0.001);
+        assertEquals(82.0, result.second().temperatureFahrenheit(), 0.001);
+        assertEquals(List.of(chicago, losAngeles), provider.requests);
     }
 
     @Test
     void summaryIncludesLocationConditionsAndMeasurements() {
         var chicago = service.getKnownLocations().getFirst();
-        when(provider.getCurrentWeather(chicago)).thenReturn(sample(chicago, 72));
+        provider.add(sample(chicago, 72));
+
         var result = service.summarize("Chicago");
+
         assertTrue(result.contains("Chicago is partly cloudy"));
         assertTrue(result.contains("72.0°F"));
         assertTrue(result.contains("45% humidity"));
@@ -72,37 +87,58 @@ class WeatherServiceTest {
 
     @Test
     void warmestFeatureReturnsTheHighestCurrentTemperature() {
-        when(provider.getCurrentWeather(any(Location.class))).thenAnswer(invocation -> {
-            var location = invocation.getArgument(0, Location.class);
-            var temp = switch (location.name()) {
+        for (var location : service.getKnownLocations()) {
+            var temperature = switch (location.name()) {
                 case "Chicago" -> 58;
                 case "Los Angeles" -> 86;
                 default -> 64;
             };
-            return sample(location, temp);
-        });
+            provider.add(sample(location, temperature));
+        }
+
         var result = service.getWarmestLocation();
+
         assertEquals("Los Angeles", result.location().name());
-        assertEquals(86, result.temperatureFahrenheit());
-        verify(provider, times(3)).getCurrentWeather(any(Location.class));
+        assertEquals(86.0, result.temperatureFahrenheit(), 0.001);
+        assertEquals(3, provider.requests.size());
     }
 
     @Test
     void providerFailureIsNotHiddenByTheService() {
-        when(provider.getCurrentWeather(any(Location.class)))
-                .thenThrow(new WeatherProviderException("service unavailable"));
+        provider.failure = new WeatherProviderException("service unavailable");
+
         var error = assertThrows(WeatherProviderException.class, () -> service.getCurrent("Chicago"));
+
         assertEquals("service unavailable", error.getMessage());
     }
 
     @Test
-    void blankLocationIsRejected() {
+    void blankLocationIsRejectedBeforeProviderIsCalled() {
         assertThrows(IllegalArgumentException.class, () -> service.getCurrent("  "));
-        verifyNoInteractions(provider);
+        assertTrue(provider.requests.isEmpty());
     }
 
     private static WeatherData sample(Location location, double temperature) {
         return new WeatherData(location, "2026-09-29T10:00", temperature, temperature - 2,
                 45, 8.5, 0.02, 2);
+    }
+
+    private static final class StubWeatherProvider implements WeatherDataProvider {
+        private final Map<String, WeatherData> weatherByLocation = new HashMap<>();
+        private final List<Location> requests = new ArrayList<>();
+        private RuntimeException failure;
+
+        void add(WeatherData weather) {
+            weatherByLocation.put(weather.location().name(), weather);
+        }
+
+        @Override
+        public WeatherData getCurrentWeather(Location location) {
+            requests.add(location);
+            if (failure != null) throw failure;
+            var weather = weatherByLocation.get(location.name());
+            if (weather == null) throw new IllegalStateException("No stub weather for " + location.name());
+            return weather;
+        }
     }
 }
